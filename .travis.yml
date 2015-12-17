@@ -1,3 +1,5 @@
+notifications:
+  slack: lesbarbusdecpe:v1nWI50PIVbUHmNqtGjayiMP
 language: android
 android:
   components:
