@@ -3,6 +3,7 @@ package cpe.lesbarbus.cozynotes.activities;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import cpe.lesbarbus.cozynotes.R;
+import cpe.lesbarbus.cozynotes.models.Note;
+import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,6 +45,21 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        //couchBaseTest();
+        CouchBaseNote couchDB = new CouchBaseNote(this);
+
+        Note note = new Note();
+        note.setTitle("Test de note");
+        note.setContent("Contenu de ma note :)");
+        String docId = couchDB.createNote(note);
+        couchDB.getDocumentById(docId);
+        note.set_id(docId);
+        note.setTitle("Nouveau titre");
+        note.setCurrentDatetime();
+        couchDB.updateNote(note);
+        couchDB.getDocumentById(docId);
+        couchDB.getNoteById(docId);
+        couchDB.deleteNote(docId);
     }
 
     @Override
@@ -99,5 +117,12 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void couchBaseTest(){
+        System.out.println("test");
+        final String TAG = "CouchbaseEvents";
+        Log.d(TAG, "Begin Couchbase Events App");
+        Log.d(TAG, "End Couchbase Events App");
     }
 }
