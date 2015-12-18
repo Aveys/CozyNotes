@@ -1,4 +1,4 @@
-package cpe.lesbarbus.cozynotes;
+package cpe.lesbarbus.cozynotes.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -32,6 +32,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import cpe.lesbarbus.cozynotes.R;
+
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
@@ -49,7 +51,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * TODO: remove after connecting to a real authentication system.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
+            "foo@example.com:hello", "bar@example.com:world","a@a:aaaaa"
     };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
