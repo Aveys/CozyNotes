@@ -1,8 +1,10 @@
 package cpe.lesbarbus.cozynotes.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.util.Log;
+import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -11,15 +13,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import cpe.lesbarbus.cozynotes.R;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    private static final java.lang.String EXAMPLE = "<p>TEST</p><p><i>itlalic</i></p>";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +47,21 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        //couchBaseTest();
+        CouchBaseNote couchDB = new CouchBaseNote(this);
+
+        Note note = new Note();
+        note.setTitle("Test de note");
+        note.setContent("Contenu de ma note :)");
+        String docId = couchDB.createNote(note);
+        couchDB.getDocumentById(docId);
+        note.set_id(docId);
+        note.setTitle("Nouveau titre");
+        note.setCurrentDatetime();
+        couchDB.updateNote(note);
+        couchDB.getDocumentById(docId);
+        couchDB.getNoteById(docId);
+        couchDB.deleteNote(docId);
     }
 
     @Override
@@ -107,5 +120,4 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 }
