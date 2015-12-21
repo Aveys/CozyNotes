@@ -2,7 +2,6 @@ package cpe.lesbarbus.cozynotes.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import cpe.lesbarbus.cozynotes.R;
 import cpe.lesbarbus.cozynotes.models.Note;
@@ -26,25 +27,23 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        com.getbase.floatingactionbutton.FloatingActionButton noteAction = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.add_note_action);
+        noteAction.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
-                Intent i = new Intent(getApplicationContext(), CreateNoteActivity.class);
-                startActivityForResult(i, 1);
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),CreateNoteActivity.class);
+                startActivityForResult(i,1);
             }
         });
+        noteAction.setSize(FloatingActionButton.SIZE_MINI);
+        com.getbase.floatingactionbutton.FloatingActionButton notebookAction = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.add_notebook_action);
+        notebookAction.setSize(FloatingActionButton.SIZE_MINI);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -92,6 +91,10 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        else if(id == R.id.action_settings_test){
+            Intent i = new Intent(this,TestActivity.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

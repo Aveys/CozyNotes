@@ -34,4 +34,5 @@ dependencies {
     compile 'com.couchbase.lite:couchbase-lite-android:1.1.0'
     compile 'com.android.support:design:23.1.1'
     compile 'com.github.mthli:Knife:v1.0'
+    compile 'com.getbase:floatingactionbutton:1.10.1'
 }

@@ -44,4 +44,6 @@
     <string name="toast_format_clear">Format clear</string>
     <string name="knife_placeholder">Write note text here</string>
     <string name="note_create_title_placeholder">Title of the note</string>
+    <string name="notebook_label">notebook</string>
+    <string name="note_label">note</string>
 </resources>

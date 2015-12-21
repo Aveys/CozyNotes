@@ -15,8 +15,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.LoginActivity"
-            android:label="@string/app_name">
-        </activity>
+            android:label="@string/app_name"></activity>
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_main"
@@ -27,7 +26,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.CreateNoteActivity"></activity>
+        <activity android:name=".activities.CreateNoteActivity" />
+        <activity android:name=".activities.TestActivity">
+        </activity>
     </application>
 
 </manifest>
