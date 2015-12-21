@@ -46,4 +46,12 @@
     <string name="note_create_title_placeholder">Title of the note</string>
     <string name="notebook_label">notebook</string>
     <string name="note_label">note</string>
+    <string name="empty_list_recent">No recent item</string>
+
+
+    <string-array name="notebook_test_array">
+        <item>Notebook 1</item>
+        <item>Notebook 2</item>
+        <item>Notebook 3</item>
+    </string-array>
 </resources>

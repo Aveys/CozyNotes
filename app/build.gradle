@@ -35,4 +35,5 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.github.mthli:Knife:v1.0'
     compile 'com.getbase:floatingactionbutton:1.10.1'
+    compile 'com.jakewharton:butterknife:7.0.1'
 }

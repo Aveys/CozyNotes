@@ -1,14 +1,18 @@
 package cpe.lesbarbus.cozynotes.activities;
 
 import android.content.DialogInterface;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import cpe.lesbarbus.cozynotes.R;
@@ -22,7 +26,14 @@ public class CreateNoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.note_create_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        Spinner spinner = (Spinner) findViewById(R.id.note_create_notebook_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.notebook_test_array,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
         knife = (KnifeText) findViewById(R.id.knife);
         // Use async would better; ImageGetter coming soon...
         knife.setText(Html.fromHtml("<p> write text here</p>", null, new KnifeTagHandler()));

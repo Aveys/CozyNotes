@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import cpe.lesbarbus.cozynotes.R;
 import cpe.lesbarbus.cozynotes.models.Note;
@@ -32,13 +33,15 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
+        final FloatingActionsMenu fam = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
         com.getbase.floatingactionbutton.FloatingActionButton noteAction = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.add_note_action);
         noteAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent i = new Intent(getApplicationContext(),CreateNoteActivity.class);
-                startActivityForResult(i,1);
+                fam.collapseImmediately();
+                startActivityForResult(i, 1);
             }
         });
         noteAction.setSize(FloatingActionButton.SIZE_MINI);

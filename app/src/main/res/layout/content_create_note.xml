@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#01ecfc"
+        android:background="@color/blue_500"
         android:scrollbars="none">
 
         <LinearLayout android:orientation="horizontal"
