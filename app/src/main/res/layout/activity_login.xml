@@ -80,5 +80,15 @@
             android:text="Login"
             android:background="#ffffff" />
 
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:padding="10dp"
+            android:text="Request an instance : http://cozy.io"
+            android:linksClickable="true"
+            android:autoLink="web"
+            android:background="@color/white"/>
+
     </LinearLayout>
 </ScrollView>

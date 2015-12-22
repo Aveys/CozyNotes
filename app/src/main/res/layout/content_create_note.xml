@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
+        android:layout_marginTop="?attr/actionBarSize"
         android:id="@+id/note_create_title"
         android:text="@string/note_create_title_placeholder"
         android:inputType="text" />

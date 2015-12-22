@@ -5,51 +5,70 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import cpe.lesbarbus.cozynotes.R;
 import cpe.lesbarbus.cozynotes.models.Note;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener {
+
+
+    @Bind(R.id.toolbar) Toolbar _toolbar;
+    @Bind(R.id.drawer_layout) DrawerLayout _drawer;
+    @Bind(R.id.multiple_actions) FloatingActionsMenu _fam;
+    @Bind(R.id.add_note_action) FloatingActionButton _noteAction;
+    @Bind(R.id.add_notebook_action) FloatingActionButton _notebookAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        //bind widget (ButterKnife lib)
+        ButterKnife.bind(this);
+
+        //Toolbar Init
+        setSupportActionBar(_toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, _drawer, _toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        _drawer.setDrawerListener(toggle);
         toggle.syncState();
-        final FloatingActionsMenu fam = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
-        com.getbase.floatingactionbutton.FloatingActionButton noteAction = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.add_note_action);
-        noteAction.setOnClickListener(new View.OnClickListener() {
+
+        //FloatingActionMenu Init
+        _noteAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(getApplicationContext(),CreateNoteActivity.class);
-                fam.collapseImmediately();
+                Intent i = new Intent(getApplicationContext(), CreateNoteActivity.class);
+                _fam.collapseImmediately();
                 startActivityForResult(i, 1);
             }
         });
-        noteAction.setSize(FloatingActionButton.SIZE_MINI);
-        com.getbase.floatingactionbutton.FloatingActionButton notebookAction = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.add_notebook_action);
-        notebookAction.setSize(FloatingActionButton.SIZE_MINI);
+        _noteAction.setSize(FloatingActionButton.SIZE_MINI);
+        _notebookAction.setSize(FloatingActionButton.SIZE_MINI);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        ListView list = (ListView) findViewById(android.R.id.list);
+        list.setEmptyView(findViewById(android.R.id.empty));
+
+
         //couchBaseTest();
         CouchBaseNote couchDB = new CouchBaseNote(this);
 
@@ -126,5 +145,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onRefresh() {
+        Toast.makeText(this,"Update asked",Toast.LENGTH_SHORT).show();
     }
 }

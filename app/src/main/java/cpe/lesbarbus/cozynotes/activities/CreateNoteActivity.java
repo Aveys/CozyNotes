@@ -15,31 +15,36 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import cpe.lesbarbus.cozynotes.R;
 import io.github.mthli.knife.KnifeTagHandler;
 import io.github.mthli.knife.KnifeText;
 
 public class CreateNoteActivity extends AppCompatActivity {
 
-    private KnifeText knife;
+    @Bind(R.id.knife) KnifeText _knife;
+    @Bind(R.id.note_create_notebook_spinner) Spinner _spinner;
+    @Bind(R.id.note_create_toolbar) Toolbar _toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.note_create_toolbar);
-        setSupportActionBar(toolbar);
+
+        ButterKnife.bind(this);
+
+        setSupportActionBar(_toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        Spinner spinner = (Spinner) findViewById(R.id.note_create_notebook_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.notebook_test_array,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        knife = (KnifeText) findViewById(R.id.knife);
+        _spinner.setAdapter(adapter);
+
         // Use async would better; ImageGetter coming soon...
-        knife.setText(Html.fromHtml("<p> write text here</p>", null, new KnifeTagHandler()));
+        _knife.setText(Html.fromHtml("<p> write text here</p>", null, new KnifeTagHandler()));
         // Switch EditText default style to KnifeText style
-        knife.swicthToKnifeStyle();
-        knife.setSelection(knife.getEditableText().length());
+        _knife.swicthToKnifeStyle();
+        _knife.setSelection(_knife.getEditableText().length());
         setupBold();
         setupItalic();
         setupUnderline();
@@ -57,7 +62,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         bold.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                knife.bold(!knife.contains(KnifeText.FORMAT_BOLD));
+                _knife.bold(!_knife.contains(KnifeText.FORMAT_BOLD));
             }
         });
 
@@ -76,7 +81,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         italic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                knife.italic(!knife.contains(KnifeText.FORMAT_ITALIC));
+                _knife.italic(!_knife.contains(KnifeText.FORMAT_ITALIC));
             }
         });
 
@@ -95,7 +100,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         underline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                knife.underline(!knife.contains(KnifeText.FORMAT_UNDERLINED));
+                _knife.underline(!_knife.contains(KnifeText.FORMAT_UNDERLINED));
             }
         });
 
@@ -114,7 +119,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         strikethrough.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                knife.strikethrough(!knife.contains(KnifeText.FORMAT_STRIKETHROUGH));
+                _knife.strikethrough(!_knife.contains(KnifeText.FORMAT_STRIKETHROUGH));
             }
         });
 
@@ -133,7 +138,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         bullet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                knife.bullet(!knife.contains(KnifeText.FORMAT_BULLET));
+                _knife.bullet(!_knife.contains(KnifeText.FORMAT_BULLET));
             }
         });
 
@@ -153,7 +158,7 @@ public class CreateNoteActivity extends AppCompatActivity {
         quote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                knife.quote(!knife.contains(KnifeText.FORMAT_QUOTE));
+                _knife.quote(!_knife.contains(KnifeText.FORMAT_QUOTE));
             }
         });
 
@@ -192,8 +197,8 @@ public class CreateNoteActivity extends AppCompatActivity {
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(knife.getText().toString());
-                knife.clearFormats();
+                System.out.println(_knife.getText().toString());
+                _knife.clearFormats();
             }
         });
 
@@ -207,8 +212,8 @@ public class CreateNoteActivity extends AppCompatActivity {
     }
 
     private void showLinkDialog() {
-        final int start = knife.getSelectionStart();
-        final int end = knife.getSelectionEnd();
+        final int start = _knife.getSelectionStart();
+        final int end = _knife.getSelectionEnd();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
@@ -227,7 +232,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                 }
 
                 // When KnifeText lose focus, use this method
-                knife.link(link, start, end);
+                _knife.link(link, start, end);
             }
         });
 
