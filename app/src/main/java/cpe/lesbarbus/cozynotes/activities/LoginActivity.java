@@ -4,7 +4,10 @@ import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,14 +19,15 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cpe.lesbarbus.cozynotes.R;
-import cpe.lesbarbus.cozynotes.authenticator.CozyServerAuthenticate;
+import cpe.lesbarbus.cozynotes.authenticator.AccountGeneral;
+
 import static cpe.lesbarbus.cozynotes.authenticator.AccountGeneral.sServerAuth;
 
 public class LoginActivity extends AccountAuthenticatorActivity {
     private final String TAG = this.getClass().getSimpleName();
-    private final int REQUEST_SIGNUP=1;
+    private final int REQUEST_SIGNUP = 1;
 
-    public final static String ARG_ACCOUNT_TYPE = "ACCOUNT_TYPE";
+    public final static String ARG_ACCOUNT_TYPE = "cpe.lesbarbus.cozynotes.auth";
     public final static String ARG_AUTH_TYPE = "AUTH_TYPE";
     public final static String ARG_ACCOUNT_NAME = "ACCOUNT_NAME";
     public final static String ARG_IS_ADDING_NEW_ACCOUNT = "IS_ADDING_NEW_ACCOUNT";
@@ -36,10 +40,12 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 
     private AccountManager mAccountManager;
 
-    @Bind(R.id.input_url) EditText _urlText;
-    @Bind(R.id.input_email) EditText _emailText;
-    @Bind(R.id.input_password) EditText _passwordText;
-    @Bind(R.id.btn_login) Button _loginButton;
+    @Bind(R.id.input_url)
+    EditText _urlText;
+    @Bind(R.id.input_password)
+    EditText _passwordText;
+    @Bind(R.id.btn_login)
+    Button _loginButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +55,6 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 
         mAccountManager = AccountManager.get(getBaseContext());
 
-        _emailText.setText(getIntent().getStringExtra(ARG_ACCOUNT_NAME));
         mAuthTokenType = "COZYCLOUD TOKEN";
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +74,9 @@ public class LoginActivity extends AccountAuthenticatorActivity {
             onLoginFailed();
             return;
         }*/
-
+        if(!isOnline()){
+            Toast.makeText(this,R.string.no_connection,Toast.LENGTH_LONG).show();
+        }
         _loginButton.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
@@ -79,29 +86,29 @@ public class LoginActivity extends AccountAuthenticatorActivity {
         progressDialog.show();
 
 
-        final String email = _emailText.getText().toString();
         final String password = _passwordText.getText().toString();
         final String url = _urlText.getText().toString();
 
-        final String accountType = getIntent().getStringExtra(ARG_ACCOUNT_TYPE);
+        final String accountType = this.mAuthTokenType;
 
         // TODO: Implement your own authentication logic here.
 
-        new AsyncTask<String,Void,Intent>(){
+        new AsyncTask<String, Void, Intent>() {
 
             @Override
             protected Intent doInBackground(String... params) {
-                Log.d("cozynotes",TAG+" > auth launched");
+                Log.d("cozynotes", TAG + " > auth launched");
                 String authtoken = null;
                 Bundle data = new Bundle();
                 try {
-                    authtoken = sServerAuth.userSignIn(email,password,url);
-                    data.putString(AccountManager.KEY_ACCOUNT_NAME,"null");
-                    data.putString(AccountManager.KEY_ACCOUNT_TYPE,accountType);
-                    data.putString(AccountManager.KEY_AUTHTOKEN,authtoken);
-                    data.putString(PARAM_USER_PASS,password);
+                    authtoken = sServerAuth.userSignIn( password, url);
+                    Log.d("LoginActivity", "AuthToken retrieved :" + authtoken);
+                    data.putString(AccountManager.KEY_ACCOUNT_NAME, "Cozynotes");
+                    data.putString(AccountManager.KEY_ACCOUNT_TYPE, AccountGeneral.ACCOUNT_TYPE);
+                    data.putString(AccountManager.KEY_AUTHTOKEN, authtoken);
+                    data.putString(PARAM_USER_PASS, password);
                 } catch (Exception e) {
-                    data.putString(KEY_ERROR_MESSAGE,e.getMessage());
+                    data.putString(KEY_ERROR_MESSAGE, e.getMessage());
                     e.printStackTrace();
                 }
                 final Intent res = new Intent();
@@ -111,12 +118,11 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 
             @Override
             protected void onPostExecute(Intent intent) {
-                if(intent.hasExtra(KEY_ERROR_MESSAGE)) {
+                if (intent.hasExtra(KEY_ERROR_MESSAGE)) {
                     Toast.makeText(getBaseContext(), intent.getStringExtra(KEY_ERROR_MESSAGE), Toast.LENGTH_LONG).show();
                     progressDialog.dismiss();
                     _loginButton.setEnabled(true);
-                }
-                else
+                } else
                     onLoginSuccess(intent);
             }
         }.execute();
@@ -143,28 +149,26 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 
     public void onLoginSuccess(Intent intent) {
 
-        Log.d("udinic", TAG + "> finishLogin");
+        Log.d("Cozynotes", TAG + "> finishLogin");
 
         String accountName = intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
         String accountPassword = intent.getStringExtra(PARAM_USER_PASS);
         final Account account = new Account(accountName, intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE));
 
-        if (getIntent().getBooleanExtra(ARG_IS_ADDING_NEW_ACCOUNT, false)) {
-            Log.d("udinic", TAG + "> finishLogin > addAccountExplicitly");
-            String authtoken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);
-            String authtokenType = mAuthTokenType;
+        Log.d("Cozynotes", TAG + "> finishLogin > addAccountExplicitly");
+        String authtoken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);
+        String authtokenType = mAuthTokenType;
 
-            // Creating the account on the device and setting the auth token we got
-            // (Not setting the auth token will cause another call to the server to authenticate the user)
-            mAccountManager.addAccountExplicitly(account, accountPassword, null);
-            mAccountManager.setAuthToken(account, authtokenType, authtoken);
-        } else {
-            Log.d("udinic", TAG + "> finishLogin > setPassword");
-            mAccountManager.setPassword(account, accountPassword);
-        }
+        // Creating the account on the device and setting the auth token we got
+        // (Not setting the auth token will cause another call to the server to authenticate the user)
+        mAccountManager.addAccountExplicitly(account, accountPassword, null);
+        mAccountManager.setAuthToken(account, authtokenType, authtoken);
+
 
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
+        Intent i = new Intent(this,MainActivity.class);
+        startActivity(i);
         finish();
 
     }
@@ -172,15 +176,14 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     public boolean validate() {
         boolean valid = true;
 
-        String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
-
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        //exemple with built-in pattern
+        /*if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             _emailText.setError("enter a valid email address");
             valid = false;
         } else {
             _emailText.setError(null);
-        }
+        }*/
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
             _passwordText.setError("between 4 and 10 alphanumeric characters");
@@ -190,5 +193,10 @@ public class LoginActivity extends AccountAuthenticatorActivity {
         }
 
         return valid;
+    }
+    public boolean isOnline(){
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo !=null && netInfo.isConnected();
     }
 }

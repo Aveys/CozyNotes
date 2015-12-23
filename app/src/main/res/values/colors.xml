@@ -19,5 +19,8 @@
     <color name="accent_material_light">#00b0ff</color>
     <color name="primary_material_dark">#2196f3</color>
     <color name="black">#177ae8</color>
+    <color name="material_blue_grey_900">#4e6672</color>
+    <color name="accent_material_dark">#ffffff</color>
+    <color name="background_material_dark">#fdfdfd</color>
 
 </resources>

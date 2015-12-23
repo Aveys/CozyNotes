@@ -3,20 +3,30 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/blue_500"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    >
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="56dp"
+        android:paddingTop="35dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
+
+        <ImageView
+            android:id="@+id/logo_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/cozy_logo_revert"
+            android:contentDescription="@string/splashcreen_logo_description" />
 
         <TextView android:src="@drawable/logo"
             android:layout_width="wrap_content"
             android:layout_height="72dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="15dp"
+            android:paddingTop="10dp"
             android:layout_gravity="center_horizontal"
             android:text="CozyNotes"
             android:textColor="#ffffff"
@@ -38,36 +48,24 @@
                 android:layout_height="wrap_content"
                 android:inputType="textUri"
                 android:hint="URL"
-                android:textColorHint="@color/white"/>
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"/>
         </android.support.design.widget.TextInputLayout>
-        <!--  Email Label -->
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:textColorHint="@color/white">
-            <EditText android:id="@+id/input_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:hint="Email"
-                android:textColorHint="@color/white"/>
-        </android.support.design.widget.TextInputLayout>
-
         <!--  Password Label -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:textColorHint="@color/white">
+            android:textColorHint="@color/white"
+            android:theme="@style/AppTheme">
             <EditText android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:hint="Password"
-                android:textColorHint="@color/white"/>
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.v7.widget.AppCompatButton
@@ -78,6 +76,7 @@
             android:layout_marginBottom="24dp"
             android:padding="12dp"
             android:text="Login"
+            android:textColor="@color/colorPrimaryDark"
             android:background="#ffffff" />
 
         <TextView
@@ -88,7 +87,8 @@
             android:text="Request an instance : http://cozy.io"
             android:linksClickable="true"
             android:autoLink="web"
-            android:background="@color/white"/>
+            android:textColor="#ffffff"
+            android:textColorLink="#c5c2c2" />
 
     </LinearLayout>
 </ScrollView>

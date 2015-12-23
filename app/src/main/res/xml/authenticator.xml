@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<account-authenticator/>
+    <account-authenticator
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:accountType="cpe.lesbarbus.cozynotes.auth"
+        android:icon="@drawable/cozy_logo"
+        android:smallIcon="@drawable/cozy_logo"
+        android:label="@string/auth_label"
+    />

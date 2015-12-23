@@ -9,8 +9,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import cpe.lesbarbus.cozynotes.activities.LoginActivity;
+import static cpe.lesbarbus.cozynotes.authenticator.AccountGeneral.*;
+import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 
 /**
  * Created by arthurveys on 22/12/15.
@@ -31,6 +34,8 @@ public class CozyAuthenticator extends AbstractAccountAuthenticator{
 
     @Override
     public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType, String[] requiredFeatures, Bundle options) throws NetworkErrorException {
+        Log.d("CozyAuthenticator", "Add account");
+
         final Intent intent = new Intent(appContext, LoginActivity.class);
         intent.putExtra(LoginActivity.ARG_ACCOUNT_TYPE,accountType);
         intent.putExtra(LoginActivity.ARG_AUTH_TYPE,authTokenType);
@@ -61,6 +66,7 @@ public class CozyAuthenticator extends AbstractAccountAuthenticator{
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE,response);
         intent.putExtra(LoginActivity.ARG_ACCOUNT_TYPE,account.type);
         intent.putExtra(LoginActivity.ARG_AUTH_TYPE,authTokenType);
+        intent.putExtra(LoginActivity.ARG_ACCOUNT_NAME,account.name);
         final Bundle bundle = new Bundle();
         bundle.putParcelable(AccountManager.KEY_INTENT,intent);
         return bundle;
@@ -68,7 +74,7 @@ public class CozyAuthenticator extends AbstractAccountAuthenticator{
 
     @Override
     public String getAuthTokenLabel(String authTokenType) {
-        return null;
+        return AUTHTOKEN_TYPE_FULL;
     }
 
     @Override
@@ -78,6 +84,8 @@ public class CozyAuthenticator extends AbstractAccountAuthenticator{
 
     @Override
     public Bundle hasFeatures(AccountAuthenticatorResponse response, Account account, String[] features) throws NetworkErrorException {
-        return null;
+        final Bundle result = new Bundle();
+        result.putBoolean(KEY_BOOLEAN_RESULT,false);
+        return result;
     }
 }
