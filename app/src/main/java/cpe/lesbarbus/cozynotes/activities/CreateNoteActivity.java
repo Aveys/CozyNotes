@@ -1,14 +1,17 @@
 package cpe.lesbarbus.cozynotes.activities;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Build;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -21,11 +24,15 @@ import cpe.lesbarbus.cozynotes.R;
 import io.github.mthli.knife.KnifeTagHandler;
 import io.github.mthli.knife.KnifeText;
 
-public class CreateNoteActivity extends AppCompatActivity {
+public class CreateNoteActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    @Bind(R.id.knife) KnifeText _knife;
-    @Bind(R.id.note_create_notebook_spinner) Spinner _spinner;
-    @Bind(R.id.note_create_toolbar) Toolbar _toolbar;
+    @Bind(R.id.knife)
+    KnifeText _knife;
+    @Bind(R.id.note_create_notebook_spinner)
+    Spinner _spinner;
+    @Bind(R.id.note_create_toolbar)
+    Toolbar _toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,14 +43,15 @@ public class CreateNoteActivity extends AppCompatActivity {
         setSupportActionBar(_toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.notebook_test_array,android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.notebook_test_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         _spinner.setAdapter(adapter);
+        _spinner.setOnItemSelectedListener(this);
+
+        //build AlertDialog
 
         // Use async would better; ImageGetter coming soon...
         _knife.setText(Html.fromHtml("<p> write text here</p>", null, new KnifeTagHandler()));
-        // Switch EditText default style to KnifeText style
-        _knife.swicthToKnifeStyle();
         _knife.setSelection(_knife.getEditableText().length());
         setupBold();
         setupItalic();
@@ -230,7 +238,6 @@ public class CreateNoteActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(link)) {
                     return;
                 }
-
                 // When KnifeText lose focus, use this method
                 _knife.link(link, start, end);
             }
@@ -244,5 +251,39 @@ public class CreateNoteActivity extends AppCompatActivity {
         });
 
         builder.create().show();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (parent.getItemAtPosition(position).toString().equals("Create a Notebook ....")) {
+
+        }
+        _spinner.setSelection(position);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    public Dialog onCreateDialog(Bundle SavedInstanceState) {
+        //TODO : ca marche pas
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //get the inflater
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        //Inflate and set layout
+        builder.setView(inflater.inflate(R.layout.dialog_addnotebook, null))
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        EditText notebookName = (EditText) findViewById(R.id.dialog_addNotebook_edit);
+                        if (TextUtils.isEmpty(notebookName.getText().toString())) {
+                            Toast.makeText(getApplicationContext(), "Notebook must have a name", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+        return null;
     }
 }
