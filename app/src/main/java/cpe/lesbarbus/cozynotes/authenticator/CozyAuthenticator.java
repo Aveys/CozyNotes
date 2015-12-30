@@ -22,6 +22,10 @@ public class CozyAuthenticator extends AbstractAccountAuthenticator{
 
     private final Context appContext;
 
+    /**
+     * Construct a new CozyAuthenticator
+     * @param context the context of the app
+     */
     public CozyAuthenticator(Context context) {
         super(context);
         this.appContext = context;
@@ -35,7 +39,7 @@ public class CozyAuthenticator extends AbstractAccountAuthenticator{
     @Override
     public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType, String[] requiredFeatures, Bundle options) throws NetworkErrorException {
         Log.d("CozyAuthenticator", "Add account");
-
+        //launch the loginActivity if a new account is needed
         final Intent intent = new Intent(appContext, LoginActivity.class);
         intent.putExtra(LoginActivity.ARG_ACCOUNT_TYPE,accountType);
         intent.putExtra(LoginActivity.ARG_AUTH_TYPE,authTokenType);
@@ -53,15 +57,18 @@ public class CozyAuthenticator extends AbstractAccountAuthenticator{
 
     @Override
     public Bundle getAuthToken(AccountAuthenticatorResponse response, Account account, String authTokenType, Bundle options) throws NetworkErrorException {
+
         final AccountManager am = AccountManager.get(appContext);
+        //try to recover already saved authtoken
         String authToken = am.peekAuthToken(account,authTokenType);
         if(!TextUtils.isEmpty(authToken)){
             final Bundle result = new Bundle();
             result.putString(AccountManager.KEY_ACCOUNT_NAME,account.name);
             result.putString(AccountManager.KEY_ACCOUNT_TYPE,account.type);
             result.putString(AccountManager.KEY_AUTHTOKEN,authToken);
-            return result;
+            return result;//return the recovered Auth Token
         }
+        //If no authtoken found, redirect to LoginActivity
         final Intent intent = new Intent(appContext,LoginActivity.class);
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE,response);
         intent.putExtra(LoginActivity.ARG_ACCOUNT_TYPE,account.type);

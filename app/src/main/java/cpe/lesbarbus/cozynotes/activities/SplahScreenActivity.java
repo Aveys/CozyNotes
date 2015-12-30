@@ -4,17 +4,12 @@ import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import butterknife.Bind;
 import cpe.lesbarbus.cozynotes.R;
 import cpe.lesbarbus.cozynotes.authenticator.AccountGeneral;
 
@@ -26,6 +21,7 @@ public class SplahScreenActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splah_screen);
+        //Init of AccountManager
         mAccountManager = AccountManager.get(this);
         getTokenForAccountCreateIfNeeded(AccountGeneral.ACCOUNT_TYPE, AccountGeneral.AUTHTOKEN_TYPE_FULL);
 
@@ -37,8 +33,8 @@ public class SplahScreenActivity extends Activity {
      * If one exist - return its auth token.
      * If more than one exists - show a picker and return the select account's auth token.
      *
-     * @param accountType
-     * @param authTokenType
+     * @param accountType the type of account (Cozynotes usually)
+     * @param authTokenType the type of auth account (AUTH_FULL since there's only one type of auth)
      */
     private void getTokenForAccountCreateIfNeeded(String accountType, String authTokenType) {
         final AccountManagerFuture<Bundle> future = mAccountManager.getAuthTokenByFeatures(accountType, authTokenType, null, this, null, null,
@@ -65,6 +61,10 @@ public class SplahScreenActivity extends Activity {
                 , null);
     }
 
+    /**
+     * Run on UI and show a Toaster
+     * @param msg the message to show
+     */
     private void showMessage(final String msg) {
         if (TextUtils.isEmpty(msg))
             return;

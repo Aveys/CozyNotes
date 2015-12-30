@@ -23,6 +23,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         this.noteList = noteList;
     }
 
+
     @Override
     public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -46,6 +47,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         else
             holder.vText.setText("No content");
     }
+
+    /**
+     * Refresh the list of notes
+     * @param list the new list of notes
+     */
     public void refreshData(List<Note> list){
         this.noteList = list;
     }
@@ -54,6 +60,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     public int getItemCount() {
         return noteList.size();
     }
+
+    /**
+     * Note View Holder
+     */
     public static class NoteViewHolder extends RecyclerView.ViewHolder{
 
 

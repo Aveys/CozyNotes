@@ -1,17 +1,8 @@
 package cpe.lesbarbus.cozynotes.models;
 
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.TextView;
-
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
-
-import butterknife.Bind;
-import cpe.lesbarbus.cozynotes.R;
 
 
 public class Note {

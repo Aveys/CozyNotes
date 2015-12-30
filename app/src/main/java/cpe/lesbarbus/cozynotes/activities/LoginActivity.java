@@ -36,7 +36,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     public final static String KEY_ACCOUNT_AUTHENTICATOR_RESPONSE = null;
 
     public final static String PARAM_USER_PASS = "USER_PASS";
-    private String mAuthTokenType;
+
 
     private AccountManager mAccountManager;
 
@@ -54,8 +54,6 @@ public class LoginActivity extends AccountAuthenticatorActivity {
         ButterKnife.bind(this);
 
         mAccountManager = AccountManager.get(getBaseContext());
-
-        mAuthTokenType = "COZYCLOUD TOKEN";
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -88,8 +86,6 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 
         final String password = _passwordText.getText().toString();
         final String url = _urlText.getText().toString();
-
-        final String accountType = this.mAuthTokenType;
 
 
         new AsyncTask<String, Void, Intent>() {
@@ -129,18 +125,6 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SIGNUP) {
-            if (resultCode == RESULT_OK) {
-
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
-                this.finish();
-            }
-        }
-    }
-
-    @Override
     public void onBackPressed() {
         // Disable going back to the MainActivity
         moveTaskToBack(true);
@@ -149,7 +133,8 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     public void onLoginSuccess(Intent intent) {
 
         Log.d("Cozynotes", TAG + "> finishLogin");
-
+        //signIn is complete, store the new account in AccountManager
+        //Create the account
         String accountName = intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
         String accountPassword = intent.getStringExtra(PARAM_USER_PASS);
         final Account account = new Account(accountName, intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE));
@@ -163,9 +148,9 @@ public class LoginActivity extends AccountAuthenticatorActivity {
         mAccountManager.addAccountExplicitly(account, accountPassword, null);
         mAccountManager.setAuthToken(account, authtokenType, authtoken);
 
-
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
+        //redirect to main activity and kill this one
         Intent i = new Intent(this,MainActivity.class);
         startActivity(i);
         finish();

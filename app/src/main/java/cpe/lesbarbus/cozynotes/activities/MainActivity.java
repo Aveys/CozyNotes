@@ -14,30 +14,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.couchbase.lite.CouchbaseLiteException;
-import com.couchbase.lite.Query;
-import com.couchbase.lite.QueryEnumerator;
-import com.couchbase.lite.QueryRow;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cpe.lesbarbus.cozynotes.R;
 import cpe.lesbarbus.cozynotes.adapter.NoteAdapter;
-import cpe.lesbarbus.cozynotes.models.Note;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 
 public class MainActivity extends AppCompatActivity
@@ -86,9 +71,11 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(i, 1);
             }
         });
+        //set the size of action button
         _noteAction.setSize(FloatingActionButton.SIZE_MINI);
         _notebookAction.setSize(FloatingActionButton.SIZE_MINI);
 
+        //drawer related
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -98,10 +85,11 @@ public class MainActivity extends AppCompatActivity
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         _recList.setLayoutManager(llm);
 
-
+        //adapter for recyclerview
         final NoteAdapter na = new NoteAdapter(couchDB.getAllNotes());
         _recList.setAdapter(na);
 
+        //refresh comportement for swipe refresh
         _spr.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

@@ -24,11 +24,11 @@ import okio.Buffer;
 public class CozyServerAuthenticate implements ServerAuthenticate {
 
     public static final MediaType JSON = MediaType.parse("application/x-www-form-urlencoded");
-    private OkHttpClient client = new OkHttpClient();
+    private OkHttpClient client = new OkHttpClient(); //TODO : create a singleton class of client with generic GET/POST/DELETE
 
     @Override
     public String userSignIn(final String pass, String url) throws Exception {
-        //Create the Auth header
+        //Create the Auth header (base 64 with owner:pass)
         client.setAuthenticator(new Authenticator() {
             @Override
             public Request authenticate(Proxy proxy, Response response) throws IOException {
@@ -41,18 +41,21 @@ public class CozyServerAuthenticate implements ServerAuthenticate {
                 return null;
             }
         });
+
         String passRes=null;
         String formedURL = "https://owner:"+pass+"@"+url+"/device";
+
         String body = "{\"login\":\""+AccountGeneral.DEVICE_NAME+"\",\"permissions\":{\"File\":{\"description\":\"Synchronise notes\"}}}";
         Log.d("CozyServerAuthenticate","Requested URL : "+formedURL+" \n Request Body : "+body);
 
-        String res = post(formedURL,body);
+        String res = post(formedURL,body);// send the POST request
+
         Log.d("CozyServerAuthenticate","result="+res);
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode rootnode = null;
         try {
-            rootnode = mapper.readValue(res,ObjectNode.class);
-            passRes=rootnode.get("password").asText();
+            rootnode = mapper.readValue(res,ObjectNode.class);//try to parse JSON
+            passRes=rootnode.get("password").asText();//recover password field
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -60,6 +63,13 @@ public class CozyServerAuthenticate implements ServerAuthenticate {
 
     }
 
+    /**
+     * Send the POST request
+     * @param url the url of the API
+     * @param json The content of the POST Request
+     * @return the response body
+     * @throws IOException
+     */
     private String post(String url, String json) throws IOException {
         client.networkInterceptors().add(new LoggingInterceptor());
         RequestBody body = RequestBody.create(JSON, json);
@@ -76,6 +86,7 @@ public class CozyServerAuthenticate implements ServerAuthenticate {
 
     }
 }
+//Interceptor for debug in OkHttp
 class LoggingInterceptor implements Interceptor {
     @Override public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
