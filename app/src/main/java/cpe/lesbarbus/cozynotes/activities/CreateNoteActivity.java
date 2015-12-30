@@ -1,15 +1,12 @@
 package cpe.lesbarbus.cozynotes.activities;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
-import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,9 +15,14 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cpe.lesbarbus.cozynotes.R;
+import cpe.lesbarbus.cozynotes.models.Note;
+import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 import io.github.mthli.knife.KnifeTagHandler;
 import io.github.mthli.knife.KnifeText;
 
@@ -28,10 +30,16 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
 
     @Bind(R.id.knife)
     KnifeText _knife;
+    @Bind(R.id.note_create_title)
+    EditText _title;
     @Bind(R.id.note_create_notebook_spinner)
     Spinner _spinner;
     @Bind(R.id.note_create_toolbar)
     Toolbar _toolbar;
+    @Bind(R.id.save_note_button)
+    ImageButton _saveButton;
+
+    private ArrayAdapter<CharSequence> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +51,10 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
         setSupportActionBar(_toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.notebook_test_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        String[] falseNotebook=getResources().getStringArray(R.array.notebook_test_array);
+        adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_dropdown_item, new ArrayList(Arrays.asList(falseNotebook)));
         _spinner.setAdapter(adapter);
         _spinner.setOnItemSelectedListener(this);
-
-        //build AlertDialog
 
         // Use async would better; ImageGetter coming soon...
         _knife.setText(Html.fromHtml("<p> write text here</p>", null, new KnifeTagHandler()));
@@ -61,6 +67,26 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
         setupQuote();
         setupLink();
         setupClear();
+
+        _saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(_title.getText().toString().isEmpty())
+                    Toast.makeText(getApplicationContext(),"Title can't be empty",Toast.LENGTH_SHORT).show();
+                else if(_title.getText().toString().isEmpty())
+                    Toast.makeText(getApplicationContext(),"Title can't be empty",Toast.LENGTH_SHORT).show();
+                else{
+                    Note n = new Note();
+                    n.setContent(_knife.toHtml());
+                    n.setTitle(_title.getText().toString());
+                    n.setCurrentDatetime();
+                    CouchBaseNote db = new CouchBaseNote(getApplicationContext());
+                    db.createNote(n);
+                    finish();
+                }
+
+            }
+        });
 
     }
 
@@ -255,10 +281,52 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        //IF add notebook selected
         if (parent.getItemAtPosition(position).toString().equals("Create a Notebook ....")) {
+            final String[] name = {null};
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(true);
 
+            View vw = getLayoutInflater().inflate(R.layout.dialog_addnotebook, parent, false);
+            final EditText notebookName = (EditText) vw.findViewById(R.id.dialog_addNotebook_edit);
+            builder.setView(vw);
+            builder.setTitle("Notebook title");
+
+            builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    name[0] = notebookName.getText().toString();
+                    if (TextUtils.isEmpty(name[0])) {
+                        Toast.makeText(getApplicationContext(), "Tittle cannot be empty", Toast.LENGTH_LONG).show();
+                    } else {
+                        adapter.add(name[0]);
+                        int pos = getAdapterItemPosition(name[0]);
+                        _spinner.setSelection(pos);
+                    }
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //DO NOTHING
+                }
+            });
+            builder.show();
         }
-        _spinner.setSelection(position);
+        else{
+            _spinner.setSelection(position);
+        }
+
+    }
+
+    private int getAdapterItemPosition(String s) {
+        for(int position=0;position<adapter.getCount();position++){
+            if(adapter.getItem(position).toString().equals(s)){
+                return position;
+            }
+        }
+        return 0;
     }
 
     @Override
@@ -266,24 +334,9 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
 
     }
 
-    public Dialog onCreateDialog(Bundle SavedInstanceState) {
-        //TODO : ca marche pas
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        //get the inflater
-        LayoutInflater inflater = this.getLayoutInflater();
-
-        //Inflate and set layout
-        builder.setView(inflater.inflate(R.layout.dialog_addnotebook, null))
-                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        EditText notebookName = (EditText) findViewById(R.id.dialog_addNotebook_edit);
-                        if (TextUtils.isEmpty(notebookName.getText().toString())) {
-                            Toast.makeText(getApplicationContext(), "Notebook must have a name", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                });
-        return null;
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
     }
 }

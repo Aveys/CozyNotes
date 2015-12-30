@@ -8,6 +8,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,29 +17,54 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.couchbase.lite.CouchbaseLiteException;
+import com.couchbase.lite.Query;
+import com.couchbase.lite.QueryEnumerator;
+import com.couchbase.lite.QueryRow;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cpe.lesbarbus.cozynotes.R;
+import cpe.lesbarbus.cozynotes.adapter.NoteAdapter;
 import cpe.lesbarbus.cozynotes.models.Note;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener {
+        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
 
-    @Bind(R.id.toolbar) Toolbar _toolbar;
-    @Bind(R.id.drawer_layout) DrawerLayout _drawer;
-    @Bind(R.id.multiple_actions) FloatingActionsMenu _fam;
-    @Bind(R.id.add_note_action) FloatingActionButton _noteAction;
-    @Bind(R.id.add_notebook_action) FloatingActionButton _notebookAction;
+    @Bind(R.id.toolbar)
+    Toolbar _toolbar;
+    @Bind(R.id.drawer_layout)
+    DrawerLayout _drawer;
+    @Bind(R.id.multiple_actions)
+    FloatingActionsMenu _fam;
+    @Bind(R.id.add_note_action)
+    FloatingActionButton _noteAction;
+    @Bind(R.id.add_notebook_action)
+    FloatingActionButton _notebookAction;
+    @Bind(R.id.cards_note_recent_list)
+    RecyclerView _recList;
+    @Bind(R.id.recent_list_swiperefresh)
+    SwipeRefreshLayout _spr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Database init
+        final CouchBaseNote couchDB = new CouchBaseNote(this);
 
         //bind widget (ButterKnife lib)
         ButterKnife.bind(this);
@@ -65,25 +92,29 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ListView list = (ListView) findViewById(android.R.id.list);
-        list.setEmptyView(findViewById(android.R.id.empty));
+        //Config Recyclerview et cards
+        _recList.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        _recList.setLayoutManager(llm);
 
 
-        //couchBaseTest();
-        CouchBaseNote couchDB = new CouchBaseNote(this);
+        final NoteAdapter na = new NoteAdapter(couchDB.getAllNotes());
+        _recList.setAdapter(na);
 
-        Note note = new Note();
-        note.setTitle("Test de note");
-        note.setContent("Contenu de ma note :)");
-        String docId = couchDB.createNote(note);
-        couchDB.getDocumentById(docId);
-        note.set_id(docId);
-        note.setTitle("Nouveau titre");
-        note.setCurrentDatetime();
-        couchDB.updateNote(note);
-        couchDB.getDocumentById(docId);
-        couchDB.getNoteById(docId);
-        couchDB.deleteNote(docId);
+        _spr.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        na.refreshData(couchDB.getAllNotes());
+                        na.notifyDataSetChanged();
+                        _spr.setRefreshing(false);
+                    }
+                }).start();
+            }
+        });
     }
 
     @Override
@@ -113,9 +144,8 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        }
-        else if(id == R.id.action_settings_test){
-            Intent i = new Intent(this,TestActivity.class);
+        } else if (id == R.id.action_settings_test) {
+            Intent i = new Intent(this, TestActivity.class);
             startActivity(i);
         }
 
@@ -149,6 +179,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onRefresh() {
-        Toast.makeText(this,"Update asked",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Update asked", Toast.LENGTH_SHORT).show();
     }
 }

@@ -22,5 +22,12 @@
     <color name="material_blue_grey_900">#4e6672</color>
     <color name="accent_material_dark">#ffffff</color>
     <color name="background_material_dark">#fdfdfd</color>
+    <color name="primary_material_light">#2196f3</color>
+    <color name="foreground_material_light">#ffffff</color>
+    <color name="primary_text_material_light">#4a4a4a</color>
+    <color name="primary_dark_material_light">#e6ffffff</color>
+    <color name="primary_text_default_material_dark">#464545</color>
+    <color name="background_material_light">#ffffff</color>
+    <color name="secondary_text_default_material_light">#8affffff</color>
 
 </resources>

@@ -1,8 +1,17 @@
 package cpe.lesbarbus.cozynotes.models;
 
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+
+import butterknife.Bind;
+import cpe.lesbarbus.cozynotes.R;
 
 
 public class Note {
@@ -64,7 +73,7 @@ public class Note {
         this.datetime = datetime;
     }
 
-    public void setCurrentDatetime(){
+    public void setCurrentDatetime() {
         this.datetime = new Date();
     }
 
@@ -78,15 +87,37 @@ public class Note {
 
     /***
      * Get the Map format of a Note
+     *
      * @return Map containing all the filled fields of the Note
      */
-    public  Map<String, Object> getMapFormat(){
+    public Map<String, Object> getMapFormat() {
         Map<String, Object> map = new HashMap<>();
-        if (title != null)          map.put("title", title);
-        if (content != null)        map.put("content", content);
-        if (datetime != null)       map.put("datetime", datetime);
-        if (endDatetime != null)    map.put("endDatetime", endDatetime);
+        if (title != null) map.put("title", title);
+        if (content != null) map.put("content", content);
+        if (datetime != null) map.put("datetime", datetime);
+        if (endDatetime != null) map.put("endDatetime", endDatetime);
 
         return map;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Note{");
+        if (_id != null)
+            sb.append("_id='").append(_id).append('\'');
+        if (_rev != null)
+            sb.append(", _rev='").append(_rev).append('\'');
+        if (title != null)
+            sb.append(", title='").append(title).append('\'');
+        if (content != null)
+            sb.append(", content='").append(content).append('\'');
+        if (media != null)
+            sb.append(", media='").append(media).append('\'');
+        if (datetime != null)
+            sb.append(", datetime=").append(datetime);
+        if (endDatetime != null)
+            sb.append(", endDatetime=").append(endDatetime);
+        sb.append('}');
+        return sb.toString();
     }
 }

@@ -27,7 +27,7 @@ public class SplahScreenActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splah_screen);
         mAccountManager = AccountManager.get(this);
-        getTokenForAccountCreateIfNeeded(AccountGeneral.ACCOUNT_TYPE,AccountGeneral.AUTHTOKEN_TYPE_FULL);
+        getTokenForAccountCreateIfNeeded(AccountGeneral.ACCOUNT_TYPE, AccountGeneral.AUTHTOKEN_TYPE_FULL);
 
     }
 
@@ -50,12 +50,11 @@ public class SplahScreenActivity extends Activity {
                             bnd = future.getResult();
                             final String authtoken = bnd.getString(AccountManager.KEY_AUTHTOKEN);
                             Log.d("Auth", "GetTokenForAccount Bundle is " + bnd);
-                            if(authtoken != null){
-                                Intent i = new Intent(getBaseContext(),MainActivity.class);
+                            if (authtoken != null) {
+                                Intent i = new Intent(getBaseContext(), MainActivity.class);
                                 startActivity(i);
                                 finish();
                             }
-
 
                         } catch (Exception e) {
                             e.printStackTrace();

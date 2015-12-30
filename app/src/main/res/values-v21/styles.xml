@@ -11,7 +11,12 @@
             <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
             <item name="colorAccent">@color/colorAccent</item>-->
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
-        <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:navigationBarColor">@color/blue_500</item>
+        <item name="android:textColorPrimary">@color/primary_text_material_light</item>
+        <item name="android:colorBackground">@color/background_material_light</item>
+        <item name="android:textColorSecondary">@color/secondary_text_material_light</item>
+        <item name="android:colorForeground">@color/foreground_material_light</item>
+        <item name="android:spinnerItemStyle">@style/MooSpinnerItem</item>
 
     </style>
     <style name="SplashScreen" parent="AppTheme">

@@ -3,11 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Notebook title"
-        android:labelFor="@id/dialog_addNotebook_edit"/>
     <EditText
         android:id="@+id/dialog_addNotebook_edit"
         android:layout_width="match_parent"

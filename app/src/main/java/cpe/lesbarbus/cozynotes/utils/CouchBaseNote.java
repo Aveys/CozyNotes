@@ -7,12 +7,19 @@ import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
 import com.couchbase.lite.Manager;
+import com.couchbase.lite.Query;
+import com.couchbase.lite.QueryEnumerator;
+import com.couchbase.lite.QueryRow;
 import com.couchbase.lite.android.AndroidContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import cpe.lesbarbus.cozynotes.models.Note;
@@ -162,5 +169,23 @@ public class CouchBaseNote {
         }
 
         return isDeleted;
+    }
+
+    public List<Note> getAllNotes(){
+        ArrayList<Note> ln = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        Note n = null;
+        try {
+            Query query = database.createAllDocumentsQuery();
+            query.setAllDocsMode(Query.AllDocsMode.ALL_DOCS);
+            QueryEnumerator result = query.run();
+            for(Iterator<QueryRow> it = result;it.hasNext();){
+                Document doc = it.next().getDocument();
+                ln.add(mapper.readValue(new JSONObject(doc.getProperties()).toString(),Note.class));
+            }
+        } catch (CouchbaseLiteException | IOException e) {
+            e.printStackTrace();
+        }
+        return ln;
     }
 }

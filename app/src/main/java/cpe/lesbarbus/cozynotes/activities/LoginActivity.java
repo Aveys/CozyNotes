@@ -91,7 +91,6 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 
         final String accountType = this.mAuthTokenType;
 
-        // TODO: Implement your own authentication logic here.
 
         new AsyncTask<String, Void, Intent>() {
 
@@ -103,7 +102,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
                 try {
                     authtoken = sServerAuth.userSignIn( password, url);
                     Log.d("LoginActivity", "AuthToken retrieved :" + authtoken);
-                    data.putString(AccountManager.KEY_ACCOUNT_NAME, "Cozynotes");
+                    data.putString(AccountManager.KEY_ACCOUNT_NAME, AccountGeneral.ACCOUNT_NAME);
                     data.putString(AccountManager.KEY_ACCOUNT_TYPE, AccountGeneral.ACCOUNT_TYPE);
                     data.putString(AccountManager.KEY_AUTHTOKEN, authtoken);
                     data.putString(PARAM_USER_PASS, password);
@@ -157,7 +156,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 
         Log.d("Cozynotes", TAG + "> finishLogin > addAccountExplicitly");
         String authtoken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);
-        String authtokenType = mAuthTokenType;
+        String authtokenType = AccountGeneral.AUTHTOKEN_TYPE_FULL;
 
         // Creating the account on the device and setting the auth token we got
         // (Not setting the auth token will cause another call to the server to authenticate the user)
