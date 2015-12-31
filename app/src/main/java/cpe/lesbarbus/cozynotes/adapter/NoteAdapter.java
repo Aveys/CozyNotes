@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import cpe.lesbarbus.cozynotes.R;
@@ -40,6 +41,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     @Override
     public void onBindViewHolder(NoteViewHolder holder, final int position) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
         Note n = noteList.get(position);
         holder._delete.setTag(position);
         holder._delete.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +79,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         else
             holder._vTitle.setText("Untitled");
         if(n.getDatetime() != null)
-            holder._vDate.setText(n.getDatetime().toString());
+            holder._vDate.setText(sdf.format(n.getDatetime()));
         else
             holder._vDate.setText("No date");
         if(!n.getContent().isEmpty())

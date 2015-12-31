@@ -73,8 +73,8 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
             public void onClick(View v) {
                 if(_title.getText().toString().isEmpty())
                     Toast.makeText(getApplicationContext(),"Title can't be empty",Toast.LENGTH_SHORT).show();
-                else if(_title.getText().toString().isEmpty())
-                    Toast.makeText(getApplicationContext(),"Title can't be empty",Toast.LENGTH_SHORT).show();
+                else if(_knife.getText().toString().isEmpty())
+                    Toast.makeText(getApplicationContext(),"Content can't be empty",Toast.LENGTH_SHORT).show();
                 else{
                     Note n = new Note();
                     n.setContent(_knife.toHtml());

@@ -11,6 +11,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -67,13 +68,12 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     public void login() {
         Log.d(TAG, "Login");
 
-        //TODO : reactivate validation for prod and validate URL field
-        /*if (!validate()) {
-            onLoginFailed();
+        if (!validate()) {
             return;
-        }*/
+        }
         if(!isOnline()){
             Toast.makeText(this,R.string.no_connection,Toast.LENGTH_LONG).show();
+            return;
         }
         _loginButton.setEnabled(false);
 
@@ -161,6 +161,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
         boolean valid = true;
 
         String password = _passwordText.getText().toString();
+        String url = _urlText.getText().toString();
         //exemple with built-in pattern
         /*if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             _emailText.setError("enter a valid email address");
@@ -174,6 +175,13 @@ public class LoginActivity extends AccountAuthenticatorActivity {
             valid = false;
         } else {
             _passwordText.setError(null);
+        }
+        if ((url.isEmpty() || !Patterns.WEB_URL.matcher(url).matches())){
+            _urlText.setError("String doesn't correspond to an URL");
+            valid=false;
+        }
+        else{
+            _urlText.setError(null);
         }
 
         return valid;
