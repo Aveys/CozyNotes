@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -86,8 +87,10 @@ public class MainActivity extends AppCompatActivity
         _recList.setLayoutManager(llm);
 
         //adapter for recyclerview
-        final NoteAdapter na = new NoteAdapter(couchDB.getAllNotes());
+        final NoteAdapter na = new NoteAdapter(couchDB.getAllNotes(),this);
         _recList.setAdapter(na);
+
+
 
         //refresh comportement for swipe refresh
         _spr.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

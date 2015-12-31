@@ -1,16 +1,21 @@
 package cpe.lesbarbus.cozynotes.adapter;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
 
 import cpe.lesbarbus.cozynotes.R;
 import cpe.lesbarbus.cozynotes.models.Note;
+import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 
 /**
  * Created by arthurveys on 29/12/15.
@@ -18,9 +23,11 @@ import cpe.lesbarbus.cozynotes.models.Note;
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder>{
 
     private List<Note> noteList;
+    private final Context mContext;
 
-    public NoteAdapter(List<Note> noteList) {
+    public NoteAdapter(List<Note> noteList, Context c) {
         this.noteList = noteList;
+        this.mContext = c;
     }
 
 
@@ -32,20 +39,50 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     }
 
     @Override
-    public void onBindViewHolder(NoteViewHolder holder, int position) {
+    public void onBindViewHolder(NoteViewHolder holder, final int position) {
         Note n = noteList.get(position);
+        holder._delete.setTag(position);
+        holder._delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO : replace this dialog by a toast with cancel button
+                Integer tag = (Integer) v.getTag();
+                final Note n = getItemAtPosition(tag);
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        CouchBaseNote db = new CouchBaseNote(mContext);
+                        db.deleteNote(n.get_id());
+                        noteList.remove(position);
+                        notifyDataSetChanged();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //DO NOTHING
+                    }
+                });
+                builder.setMessage("Are you sure you want to delete this note ?");
+                builder.setTitle("Delete a note");
+                builder.create().show();
+
+
+            }
+        });
         if(!n.getTitle().isEmpty())
-            holder.vTitle.setText(n.getTitle());
+            holder._vTitle.setText(n.getTitle());
         else
-            holder.vTitle.setText("Untitled");
+            holder._vTitle.setText("Untitled");
         if(n.getDatetime() != null)
-            holder.vDate.setText(n.getDatetime().toString());
+            holder._vDate.setText(n.getDatetime().toString());
         else
-            holder.vDate.setText("No date");
+            holder._vDate.setText("No date");
         if(!n.getContent().isEmpty())
-            holder.vText.setText(Html.fromHtml(n.getContent()));
+            holder._vText.setText(Html.fromHtml(n.getContent()));
         else
-            holder.vText.setText("No content");
+            holder._vText.setText("No content");
     }
 
     /**
@@ -54,6 +91,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
      */
     public void refreshData(List<Note> list){
         this.noteList = list;
+    }
+
+    /**
+     * return a Note from the position in the list
+     * @param position the position in the list
+     * @return a note object
+     */
+    public Note getItemAtPosition(int position){
+        return noteList.get(position);
     }
 
     @Override
@@ -67,14 +113,16 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     public static class NoteViewHolder extends RecyclerView.ViewHolder{
 
 
-        TextView vTitle;
-        TextView vText;
-        TextView vDate;
+        TextView _vTitle;
+        TextView _vText;
+        TextView _vDate;
+        Button _delete;
         public NoteViewHolder(View itemView) {
             super(itemView);
-            vTitle = (TextView) itemView.findViewById(R.id.card_note_title);
-            vText = (TextView) itemView.findViewById(R.id.card_note_text);
-            vDate = (TextView) itemView.findViewById(R.id.card_note_date);
+            _vTitle = (TextView) itemView.findViewById(R.id.card_note_title);
+            _vText = (TextView) itemView.findViewById(R.id.card_note_text);
+            _vDate = (TextView) itemView.findViewById(R.id.card_note_date);
+            _delete = (Button) itemView.findViewById(R.id.card_note_delete);
         }
     }
 }
