@@ -142,12 +142,14 @@ public class LoginActivity extends AccountAuthenticatorActivity {
         Log.d("Cozynotes", TAG + "> finishLogin > addAccountExplicitly");
         String authtoken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);
         String authtokenType = AccountGeneral.AUTHTOKEN_TYPE_FULL;
+        Bundle extra = new Bundle();
+        extra.putString("urlCozy", _urlText.getText().toString());
 
         // Creating the account on the device and setting the auth token we got
         // (Not setting the auth token will cause another call to the server to authenticate the user)
-        mAccountManager.addAccountExplicitly(account, accountPassword, null);
+        boolean accountCreated = mAccountManager.addAccountExplicitly(account, accountPassword, extra);
         mAccountManager.setAuthToken(account, authtokenType, authtoken);
-
+        Log.d("Cozynotes","Account created ? "+accountCreated);
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
         //redirect to main activity and kill this one

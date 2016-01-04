@@ -11,7 +11,7 @@
         android:layout_marginBottom="30dp"
         android:id="@+id/note_create_title"
         android:textColor="@color/black"
-        android:text="@string/note_create_title_placeholder"
+        android:hint="@string/note_create_title_placeholder"
         android:textSize="24dp"
         android:inputType="text"
         android:paddingLeft="@dimen/activity_horizontal_margin"
