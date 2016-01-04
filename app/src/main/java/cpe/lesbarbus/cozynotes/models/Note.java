@@ -9,6 +9,8 @@ public class Note {
 
     private String _id;
     private String _rev;
+    private String type = "note";
+    private String notebookId;
     private String title;
     private String content;
     private String media;
@@ -30,6 +32,14 @@ public class Note {
 
     public void set_rev(String _rev) {
         this._rev = _rev;
+    }
+
+    public String getnotebookId() {
+        return notebookId;
+    }
+
+    public void setNotebookId(String notebookId) {
+        this.notebookId = notebookId;
     }
 
     public String getTitle() {
@@ -83,6 +93,8 @@ public class Note {
      */
     public Map<String, Object> getMapFormat() {
         Map<String, Object> map = new HashMap<>();
+        if (type != null) map.put("type", type);
+        if (notebookId != null) map.put("notebookId", notebookId);
         if (title != null) map.put("title", title);
         if (content != null) map.put("content", content);
         if (datetime != null) map.put("datetime", datetime);
@@ -98,6 +110,10 @@ public class Note {
             sb.append("_id='").append(_id).append('\'');
         if (_rev != null)
             sb.append(", _rev='").append(_rev).append('\'');
+        if (type != null)
+            sb.append(", _type='").append(type).append('\'');
+        if (notebookId != null)
+            sb.append(", _notebookId='").append(notebookId).append('\'');
         if (title != null)
             sb.append(", title='").append(title).append('\'');
         if (content != null)

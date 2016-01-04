@@ -1,6 +1,8 @@
 package cpe.lesbarbus.cozynotes.models;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by arthurveys on 03/01/16.
@@ -9,8 +11,8 @@ public class Notebook {
 
     private String _id;
     private String _rev;
+    private String type = "notebook";
     private String name;
-    private List<Note> notes;
 
     public Notebook() {
     }
@@ -39,11 +41,32 @@ public class Notebook {
         this.name = name;
     }
 
-    public List<Note> getNotes() {
-        return notes;
+
+    /***
+     * Get the Map format of a Note
+     *
+     * @return Map containing all the filled fields of the Note
+     */
+    public Map<String, Object> getMapFormat() {
+        Map<String, Object> map = new HashMap<>();
+        if (type != null) map.put("_type", type);
+        if (name != null) map.put("name", name);
+        return map;
     }
 
-    public void setNotes(List<Note> notes) {
-        this.notes = notes;
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Note{");
+        if (_id != null)
+            sb.append("_id='").append(_id).append('\'');
+        if (_rev != null)
+            sb.append(", _rev='").append(_rev).append('\'');
+        if (type != null)
+            sb.append(", _type='").append(type).append('\'');
+        if (name != null)
+            sb.append(", name='").append(name).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
+
 }
