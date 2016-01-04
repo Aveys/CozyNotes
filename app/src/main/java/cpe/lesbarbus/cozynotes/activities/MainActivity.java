@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
 
+    private NoteAdapter na = null;
+    private CouchBaseNote couchDB = null;
     @Bind(R.id.toolbar)
     Toolbar _toolbar;
     @Bind(R.id.drawer_layout)
@@ -49,7 +51,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Database init
-        final CouchBaseNote couchDB = new CouchBaseNote(this);
 
         //bind widget (ButterKnife lib)
         ButterKnife.bind(this);
@@ -85,11 +86,11 @@ public class MainActivity extends AppCompatActivity
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         _recList.setLayoutManager(llm);
 
+        couchDB = new CouchBaseNote(this);
+
         //adapter for recyclerview
-        final NoteAdapter na = new NoteAdapter(couchDB.getAllNotes(),this);
+         na = new NoteAdapter(couchDB.getAllNotes(),this);
         _recList.setAdapter(na);
-
-
 
         //refresh comportement for swipe refresh
         _spr.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -149,11 +150,18 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.all_notes) {
-            // Handle the camera action
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    na.refreshData(couchDB.getAllNotes());
+                    na.notifyDataSetChanged();
+                }
+            }).start();
+
         } else if (id == R.id.all_notebooks) {
-
+            //TODO
         } else if (id == R.id.disconnect) {
-
+            //TODO
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -74,6 +74,36 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
             }
         });
+        holder._edit.setTag(position);
+        holder._edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO : replace this dialog by a toast with cancel button
+                Integer tag = (Integer) v.getTag();
+                final Note n = getItemAtPosition(tag);
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        CouchBaseNote db = new CouchBaseNote(mContext);
+                        db.deleteNote(n.get_id());
+                        noteList.remove(position);
+                        notifyDataSetChanged();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //DO NOTHING
+                    }
+                });
+                builder.setMessage("Are you sure you want to delete this note ?");
+                builder.setTitle("Delete a note");
+                builder.create().show();
+
+
+            }
+        });
         if(!n.getTitle().isEmpty())
             holder._vTitle.setText(n.getTitle());
         else
@@ -120,12 +150,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         TextView _vText;
         TextView _vDate;
         Button _delete;
+        Button _edit;
         public NoteViewHolder(View itemView) {
             super(itemView);
             _vTitle = (TextView) itemView.findViewById(R.id.card_note_title);
             _vText = (TextView) itemView.findViewById(R.id.card_note_text);
             _vDate = (TextView) itemView.findViewById(R.id.card_note_date);
             _delete = (Button) itemView.findViewById(R.id.card_note_delete);
+            _edit = (Button) itemView.findViewById(R.id.card_note_edit);
         }
     }
 }
