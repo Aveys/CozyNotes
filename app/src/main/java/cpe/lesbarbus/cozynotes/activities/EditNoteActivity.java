@@ -39,11 +39,16 @@ public class EditNoteActivity extends AppCompatActivity implements AdapterView.O
     @Bind(R.id.save_note_button)
     ImageButton _saveButton;
 
+    Note _note;
+
     private ArrayAdapter<CharSequence> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        _note = (Note) getIntent().getSerializableExtra("note");
+
         setContentView(R.layout.activity_create_note);
 
         ButterKnife.bind(this);
@@ -57,8 +62,11 @@ public class EditNoteActivity extends AppCompatActivity implements AdapterView.O
         _spinner.setOnItemSelectedListener(this);
 
         // Use async would better; ImageGetter coming soon...
-        _knife.setText(Html.fromHtml("<p> write text here</p>", null, new KnifeTagHandler()));
+        _knife.setText(Html.fromHtml(_note.getContent(), null, new KnifeTagHandler()));
         _knife.setSelection(_knife.getEditableText().length());
+
+        _title.setText(_note.getTitle());
+
         setupBold();
         setupItalic();
         setupUnderline();
@@ -68,8 +76,6 @@ public class EditNoteActivity extends AppCompatActivity implements AdapterView.O
         setupLink();
         setupClear();
 
-        Note note = (Note) getIntent().getSerializableExtra("note");
-
         _saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,12 +84,11 @@ public class EditNoteActivity extends AppCompatActivity implements AdapterView.O
                 else if(_knife.getText().toString().isEmpty())
                     Toast.makeText(getApplicationContext(),"Content can't be empty",Toast.LENGTH_SHORT).show();
                 else{
-                    Note n = new Note();
-                    n.setContent(_knife.toHtml());
-                    n.setTitle(_title.getText().toString());
-                    n.setCurrentDatetime();
+                    _note.setContent(_knife.toHtml());
+                    _note.setTitle(_title.getText().toString());
+                    //_note.setCurrentDatetime(); On ne modifie pas la date
                     CouchBaseNote db = new CouchBaseNote(getApplicationContext());
-                    db.createNote(n);
+                    db.updateNote(_note);
                     finish();
                 }
 
