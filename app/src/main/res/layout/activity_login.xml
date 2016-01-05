@@ -28,7 +28,7 @@
             android:layout_marginBottom="15dp"
             android:paddingTop="10dp"
             android:layout_gravity="center_horizontal"
-            android:text="CozyNotes"
+            android:text="@string/cozynotes"
             android:textColor="#ffffff"
             android:textStyle="bold"
             android:textSize="40dp"
@@ -47,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textUri"
-                android:hint="URL"
+                android:hint="@string/input_url"
                 android:textColorHint="@color/white"
                 android:textColor="@color/white"/>
         </android.support.design.widget.TextInputLayout>
@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:textColorHint="@color/white"
                 android:textColor="@color/white"/>
         </android.support.design.widget.TextInputLayout>
@@ -75,7 +75,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
-            android:text="Login"
+            android:text="@string/login"
             android:textColor="@color/colorPrimaryDark"
             android:background="#ffffff" />
 
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:padding="10dp"
-            android:text="Request an instance : http://cozy.io"
+            android:text="@string/request_instance"
             android:linksClickable="true"
             android:autoLink="web"
             android:textColor="#ffffff"

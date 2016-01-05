@@ -1,0 +1,89 @@
+<resources>
+    <string name="app_name">CozyNotes</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Mot de passe (optionel)</string>
+    <string name="action_sign_in">S'enregistrer</string>
+    <string name="action_sign_in_short">S'enregistrer</string>
+    <string name="error_invalid_email">Cet email est invalide</string>
+    <string name="error_invalid_password">Le mot de passe est trop court</string>
+    <string name="error_incorrect_password">Le mot de passe est incorrect</string>
+    <string name="error_field_required">Ce champ est requis</string>
+    <string name="permission_rationale">"L'application a besoin d'accdéder à vos contacts."
+    </string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Ouvrir le tiroir de navigation</string>
+    <string name="navigation_drawer_close">Fermer le tiroir de navigation</string>
+
+    <string name="action_settings">Configuration</string>
+
+    <!-- Demo -->
+
+    <!-- Menu -->
+    <string name="menu_undo">Annuler</string>
+    <string name="menu_redo">Refaire</string>
+    <string name="menu_github">GitHub</string>
+
+    <!-- Dialog -->
+    <string name="dialog_title">Insérer un lien</string>
+    <string name="dialog_edit_hint">http(s)://</string>
+    <string name="dialog_button_ok">OK</string>
+    <string name="dialog_button_cancel">Annuler</string>
+
+    <!-- Toast -->
+    <string name="toast_bold">Gras</string>
+    <string name="toast_italic">Italique</string>
+    <string name="toast_underline">Souligner</string>
+    <string name="toast_strikethrough">Barré</string>
+    <string name="toast_bullet">Liste</string>
+    <string name="toast_quote">Citer</string>
+    <string name="toast_insert_link">Insérer un lien</string>
+    <string name="toast_format_clear">Nettoyage format</string>
+    <string name="knife_placeholder">Ecrivez la note ici</string>
+    <string name="note_create_title_placeholder">Titre de la note</string>
+    <string name="notebook_label">notebook</string>
+    <string name="note_label">note</string>
+    <string name="empty_list_recent">Aucun objet récent</string>
+    <string name="menu_title_refresh">Rafraîchir</string>
+
+
+    <string-array name="notebook_test_array">
+        <item>Notebook 1</item>
+        <item>Notebook 2</item>
+        <item>Notebook 3</item>
+        <item>Créer un Notebook ....</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="auth_label">Notes du CozyCloud</string>
+    <string name="no_connection">Aucune connexion détecté</string>
+    <string name="splashcreen_logo_description">Logo cozycloud</string>
+    <string name="list_notrebook_name">Nom du Notebook</string>
+    <string name="list_notebook_desc">Description du notebook</string>
+    <string name="nav_camera">Importer</string>
+    <string name="nav_gallery">Gallerie</string>
+    <string name="nav_slideshow">Slideshow</string>
+    <string name="nav_manage">Outils</string>
+    <string name="nav_communicate">Communiquer</string>
+    <string name="nav_share">Partager</string>
+    <string name="nav_send">Envoyer</string>
+    <string name="addnotebook_title">Titre Notebook</string>
+    <string name="action_settings_test">Test de l'activité</string>
+    <string name="title">Titre</string>
+    <string name="cozynotes">CozyNotes</string>
+    <string name="date">Date</string>
+    <string name="card_note_text">test</string>
+    <string name="input_url">URL</string>
+    <string name="edit">Editer</string>
+    <string name="delete">Supprimer</string>
+    <string name="disconnect">Déconnecter</string>
+    <string name="all_notrebooks">Voir tous les notebooks</string>
+    <string name="all_notes">Voir toutes les notes</string>
+    <string name="password">Mot de Passe</string>
+    <string name="login">Identifiant</string>
+    <string name="request_instance">Demander une instance : http://cozy.io</string>
+</resources>

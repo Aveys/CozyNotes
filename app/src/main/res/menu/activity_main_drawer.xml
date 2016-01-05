@@ -5,14 +5,14 @@
         <item
             android:id="@+id/all_notes"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Voir toutes les notes" />
+            android:title="@string/all_notes" />
         <item
             android:id="@+id/all_notebooks"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Voir tous les notebooks" />
+            android:title="@string/all_notrebooks" />
         <item
             android:id="@+id/disconnect"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Déconnecter" />
+            android:title="@string/disconnect" />
     </group>
 </menu>

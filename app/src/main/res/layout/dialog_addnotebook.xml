@@ -11,6 +11,6 @@
         android:inputType="textAutoCorrect"
         android:paddingRight="24dp"
         android:paddingLeft="24dp"
-        android:hint="Notebook title"/>
+        android:hint="@string/addnotebook_title"/>
 
 </LinearLayout>

@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
         android:textAlignment="center"
-        android:text="CozyNotes"
+        android:text="@string/cozynotes"
         android:textColor="#ffffff"
         android:textStyle="bold"
         android:textSize="50dp"/>
