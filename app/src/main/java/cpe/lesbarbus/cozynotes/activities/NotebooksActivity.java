@@ -43,6 +43,8 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
     com.getbase.floatingactionbutton.FloatingActionButton _noteAction;
     @Bind(R.id.add_notebook_action)
     com.getbase.floatingactionbutton.FloatingActionButton _notebookAction;
+    @Bind(R.id.list_notebooks)
+    ListView _listNotebook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +99,7 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
         });*/
         couchDB = new CouchBaseNotebook();
         na = new NotebookAdapter(couchDB.getAllNotebooks(), this);
-        ListView listView = (ListView) findViewById(R.id.list_notebooks);
-        listView.setAdapter(na);
+        _listNotebook.setAdapter(na);
     }
 
     @Override
