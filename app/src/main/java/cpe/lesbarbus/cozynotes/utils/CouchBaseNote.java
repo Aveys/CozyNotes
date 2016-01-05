@@ -34,49 +34,19 @@ public class CouchBaseNote {
     public static final String DOC_TYPE = "note";
     public static final String TAG = "couchbasenotes";
     private Database database;
-    private Manager manager;
-
-    private Context context;
 
 
     public CouchBaseNote(Context context) {
-        this.context = context;
         Log.d(TAG, "onCreate CouchDB");
-        manager = null;
         database = null;
 
         try {
-            manager = getManagerInstance();
-            database = getDatabaseInstance();
+            CouchBaseManager couchManager = new CouchBaseManager(context);
+            database = couchManager.getDatabaseInstance();
             createView();
         } catch (Exception e) {
             Log.e(TAG, "Error getting database", e);
         }
-    }
-
-    /***
-     * Implements Singleton Pattern
-     * @return An instance of a the note manager object
-     * @throws IOException
-     */
-    public Manager getManagerInstance() throws IOException {
-
-        if (manager == null) {
-            manager = new Manager(new AndroidContext(context), Manager.DEFAULT_OPTIONS);
-        }
-        return manager;
-    }
-
-    /***
-     * Implements Singleton Pattern
-     * @return An instance of the note database object
-     * @throws CouchbaseLiteException
-     */
-    public Database getDatabaseInstance() throws CouchbaseLiteException {
-        if ((database == null) & (manager != null)) {
-            this.database = manager.getDatabase(DB_NAME);
-        }
-        return database;
     }
 
     /***
@@ -216,6 +186,7 @@ public class CouchBaseNote {
         return ln;
     }
 
+    //TODO: Use couchbase views
     public View createView(){
         View testView = database.getView("testView");
         if (testView.getMap() == null) {
@@ -238,6 +209,8 @@ public class CouchBaseNote {
             Log.d(TAG, "View Created "+testView.toString());
         }
 
-        Log.d(TAG, TestView.toString());
+        Log.d(TAG, testView.toString());
+
+        return null;
     }
 }

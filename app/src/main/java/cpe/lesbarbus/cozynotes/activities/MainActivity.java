@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Config Recyclerview et cards
+        //Config Recyclerview & cards
         _recList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -113,19 +113,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        try {
-            Query qy = couchDB.getDatabaseInstance().getView("testView").createQuery();
-            qy.setLimit(20);
-            qy.setDescending(true);
-            QueryEnumerator result = qy.run();
-            for (Iterator<QueryRow> it = result; it.hasNext(); ) {
-
-                QueryRow row = it.next();
-                System.out.println("Row : "+row.getKey().toString());
-            }
-        } catch (CouchbaseLiteException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
