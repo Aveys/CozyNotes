@@ -7,13 +7,11 @@ import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
 import com.couchbase.lite.Emitter;
-import com.couchbase.lite.Manager;
 import com.couchbase.lite.Mapper;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.QueryEnumerator;
 import com.couchbase.lite.QueryRow;
 import com.couchbase.lite.View;
-import com.couchbase.lite.android.AndroidContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONObject;
@@ -28,16 +26,12 @@ import java.util.Map;
 import cpe.lesbarbus.cozynotes.models.Note;
 import cpe.lesbarbus.cozynotes.models.Notebook;
 
-/**
- * Created by lbl on 04/01/2016.
- */
+
 public class CouchBaseNotebook {
 
-    public static final String DB_NAME = "couchbasenotes";
     public static final String DOC_TYPE = "notebook";
     public static final String TAG = "couchbasenotes";
     private Database database;
-    private Manager manager;
 
     private Context context;
 
@@ -45,41 +39,30 @@ public class CouchBaseNotebook {
     public CouchBaseNotebook(Context context) {
         this.context = context;
         Log.d(TAG, "onCreate CouchDBNotebook");
-        manager = null;
         database = null;
         try {
-            manager = getManagerInstance();
-            database = getDatabaseInstance();
+            CouchBaseManager couchManager = new CouchBaseManager(context);
+            database = couchManager.getDatabaseInstance();
         } catch (Exception e) {
             Log.e(TAG, "Error getting database", e);
         }
     }
 
-    /***
-     * Implements Singleton Pattern
-     *
-     * @return An instance of a the note manager object
-     * @throws IOException
-     */
-    public Manager getManagerInstance() throws IOException {
-
-        if (manager == null) {
-            manager = new Manager(new AndroidContext(context), Manager.DEFAULT_OPTIONS);
-        }
-        return manager;
-    }
-
-    /***
-     * Implements Singleton Pattern
-     *
-     * @return An instance of the note database object
-     * @throws CouchbaseLiteException
-     */
-    public Database getDatabaseInstance() throws CouchbaseLiteException {
-        if ((database == null) & (manager != null)) {
-            this.database = manager.getDatabase(DB_NAME);
-        }
-        return database;
+    private void initNotebook() {
+        View viewNotebook = database.getView("NotebookView");
+        viewNotebook.setMap(new Mapper() {
+            @Override
+            public void map(Map<String, Object> document, Emitter emitter) {
+                if (document.get("type").equals("notebook")) {
+                    List<Object> key = new ArrayList<Object>();
+                    key.add(document.get("datetime"));
+                    key.add(document.get("title"));
+                    key.add(document.get("content"));
+                    HashMap<String, Object> value = new HashMap<String, Object>();
+                    emitter.emit(key, value);
+                }
+            }
+        }, "1");
     }
 
     /***
@@ -139,9 +122,6 @@ public class CouchBaseNotebook {
             Log.e(TAG, "The note id is null");
         }
     }
-
-
-    //TODO: Select an notebook by its Id and Select all notebook
 
     /**
      * Find an document stored in the database by its id
