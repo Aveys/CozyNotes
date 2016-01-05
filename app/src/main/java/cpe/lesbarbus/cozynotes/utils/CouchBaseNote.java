@@ -153,8 +153,8 @@ public class CouchBaseNote {
             Query query = database.createAllDocumentsQuery();
             query.setAllDocsMode(Query.AllDocsMode.ALL_DOCS);
             QueryEnumerator result = query.run();
-            for(Iterator<QueryRow> it = result;it.hasNext();){
-                Document doc = it.next().getDocument();
+            for(; result.hasNext();){
+                Document doc = result.next().getDocument();
 
                 if (DOC_TYPE.equals(doc.getProperty("type"))) {
                     ln.add(mapper.readValue(new JSONObject(doc.getProperties()).toString(), Note.class));
@@ -174,8 +174,8 @@ public class CouchBaseNote {
             Query query = database.createAllDocumentsQuery();
             query.setAllDocsMode(Query.AllDocsMode.ALL_DOCS);
             QueryEnumerator result = query.run();
-            for(Iterator<QueryRow> it = result;it.hasNext();){
-                Document doc = it.next().getDocument();
+            for(; result.hasNext();){
+                Document doc = result.next().getDocument();
                 if (DOC_TYPE.equals(doc.getProperty("type")) && notebookId.equals(doc.getProperty("notebookId"))) {
                     ln.add(mapper.readValue(new JSONObject(doc.getProperties()).toString(), Note.class));
                 }
@@ -185,32 +185,34 @@ public class CouchBaseNote {
         }
         return ln;
     }
-
-    //TODO: Use couchbase views
+    /**
+     * Create or retrieve the view to find notes
+     * In keys, creation date, the title, notebookId
+     * In values, the note object under note key
+     * @return the view
+     */
     public View createView(){
-        View testView = database.getView("testView");
-        if (testView.getMap() == null) {
-            testView.setMap(
+        View noteView = database.getView("noteView");
+        if (noteView.getMap() == null) {
+            noteView.setMap(
                     new Mapper(){
                         @Override
                         public void map(Map<String, Object> document, Emitter emitter) {
-                            System.out.println("Document retrieved : "+document.toString());
+                            Log.d(TAG,"Document retrieved in noteView: "+document.toString());
                             if (document.get("type").equals("note")) {
                                 List<Object> key = new ArrayList<Object>();
                                 key.add(document.get("datetime"));
                                 key.add(document.get("title"));
-                                key.add(document.get("content"));
+                                key.add(document.get("notebookId"));
                                 HashMap<String, Object> value = new HashMap<String, Object>();
+                                value.put("note",document.toString());
                                 emitter.emit(key, value);
                             }
                         }
-                    }, "2" /* The version number of the mapper... */
+                    }, "4" /* The version number of the mapper... */
             );
-            Log.d(TAG, "View Created "+testView.toString());
+            Log.d(TAG, "View Created for Notes"+noteView.toString());
         }
-
-        Log.d(TAG, testView.toString());
-
-        return null;
+        return noteView;
     }
 }
