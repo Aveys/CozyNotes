@@ -17,6 +17,10 @@ public class Notebook {
     public Notebook() {
     }
 
+    public Notebook(String name) {
+        this.name = name;
+    }
+
     public String get_id() {
         return _id;
     }

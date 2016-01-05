@@ -24,7 +24,10 @@ import java.util.Arrays;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cpe.lesbarbus.cozynotes.R;
+import cpe.lesbarbus.cozynotes.adapter.NotebookAdapter;
+import cpe.lesbarbus.cozynotes.adapter.NotebookSpinnerAdapter;
 import cpe.lesbarbus.cozynotes.models.Note;
+import cpe.lesbarbus.cozynotes.models.Notebook;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseManager;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNotebook;
@@ -44,7 +47,10 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
     @Bind(R.id.save_note_button)
     ImageButton _saveButton;
 
-    private ArrayAdapter<CharSequence> adapter;
+    private ArrayAdapter<Notebook> adapter;
+    private CouchBaseNote cbn;
+    private CouchBaseNotebook cbk;
+    private ArrayList<Notebook> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +62,12 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
         setSupportActionBar(_toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        String[] falseNotebook=getResources().getStringArray(R.array.notebook_test_array);
-        adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_dropdown_item, new ArrayList(Arrays.asList(falseNotebook)));
+        cbn = new CouchBaseNote();
+        cbk = new CouchBaseNotebook();
+        list = (ArrayList<Notebook>) cbk.getAllNotebooks();
+        list.add(new Notebook("Create a Notebook ...."));
+
+        adapter = new NotebookSpinnerAdapter(this, android.R.layout.simple_spinner_dropdown_item, list);
         _spinner.setAdapter(adapter);
         _spinner.setOnItemSelectedListener(this);
 
@@ -85,9 +95,11 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
                     n.setContent(_knife.toHtml());
                     n.setTitle(_title.getText().toString());
                     n.setCurrentDatetime();
-                    n.setNotebookId((String) _spinner.getSelectedItem());
-                    CouchBaseNote db = new CouchBaseNote();
-                    db.createNote(n);
+
+                    Notebook nb = (Notebook) _spinner.getSelectedItem();
+                    n.setNotebookId(nb.get_id());
+
+                    cbn.createNote(n);
                     finish();
                 }
 
@@ -225,7 +237,8 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         //IF add notebook selected
-        if (parent.getItemAtPosition(position).toString().equals("Create a Notebook ....")) {
+        Notebook nb = (Notebook) parent.getItemAtPosition(position);
+        if (nb.getName().equals("Create a Notebook ....")) {
             final String[] name = {null};
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true);
@@ -234,7 +247,6 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
             final EditText notebookName = (EditText) vw.findViewById(R.id.dialog_addNotebook_edit);
             builder.setView(vw);
             builder.setTitle("Notebook title");
-
             builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -242,12 +254,10 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
                     if (TextUtils.isEmpty(name[0])) {
                         Toast.makeText(getApplicationContext(), "Tittle cannot be empty", Toast.LENGTH_LONG).show();
                     } else {
-
-                        CouchBaseNotebook cbNotebook = new CouchBaseNotebook();
-
-
-                        adapter.add(name[0]);
-                        int pos = getAdapterItemPosition(name[0]);
+                        Notebook newNB = new Notebook(name[0]);
+                        cbk.createNotebook(newNB);
+                        adapter.add(newNB);
+                        int pos = getAdapterItemPosition(newNB);
                         _spinner.setSelection(pos);
 
                     }
@@ -268,9 +278,9 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
 
     }
 
-    private int getAdapterItemPosition(String s) {
+    private int getAdapterItemPosition(Notebook  nb) {
         for(int position=0;position<adapter.getCount();position++){
-            if(adapter.getItem(position).toString().equals(s)){
+            if(adapter.getItem(position).equals(nb)){
                 return position;
             }
         }

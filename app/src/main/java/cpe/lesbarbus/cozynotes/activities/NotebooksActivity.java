@@ -108,13 +108,9 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
         int id = item.getItemId();
 
         if (id == R.id.all_notes) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    na.refreshData(couchDB.getAllNotebooks());
-                    na.notifyDataSetChanged();
-                }
-            }).start();
+            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(i);
+            finish();
 
         } else if (id == R.id.all_notebooks) {
             Intent i = new Intent(getApplicationContext(), NotebooksActivity.class);

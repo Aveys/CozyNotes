@@ -1,6 +1,7 @@
 package cpe.lesbarbus.cozynotes.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,7 @@ public class NotebookAdapter extends ArrayAdapter<Notebook>{
     private final Context mContext;
 
     public NotebookAdapter(List<Notebook> list , Context context){
-        super(context, R.layout.content_notebooks, list);
+        super(context, R.layout.list_notebook, list);
         this.mContext = context;
         this.notebookList = list;
     }
@@ -30,9 +31,9 @@ public class NotebookAdapter extends ArrayAdapter<Notebook>{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Notebook item = getItem(position);
-        LayoutInflater layoutInf = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInf = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if(convertView == null) {
-            convertView = layoutInf.inflate(R.layout.content_notebooks, parent, false);
+            convertView = layoutInf.inflate(R.layout.list_notebook, parent, false);
         }
         TextView name = (TextView) convertView.findViewById(R.id.list_notebook_name);
         name.setText(item.getName());

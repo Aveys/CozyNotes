@@ -48,6 +48,23 @@ public class CouchBaseManager {
         }
         return database;
     }
+    /*HOW TO QUERY VIEW IN COUCHDBLITE
+    try {
+
+            Database db = CouchBaseManager.getDatabaseInstance();
+            Query qy = db.getView("noteView").createQuery();
+            qy.setLimit(20);
+            qy.setDescending(true);
+            QueryEnumerator result = qy.run();
+            for (; result.hasNext(); ) {
+
+                QueryRow row = result.next();
+                System.out.println("Row Key: "+row.getKey().toString());
+                System.out.println("Row Value: "+row.getValue().toString());
+            }
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+        }*/
 
 
 }
