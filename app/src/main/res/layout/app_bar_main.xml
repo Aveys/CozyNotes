@@ -51,7 +51,7 @@
             android:id="@+id/add_note_action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="100dp"
+            android:paddingBottom="17dp"
             fab:fab_colorNormal="@color/white"
             fab:fab_title="@string/note_label"
             android:src="@drawable/ic_action_note_add_blue"

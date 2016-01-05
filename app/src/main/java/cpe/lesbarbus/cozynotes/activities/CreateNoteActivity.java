@@ -99,14 +99,6 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
                 _knife.bold(!_knife.contains(KnifeText.FORMAT_BOLD));
             }
         });
-
-        bold.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(CreateNoteActivity.this, R.string.toast_bold, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
     }
 
     private void setupItalic() {
@@ -116,14 +108,6 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
             @Override
             public void onClick(View v) {
                 _knife.italic(!_knife.contains(KnifeText.FORMAT_ITALIC));
-            }
-        });
-
-        italic.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(CreateNoteActivity.this, R.string.toast_italic, Toast.LENGTH_SHORT).show();
-                return true;
             }
         });
     }
@@ -137,14 +121,6 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
                 _knife.underline(!_knife.contains(KnifeText.FORMAT_UNDERLINED));
             }
         });
-
-        underline.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(CreateNoteActivity.this, R.string.toast_underline, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
     }
 
     private void setupStrikethrough() {
@@ -154,14 +130,6 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
             @Override
             public void onClick(View v) {
                 _knife.strikethrough(!_knife.contains(KnifeText.FORMAT_STRIKETHROUGH));
-            }
-        });
-
-        strikethrough.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(CreateNoteActivity.this, R.string.toast_strikethrough, Toast.LENGTH_SHORT).show();
-                return true;
             }
         });
     }
@@ -176,14 +144,6 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
             }
         });
 
-
-        bullet.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(CreateNoteActivity.this, R.string.toast_bullet, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
     }
 
     private void setupQuote() {
@@ -196,13 +156,6 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
             }
         });
 
-        quote.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(CreateNoteActivity.this, R.string.toast_quote, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
     }
 
     private void setupLink() {
@@ -212,14 +165,6 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
             @Override
             public void onClick(View v) {
                 showLinkDialog();
-            }
-        });
-
-        link.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(CreateNoteActivity.this, R.string.toast_insert_link, Toast.LENGTH_SHORT).show();
-                return true;
             }
         });
     }
@@ -233,14 +178,6 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
             public void onClick(View v) {
                 System.out.println(_knife.getText().toString());
                 _knife.clearFormats();
-            }
-        });
-
-        clear.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(CreateNoteActivity.this, R.string.toast_format_clear, Toast.LENGTH_SHORT).show();
-                return true;
             }
         });
     }
