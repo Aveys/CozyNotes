@@ -68,6 +68,8 @@ public class EditNoteActivity extends AppCompatActivity implements AdapterView.O
         setupLink();
         setupClear();
 
+        Note note = (Note) getIntent().getSerializableExtra("note");
+
         _saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
