@@ -30,7 +30,6 @@ import cpe.lesbarbus.cozynotes.models.Note;
 
 public class CouchBaseNote {
 
-    public static final String DB_NAME = "couchbasenotes";
     public static final String DOC_TYPE = "note";
     public static final String TAG = "couchbasenotes";
     private Database database;
