@@ -5,15 +5,5 @@
         android:id="@+id/list_notebook_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/list_notrebook_name"/>
-    <TextView
-        android:id="@+id/list_notebook_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/list_notebook_name"
-        android:text="@string/list_notebook_desc"/>
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/list_notebook_desc"/>
+        android:text="Nom du Notebook"/>
 </RelativeLayout>

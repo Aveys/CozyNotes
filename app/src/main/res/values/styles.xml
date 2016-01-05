@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-    <!--    <item name="colorPrimary">@color/colorPrimary</item>
+        <!--    <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>-->
         <item name="colorPrimaryDark">@color/material_blue_grey_900</item>
@@ -13,6 +13,7 @@
         <item name="android:textColorSecondary">@color/secondary_text_material_light</item>
         <item name="android:colorForeground">@color/foreground_material_light</item>
     </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -26,11 +27,12 @@
         <item name="android:background">@drawable/fab_label_background</item>
         <item name="android:textColor">@color/white</item>
     </style>
-        <style name="MooSpinnerItem" parent="android:Widget.TextView.SpinnerItem">
-            <item name="android:textAppearance">@style/MooTextAppearanceSpinnerItem</item>
-        </style>
 
-        <style name="MooTextAppearanceSpinnerItem" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
-            <item name="android:textColor">#ffffff</item>
-        </style>
+    <style name="MooSpinnerItem" parent="android:Widget.TextView.SpinnerItem">
+        <item name="android:textAppearance">@style/MooTextAppearanceSpinnerItem</item>
+    </style>
+
+    <style name="MooTextAppearanceSpinnerItem" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+        <item name="android:textColor">#ffffff</item>
+    </style>
 </resources>

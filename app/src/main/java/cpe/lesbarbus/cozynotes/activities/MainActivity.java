@@ -29,6 +29,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cpe.lesbarbus.cozynotes.R;
 import cpe.lesbarbus.cozynotes.adapter.NoteAdapter;
+import cpe.lesbarbus.cozynotes.models.Notebook;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 
 public class MainActivity extends AppCompatActivity
@@ -166,7 +167,8 @@ public class MainActivity extends AppCompatActivity
             }).start();
 
         } else if (id == R.id.all_notebooks) {
-            //TODO
+            Intent i = new Intent(getApplicationContext(), NotebooksActivity.class);
+            startActivity(i);
         } else if (id == R.id.disconnect) {
             //TODO
         }
