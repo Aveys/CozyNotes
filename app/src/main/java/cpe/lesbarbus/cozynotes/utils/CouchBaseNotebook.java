@@ -31,6 +31,7 @@ import cpe.lesbarbus.cozynotes.models.Notebook;
 public class CouchBaseNotebook {
 
     public static final String DB_NAME = "couchbasenotes";
+    public static final String DOC_TYPE = "notebook";
     public static final String TAG = "couchbasenotes";
     private Database database;
     private Manager manager;
@@ -155,7 +156,7 @@ public class CouchBaseNotebook {
      * @param documentId id of the note
      * @return boolean to indicate whether deleted or not
      */
-    public boolean deleteNote(String documentId){
+    public boolean deleteNotebook(String documentId){
 
         boolean isDeleted = true;
         Document document = database.getDocument(documentId);
@@ -174,8 +175,8 @@ public class CouchBaseNotebook {
         return isDeleted;
     }
 
-    public List<Note> getAllNotes(){
-        ArrayList<Note> ln = new ArrayList<>();
+    public List<Notebook> getAllNotebooks(){
+        ArrayList<Notebook> ln = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         Note n = null;
         try {
@@ -184,7 +185,10 @@ public class CouchBaseNotebook {
             QueryEnumerator result = query.run();
             for(Iterator<QueryRow> it = result;it.hasNext();){
                 Document doc = it.next().getDocument();
-                ln.add(mapper.readValue(new JSONObject(doc.getProperties()).toString(),Note.class));
+
+                if (DOC_TYPE.equals(doc.getProperty("type"))) {
+                    ln.add(mapper.readValue(new JSONObject(doc.getProperties()).toString(), Notebook.class));
+                }
             }
         } catch (CouchbaseLiteException | IOException e) {
             e.printStackTrace();

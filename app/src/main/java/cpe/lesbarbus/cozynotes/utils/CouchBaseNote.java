@@ -6,13 +6,10 @@ import android.util.Log;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
-import com.couchbase.lite.Emitter;
 import com.couchbase.lite.Manager;
-import com.couchbase.lite.Mapper;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.QueryEnumerator;
 import com.couchbase.lite.QueryRow;
-import com.couchbase.lite.View;
 import com.couchbase.lite.android.AndroidContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -31,6 +28,7 @@ import cpe.lesbarbus.cozynotes.models.Note;
 public class CouchBaseNote {
 
     public static final String DB_NAME = "couchbasenotes";
+    public static final String DOC_TYPE = "note";
     public static final String TAG = "couchbasenotes";
     private Database database;
     private Manager manager;
@@ -135,8 +133,6 @@ public class CouchBaseNote {
     }
 
 
-
-    //TODO: Select a Note by its Id and Select all Note
     /**
      * Find an document stored in the database by its id
      * @param documentId id of the document
@@ -185,7 +181,10 @@ public class CouchBaseNote {
             QueryEnumerator result = query.run();
             for(Iterator<QueryRow> it = result;it.hasNext();){
                 Document doc = it.next().getDocument();
-                ln.add(mapper.readValue(new JSONObject(doc.getProperties()).toString(),Note.class));
+
+                if (DOC_TYPE.equals(doc.getProperty("type"))) {
+                    ln.add(mapper.readValue(new JSONObject(doc.getProperties()).toString(), Note.class));
+                }
             }
         } catch (CouchbaseLiteException | IOException e) {
             e.printStackTrace();
@@ -193,23 +192,28 @@ public class CouchBaseNote {
         return ln;
     }
 
+    public List<Note> getAllNotesByNotebook(String notebookId){
+        ArrayList<Note> ln = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        Note n = null;
+        try {
+            Query query = database.createAllDocumentsQuery();
+            query.setAllDocsMode(Query.AllDocsMode.ALL_DOCS);
+            QueryEnumerator result = query.run();
+            for(Iterator<QueryRow> it = result;it.hasNext();){
+                Document doc = it.next().getDocument();
 
-    public void CreateView(){
-        View TestView = database.getView("testView");
-        if (TestView == null) {
-            TestView.setMap(
-                    new Mapper(){
-                        @Override
-                        public void map(Map<String, Object> document,
-                                        Emitter emitter) {
-                    /* Emit data to matieralized view */
-                            emitter.emit(
-                                    (String) document.get("title"), null);
-                        }
-                    }, "1" /* The version number of the mapper... */
-            );
+                if (DOC_TYPE.equals(doc.getProperty("type")) && notebookId.equals(doc.getProperty("notebookId"))) {
+                    ln.add(mapper.readValue(new JSONObject(doc.getProperties()).toString(), Note.class));
+                }
+            }
+        } catch (CouchbaseLiteException | IOException e) {
+            e.printStackTrace();
         }
-
-        Log.d(TAG, TestView.toString());
+        return ln;
     }
+
+    //TODO: Use couchbase views
+
+
 }

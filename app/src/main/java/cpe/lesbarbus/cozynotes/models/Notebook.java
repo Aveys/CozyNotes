@@ -41,15 +41,18 @@ public class Notebook {
         this.name = name;
     }
 
+    public String getType() {return type;}
+
+    public void setType(String type) {this.type = type;}
 
     /***
-     * Get the Map format of a Note
+     * Get the Map format of a Notebook
      *
      * @return Map containing all the filled fields of the Note
      */
     public Map<String, Object> getMapFormat() {
         Map<String, Object> map = new HashMap<>();
-        if (type != null) map.put("_type", type);
+        if (type != null) map.put("type", type);
         if (name != null) map.put("name", name);
         return map;
     }
@@ -62,7 +65,7 @@ public class Notebook {
         if (_rev != null)
             sb.append(", _rev='").append(_rev).append('\'');
         if (type != null)
-            sb.append(", _type='").append(type).append('\'');
+            sb.append(", type='").append(type).append('\'');
         if (name != null)
             sb.append(", name='").append(name).append('\'');
         sb.append('}');
