@@ -6,10 +6,13 @@ import android.util.Log;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
+import com.couchbase.lite.Emitter;
 import com.couchbase.lite.Manager;
+import com.couchbase.lite.Mapper;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.QueryEnumerator;
 import com.couchbase.lite.QueryRow;
+import com.couchbase.lite.View;
 import com.couchbase.lite.android.AndroidContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -44,13 +47,29 @@ public class CouchBaseNotebook {
         Log.d(TAG, "onCreate CouchDBNotebook");
         manager = null;
         database = null;
-
         try {
             manager = getManagerInstance();
             database = getDatabaseInstance();
         } catch (Exception e) {
             Log.e(TAG, "Error getting database", e);
         }
+    }
+
+    private void initNotebook() {
+        View viewNotebook = database.getView("NotebookView");
+        viewNotebook.setMap(new Mapper() {
+            @Override
+            public void map(Map<String, Object> document, Emitter emitter) {
+                if (document.get("type").equals("notebook")) {
+                    List<Object> key = new ArrayList<Object>();
+                    key.add(document.get("datetime"));
+                    key.add(document.get("title"));
+                    key.add(document.get("content"));
+                    HashMap<String, Object> value = new HashMap<String, Object>();
+                    emitter.emit(key, value);
+                }
+            }
+        }, "1");
     }
 
     /***

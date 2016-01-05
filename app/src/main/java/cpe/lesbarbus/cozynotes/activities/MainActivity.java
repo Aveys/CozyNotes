@@ -16,8 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.couchbase.lite.CouchbaseLiteException;
+import com.couchbase.lite.Query;
+import com.couchbase.lite.QueryEnumerator;
+import com.couchbase.lite.QueryRow;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
+import java.util.Iterator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -106,6 +112,20 @@ public class MainActivity extends AppCompatActivity
                 });
             }
         });
+
+        try {
+            Query qy = couchDB.getDatabaseInstance().getView("testView").createQuery();
+            qy.setLimit(20);
+            qy.setDescending(true);
+            QueryEnumerator result = qy.run();
+            for (Iterator<QueryRow> it = result; it.hasNext(); ) {
+
+                QueryRow row = it.next();
+                System.out.println("Row : "+row.getKey().toString());
+            }
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

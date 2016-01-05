@@ -6,10 +6,13 @@ import android.util.Log;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
+import com.couchbase.lite.Emitter;
 import com.couchbase.lite.Manager;
+import com.couchbase.lite.Mapper;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.QueryEnumerator;
 import com.couchbase.lite.QueryRow;
+import com.couchbase.lite.View;
 import com.couchbase.lite.android.AndroidContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -45,6 +48,7 @@ public class CouchBaseNote {
         try {
             manager = getManagerInstance();
             database = getDatabaseInstance();
+            createView();
         } catch (Exception e) {
             Log.e(TAG, "Error getting database", e);
         }
@@ -202,7 +206,6 @@ public class CouchBaseNote {
             QueryEnumerator result = query.run();
             for(Iterator<QueryRow> it = result;it.hasNext();){
                 Document doc = it.next().getDocument();
-
                 if (DOC_TYPE.equals(doc.getProperty("type")) && notebookId.equals(doc.getProperty("notebookId"))) {
                     ln.add(mapper.readValue(new JSONObject(doc.getProperties()).toString(), Note.class));
                 }
@@ -213,7 +216,28 @@ public class CouchBaseNote {
         return ln;
     }
 
-    //TODO: Use couchbase views
+    public View createView(){
+        View testView = database.getView("testView");
+        if (testView.getMap() == null) {
+            testView.setMap(
+                    new Mapper(){
+                        @Override
+                        public void map(Map<String, Object> document, Emitter emitter) {
+                            System.out.println("Document retrieved : "+document.toString());
+                            if (document.get("type").equals("note")) {
+                                List<Object> key = new ArrayList<Object>();
+                                key.add(document.get("datetime"));
+                                key.add(document.get("title"));
+                                key.add(document.get("content"));
+                                HashMap<String, Object> value = new HashMap<String, Object>();
+                                emitter.emit(key, value);
+                            }
+                        }
+                    }, "2" /* The version number of the mapper... */
+            );
+            Log.d(TAG, "View Created "+testView.toString());
+        }
 
-
+        Log.d(TAG, TestView.toString());
+    }
 }

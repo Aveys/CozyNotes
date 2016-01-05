@@ -80,6 +80,7 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
                     n.setContent(_knife.toHtml());
                     n.setTitle(_title.getText().toString());
                     n.setCurrentDatetime();
+                    n.setNotebookId((String) _spinner.getSelectedItem());
                     CouchBaseNote db = new CouchBaseNote(getApplicationContext());
                     db.createNote(n);
                     finish();

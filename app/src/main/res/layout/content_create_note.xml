@@ -12,7 +12,7 @@
         android:id="@+id/note_create_title"
         android:textColor="@color/black"
         android:hint="@string/note_create_title_placeholder"
-        android:textSize="24dp"
+        android:textSize="24sp"
         android:inputType="text"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -23,6 +23,7 @@
         android:layout_height="2dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
+        android:layout_below="@id/note_create_title"
         android:background="?android:attr/listDivider"
         android:minHeight="2dp"/>
 
