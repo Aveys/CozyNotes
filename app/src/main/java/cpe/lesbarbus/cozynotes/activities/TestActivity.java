@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import cpe.lesbarbus.cozynotes.R;
 import cpe.lesbarbus.cozynotes.authenticator.AccountGeneral;
+import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 
 public class TestActivity extends Activity {
     @Override
@@ -35,6 +36,8 @@ public class TestActivity extends Activity {
                 actionA.setTitle("Action A clicked");
             }
         });
+
+
 
     }
 }

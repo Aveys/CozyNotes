@@ -16,8 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.couchbase.lite.CouchbaseLiteException;
+import com.couchbase.lite.Query;
+import com.couchbase.lite.QueryEnumerator;
+import com.couchbase.lite.QueryRow;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
+import java.util.Iterator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -80,7 +86,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Config Recyclerview et cards
+        //Config Recyclerview & cards
         _recList.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -106,6 +112,7 @@ public class MainActivity extends AppCompatActivity
                 });
             }
         });
+
     }
 
     @Override

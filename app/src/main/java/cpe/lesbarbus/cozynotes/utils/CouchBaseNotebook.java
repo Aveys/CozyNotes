@@ -6,10 +6,13 @@ import android.util.Log;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
+import com.couchbase.lite.Emitter;
 import com.couchbase.lite.Manager;
+import com.couchbase.lite.Mapper;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.QueryEnumerator;
 import com.couchbase.lite.QueryRow;
+import com.couchbase.lite.View;
 import com.couchbase.lite.android.AndroidContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -44,7 +47,6 @@ public class CouchBaseNotebook {
         Log.d(TAG, "onCreate CouchDBNotebook");
         manager = null;
         database = null;
-
         try {
             manager = getManagerInstance();
             database = getDatabaseInstance();
@@ -55,6 +57,7 @@ public class CouchBaseNotebook {
 
     /***
      * Implements Singleton Pattern
+     *
      * @return An instance of a the note manager object
      * @throws IOException
      */
@@ -68,6 +71,7 @@ public class CouchBaseNotebook {
 
     /***
      * Implements Singleton Pattern
+     *
      * @return An instance of the note database object
      * @throws CouchbaseLiteException
      */
@@ -80,10 +84,11 @@ public class CouchBaseNotebook {
 
     /***
      * Add a notebook to the database
+     *
      * @param notebook note to create
      * @return String, document id of the created note, null if not created
      */
-    public String createNotebook(Notebook notebook){
+    public String createNotebook(Notebook notebook) {
         Document document = database.createDocument();
         String documentId = document.getId();
 
@@ -97,7 +102,7 @@ public class CouchBaseNotebook {
                 document.delete();
                 documentId = null;
             } catch (CouchbaseLiteException e1) {
-                Log.e (TAG, "Cannot delete document", e);
+                Log.e(TAG, "Cannot delete document", e);
             }
         }
 
@@ -106,12 +111,13 @@ public class CouchBaseNotebook {
 
     /**
      * Update a notebook
+     *
      * @param notebook Note with updated fields
      */
-    public void updateNotebook(Notebook notebook){
+    public void updateNotebook(Notebook notebook) {
 
 
-        if(notebook.get_id() != null){
+        if (notebook.get_id() != null) {
             //Retrieve the document if the note has an id
             Document document = database.getDocument(notebook.get_id());
             Map<String, Object> noteMap = notebook.getMapFormat();
@@ -121,7 +127,7 @@ public class CouchBaseNotebook {
                 Map<String, Object> updatedProperties = new HashMap<>();
                 updatedProperties.putAll(document.getProperties());
                 //iterate each entry of the note
-                for(Map.Entry<String, Object> entry : noteMap.entrySet()){
+                for (Map.Entry<String, Object> entry : noteMap.entrySet()) {
                     updatedProperties.put(entry.getKey(), entry.getValue());
                 }
 
@@ -129,53 +135,55 @@ public class CouchBaseNotebook {
             } catch (CouchbaseLiteException e) {
                 Log.e(TAG, "Error putting", e);
             }
-        }else{
+        } else {
             Log.e(TAG, "The note id is null");
         }
     }
 
 
-
     //TODO: Select an notebook by its Id and Select all notebook
+
     /**
      * Find an document stored in the database by its id
+     *
      * @param documentId id of the document
      * @return a document, null if not found
      */
-    public Document getDocumentById(String documentId){
+    public Document getDocumentById(String documentId) {
         return database.getDocument(documentId);
     }
 
-    public void getNotebookById(String documentId){
+    public void getNotebookById(String documentId) {
         JSONObject jsonObject = new JSONObject(database.getDocument(documentId).getProperties());
         System.out.println(jsonObject.toString());
     }
 
     /**
      * Delete a notebook by its id
+     *
      * @param documentId id of the note
      * @return boolean to indicate whether deleted or not
      */
-    public boolean deleteNotebook(String documentId){
+    public boolean deleteNotebook(String documentId) {
 
         boolean isDeleted = true;
         Document document = database.getDocument(documentId);
 
-        if(document != null){
+        if (document != null) {
             try {
                 isDeleted = document.delete();
                 Log.d(TAG, "Deleted document, deletion status = " + document.isDeleted());
             } catch (CouchbaseLiteException e) {
-                Log.e (TAG, "Cannot delete document", e);
+                Log.e(TAG, "Cannot delete document", e);
             }
-        }else{
-            Log.e (TAG, "Cannot delete an unexisting document");
+        } else {
+            Log.e(TAG, "Cannot delete an unexisting document");
         }
 
         return isDeleted;
     }
 
-    public List<Notebook> getAllNotebooks(){
+    public List<Notebook> getAllNotebooks() {
         ArrayList<Notebook> ln = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         Note n = null;
@@ -183,7 +191,7 @@ public class CouchBaseNotebook {
             Query query = database.createAllDocumentsQuery();
             query.setAllDocsMode(Query.AllDocsMode.ALL_DOCS);
             QueryEnumerator result = query.run();
-            for(Iterator<QueryRow> it = result;it.hasNext();){
+            for (Iterator<QueryRow> it = result; it.hasNext(); ) {
                 Document doc = it.next().getDocument();
 
                 if (DOC_TYPE.equals(doc.getProperty("type"))) {
@@ -196,6 +204,32 @@ public class CouchBaseNotebook {
         return ln;
     }
 
-
-
+    /**
+     * Create or retrieve the view to find notebook
+     * In keys, the notebook name
+     * In values, the notebook object under notebook key
+     * @return the view
+     */
+    public View createView() {
+        View notebookView = database.getView("notebookView");
+        if (notebookView.getMap() == null) {
+            notebookView.setMap(
+                    new Mapper() {
+                        @Override
+                        public void map(Map<String, Object> document, Emitter emitter) {
+                            Log.d(TAG, "Document retrieved in notebookView: " + document.toString());
+                            if (document.get("type").equals("notebook")) {
+                                List<Object> key = new ArrayList<Object>();
+                                key.add(document.get("name"));
+                                HashMap<String, Object> value = new HashMap<String, Object>();
+                                value.put("notebook", document.toString());
+                                emitter.emit(key, value);
+                            }
+                        }
+                    }, "4" /* The version number of the mapper... */
+            );
+            Log.d(TAG, "View Created for Notebook" + notebookView.toString());
+        }
+        return notebookView;
+    }
 }
