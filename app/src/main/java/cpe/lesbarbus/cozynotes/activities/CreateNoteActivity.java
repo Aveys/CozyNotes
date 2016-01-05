@@ -15,6 +15,9 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.couchbase.lite.CouchbaseLiteException;
+import com.couchbase.lite.Database;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -22,7 +25,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cpe.lesbarbus.cozynotes.R;
 import cpe.lesbarbus.cozynotes.models.Note;
+import cpe.lesbarbus.cozynotes.utils.CouchBaseManager;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
+import cpe.lesbarbus.cozynotes.utils.CouchBaseNotebook;
 import io.github.mthli.knife.KnifeTagHandler;
 import io.github.mthli.knife.KnifeText;
 
@@ -81,7 +86,7 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
                     n.setTitle(_title.getText().toString());
                     n.setCurrentDatetime();
                     n.setNotebookId((String) _spinner.getSelectedItem());
-                    CouchBaseNote db = new CouchBaseNote(getApplicationContext());
+                    CouchBaseNote db = new CouchBaseNote();
                     db.createNote(n);
                     finish();
                 }
@@ -237,9 +242,14 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
                     if (TextUtils.isEmpty(name[0])) {
                         Toast.makeText(getApplicationContext(), "Tittle cannot be empty", Toast.LENGTH_LONG).show();
                     } else {
+
+                        CouchBaseNotebook cbNotebook = new CouchBaseNotebook();
+
+
                         adapter.add(name[0]);
                         int pos = getAdapterItemPosition(name[0]);
                         _spinner.setSelection(pos);
+
                     }
                 }
             });

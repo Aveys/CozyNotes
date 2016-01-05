@@ -17,18 +17,21 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.couchbase.lite.CouchbaseLiteException;
+import com.couchbase.lite.Database;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.QueryEnumerator;
 import com.couchbase.lite.QueryRow;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
+import java.io.IOException;
 import java.util.Iterator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cpe.lesbarbus.cozynotes.R;
 import cpe.lesbarbus.cozynotes.adapter.NoteAdapter;
+import cpe.lesbarbus.cozynotes.utils.CouchBaseManager;
 import cpe.lesbarbus.cozynotes.models.Notebook;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 
@@ -57,8 +60,14 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Database init
 
+        //Database init
+        try {
+            CouchBaseManager.setDatabaseInstance(this);
+        } catch (IOException | CouchbaseLiteException e) {
+            Toast.makeText(this, R.string.error_database_load,Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
         //bind widget (ButterKnife lib)
         ButterKnife.bind(this);
 
@@ -93,7 +102,7 @@ public class MainActivity extends AppCompatActivity
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         _recList.setLayoutManager(llm);
 
-        couchDB = new CouchBaseNote(this);
+        couchDB = new CouchBaseNote();
 
         //adapter for recyclerview
          na = new NoteAdapter(couchDB.getAllNotes(),this);
@@ -113,6 +122,21 @@ public class MainActivity extends AppCompatActivity
                 });
             }
         });
+        try {
+            Database db = CouchBaseManager.getDatabaseInstance();
+            Query qy = db.getView("noteView").createQuery();
+            qy.setLimit(20);
+            qy.setDescending(true);
+            QueryEnumerator result = qy.run();
+            for (; result.hasNext(); ) {
+
+                QueryRow row = result.next();
+                System.out.println("Row Key: "+row.getKey().toString());
+                System.out.println("Row Value: "+row.getValue().toString());
+            }
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+        }
 
     }
 

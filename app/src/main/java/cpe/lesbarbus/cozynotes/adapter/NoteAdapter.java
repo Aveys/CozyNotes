@@ -59,7 +59,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                 builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        CouchBaseNote db = new CouchBaseNote(mContext);
+                        CouchBaseNote db = new CouchBaseNote();
                         db.deleteNote(n.get_id());
                         noteList.remove(position);
                         notifyDataSetChanged();

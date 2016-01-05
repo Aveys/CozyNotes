@@ -88,7 +88,7 @@ public class EditNoteActivity extends AppCompatActivity implements AdapterView.O
                     _note.setContent(_knife.toHtml());
                     _note.setTitle(_title.getText().toString());
                     //_note.setCurrentDatetime(); On ne modifie pas la date
-                    CouchBaseNote db = new CouchBaseNote(getApplicationContext());
+                    CouchBaseNote db = new CouchBaseNote();
                     db.updateNote(_note);
                     finish();
                 }

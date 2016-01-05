@@ -14,6 +14,7 @@
         completions."
     </string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_notebooks">Notebook</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -87,4 +88,5 @@
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="request_instance">Request an instance : http://cozy.io</string>
+    <string name="error_database_load">Database Loading Error, expect errors during the execution of the app</string>
 </resources>

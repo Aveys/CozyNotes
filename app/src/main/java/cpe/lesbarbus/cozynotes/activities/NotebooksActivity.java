@@ -95,7 +95,7 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
                         .setAction("Action", null).show();
             }
         });*/
-        couchDB = new CouchBaseNotebook(this);
+        couchDB = new CouchBaseNotebook();
         na = new NotebookAdapter(couchDB.getAllNotebooks(), this);
         ListView listView = (ListView) findViewById(R.id.list_notebooks);
         listView.setAdapter(na);

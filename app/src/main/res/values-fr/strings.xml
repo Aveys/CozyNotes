@@ -86,4 +86,5 @@
     <string name="password">Mot de Passe</string>
     <string name="login">Identifiant</string>
     <string name="request_instance">Demander une instance : http://cozy.io</string>
+    <string name="error_database_load">Impossible de charger la base de donnée</string>
 </resources>

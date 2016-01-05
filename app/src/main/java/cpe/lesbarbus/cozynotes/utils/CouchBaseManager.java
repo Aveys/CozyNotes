@@ -17,13 +17,11 @@ public class CouchBaseManager {
     public static Manager manager;
     public static Context context;
 
-    public CouchBaseManager(Context context) {
-        CouchBaseManager.context = context;
-        try {
-            manager = getManagerInstance();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static Database setDatabaseInstance(Context c) throws IOException, CouchbaseLiteException {
+        context=c;
+        manager = getManagerInstance();
+        database = getDatabaseInstance();
+        return database;
     }
 
     /***

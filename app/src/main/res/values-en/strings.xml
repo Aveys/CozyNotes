@@ -87,4 +87,5 @@
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="request_instance">Request an instance : http://cozy.io</string>
+    <string name="error_database_load">Database Loading Error, expect errors during the execution of the app</string>
 </resources>

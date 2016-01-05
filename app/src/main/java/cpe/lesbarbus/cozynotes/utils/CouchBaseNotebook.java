@@ -1,6 +1,5 @@
 package cpe.lesbarbus.cozynotes.utils;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.couchbase.lite.CouchbaseLiteException;
@@ -10,7 +9,6 @@ import com.couchbase.lite.Emitter;
 import com.couchbase.lite.Mapper;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.QueryEnumerator;
-import com.couchbase.lite.QueryRow;
 import com.couchbase.lite.View;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -18,8 +16,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -33,18 +31,15 @@ public class CouchBaseNotebook {
     public static final String TAG = "couchbasenotes";
     private Database database;
 
-    private Context context;
 
 
-    public CouchBaseNotebook(Context context) {
-        this.context = context;
+    public CouchBaseNotebook() {
         Log.d(TAG, "onCreate CouchDBNotebook");
         database = null;
         try {
-            CouchBaseManager couchManager = new CouchBaseManager(context);
-            database = couchManager.getDatabaseInstance();
-        } catch (Exception e) {
-            Log.e(TAG, "Error getting database", e);
+            database = CouchBaseManager.getDatabaseInstance();
+        } catch (CouchbaseLiteException e) {
+            Log.e(TAG, Arrays.toString(e.getStackTrace()));
         }
     }
 
@@ -62,7 +57,7 @@ public class CouchBaseNotebook {
                     emitter.emit(key, value);
                 }
             }
-        }, "1");
+        }, "2");
     }
 
     /***
@@ -171,8 +166,8 @@ public class CouchBaseNotebook {
             Query query = database.createAllDocumentsQuery();
             query.setAllDocsMode(Query.AllDocsMode.ALL_DOCS);
             QueryEnumerator result = query.run();
-            for (Iterator<QueryRow> it = result; it.hasNext(); ) {
-                Document doc = it.next().getDocument();
+            for (; result.hasNext(); ) {
+                Document doc = result.next().getDocument();
 
                 if (DOC_TYPE.equals(doc.getProperty("type"))) {
                     ln.add(mapper.readValue(new JSONObject(doc.getProperties()).toString(), Notebook.class));
@@ -188,28 +183,28 @@ public class CouchBaseNotebook {
      * Create or retrieve the view to find notebook
      * In keys, the notebook name
      * In values, the notebook object under notebook key
+     *
      * @return the view
      */
     public View createView() {
         View notebookView = database.getView("notebookView");
-        if (notebookView.getMap() == null) {
-            notebookView.setMap(
-                    new Mapper() {
-                        @Override
-                        public void map(Map<String, Object> document, Emitter emitter) {
-                            Log.d(TAG, "Document retrieved in notebookView: " + document.toString());
-                            if (document.get("type").equals("notebook")) {
-                                List<Object> key = new ArrayList<Object>();
-                                key.add(document.get("name"));
-                                HashMap<String, Object> value = new HashMap<String, Object>();
-                                value.put("notebook", document.toString());
-                                emitter.emit(key, value);
-                            }
+        notebookView.setMap(
+                new Mapper() {
+                    @Override
+                    public void map(Map<String, Object> document, Emitter emitter) {
+                        Log.d(TAG, "Document retrieved in notebookView: " + document.toString());
+                        if (document.get("type").equals("notebook")) {
+                            List<Object> key = new ArrayList<Object>();
+                            key.add(document.get("name"));
+                            HashMap<String, Object> value = new HashMap<String, Object>();
+                            value.put("notebook", document.toString());
+                            emitter.emit(key, value);
                         }
-                    }, "4" /* The version number of the mapper... */
-            );
-            Log.d(TAG, "View Created for Notebook" + notebookView.toString());
-        }
+                    }
+                }, "4" /* The version number of the mapper... */
+        );
+        Log.d(TAG, "View Created for Notebook" + notebookView.toString());
         return notebookView;
     }
+
 }
