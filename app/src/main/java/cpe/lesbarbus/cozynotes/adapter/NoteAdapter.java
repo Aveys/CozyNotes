@@ -1,8 +1,10 @@
 package cpe.lesbarbus.cozynotes.adapter;
 
 import android.app.AlertDialog;
+import android.app.Application;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -15,6 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import cpe.lesbarbus.cozynotes.R;
+import cpe.lesbarbus.cozynotes.activities.EditNoteActivity;
+import cpe.lesbarbus.cozynotes.activities.MainActivity;
 import cpe.lesbarbus.cozynotes.models.Note;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 
@@ -78,30 +82,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         holder._edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO : replace this dialog by a toast with cancel button
-                Integer tag = (Integer) v.getTag();
-                final Note n = getItemAtPosition(tag);
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        CouchBaseNote db = new CouchBaseNote(mContext);
-                        db.deleteNote(n.get_id());
-                        noteList.remove(position);
-                        notifyDataSetChanged();
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //DO NOTHING
-                    }
-                });
-                builder.setMessage("Are you sure you want to delete this note ?");
-                builder.setTitle("Delete a note");
-                builder.create().show();
-
-
+                Intent editIntent = new Intent(mContext, EditNoteActivity.class);
+                Note note = getItemAtPosition(position);
+                editIntent.putExtra("note", note);
+                mContext.startActivity(editIntent);
             }
         });
         if(!n.getTitle().isEmpty())
