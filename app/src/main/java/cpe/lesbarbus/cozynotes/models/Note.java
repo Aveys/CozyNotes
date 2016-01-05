@@ -86,6 +86,18 @@ public class Note {
         this.endDatetime = endDatetime;
     }
 
+    public String getNotebookId() {
+        return notebookId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     /***
      * Get the Map format of a Note
      *

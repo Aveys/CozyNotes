@@ -96,14 +96,14 @@ public class MainActivity extends AppCompatActivity
         _spr.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Thread(new Runnable() {
+                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         na.refreshData(couchDB.getAllNotes());
                         na.notifyDataSetChanged();
                         _spr.setRefreshing(false);
                     }
-                }).start();
+                });
             }
         });
     }
