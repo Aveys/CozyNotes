@@ -16,7 +16,8 @@
         android:id="@+id/list_notebooks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="?attr/actionBarSize"
         android:divider="@drawable/list_divider"
-         />
+        />
 
 </RelativeLayout>

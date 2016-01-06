@@ -44,7 +44,6 @@ import cpe.lesbarbus.cozynotes.utils.CouchBaseNotebook;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
-
     private NoteAdapter na = null;
     private CouchBaseNotebook cbk;
     private CouchBaseNote cbn;

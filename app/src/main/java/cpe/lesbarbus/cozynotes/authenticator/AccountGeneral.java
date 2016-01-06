@@ -19,7 +19,7 @@ public class AccountGeneral {
     public static final ServerAuthenticate sServerAuth = new CozyServerAuthenticate();
     //DEV : Modify this for having multiple device on one instance of cozycloud
     //TODO : add this in advance parameter at first login or another system
-    public static final String DEVICE_NAME = "cozynote-lbl";
+    public static final String DEVICE_NAME = "cozynote-polo";
 
     /**
      * Return the URl saved inside the extra of account
