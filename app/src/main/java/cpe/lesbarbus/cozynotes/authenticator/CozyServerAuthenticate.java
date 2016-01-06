@@ -73,14 +73,12 @@ public class CozyServerAuthenticate implements ServerAuthenticate {
     private String post(String url, String json) throws IOException {
         client.networkInterceptors().add(new LoggingInterceptor());
         RequestBody body = RequestBody.create(JSON, json);
-        System.out.println(body.contentType().toString());
         Request req = new Request.Builder()
                 .url(url)
                 .post(body)
                 .addHeader("{Content-Type", "application/json}")
                 .addHeader("Accept", "*/*")
                 .build();
-        System.out.println(req.toString());
         Response res = client.newCall(req).execute();
         return res.body().string();
 

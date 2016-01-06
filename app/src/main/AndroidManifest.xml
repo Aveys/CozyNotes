@@ -41,6 +41,9 @@
             android:name=".activities.EditNoteActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activities.NoteDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
             android:name=".activities.TestActivity"
             android:theme="@style/Theme.AppCompat.Light" />
 

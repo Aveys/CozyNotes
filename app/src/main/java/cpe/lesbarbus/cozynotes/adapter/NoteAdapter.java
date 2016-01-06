@@ -46,10 +46,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cardlayout_note,parent,false);
         final NoteViewHolder nvh = new NoteViewHolder(itemView);
+
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onItemClick(v, nvh.getPosition());
+                  v.findViewById(R.id.card_note_delete).getTag();
+                //final Note n = getItemAtPosition(tag);
+               int tag = (int) v.findViewById(R.id.card_note_title).getTag();
+                listener.onItemClick(v, getItemAtPosition(tag));
             }
         });
         return new NoteViewHolder(itemView);
@@ -60,11 +64,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
         Note n = noteList.get(position);
+        holder._vTitle.setTag(position);
         holder._delete.setTag(position);
         holder._delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO : replace this dialog by a toast with cancel button
                 Integer tag = (Integer) v.getTag();
                 final Note n = getItemAtPosition(tag);
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -141,7 +145,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
      */
     public static class NoteViewHolder extends RecyclerView.ViewHolder{
 
-
         TextView _vTitle;
         TextView _vText;
         TextView _vDate;
@@ -149,6 +152,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         Button _edit;
         public NoteViewHolder(View itemView) {
             super(itemView);
+
             _vTitle = (TextView) itemView.findViewById(R.id.card_note_title);
             _vText = (TextView) itemView.findViewById(R.id.card_note_text);
             _vDate = (TextView) itemView.findViewById(R.id.card_note_date);

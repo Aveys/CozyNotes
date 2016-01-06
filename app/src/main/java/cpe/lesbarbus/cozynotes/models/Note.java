@@ -101,6 +101,11 @@ public class Note implements Serializable{
         this.type = type;
     }
 
+    public String getFormattedDateTime(){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return sdf.format(this.getDatetime());
+    }
+
     /***
      * Get the Map format of a Note
      *

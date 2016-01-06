@@ -37,6 +37,7 @@ import cpe.lesbarbus.cozynotes.R;
 import cpe.lesbarbus.cozynotes.adapter.NoteAdapter;
 import cpe.lesbarbus.cozynotes.fragment.NoteDetailDialog;
 import cpe.lesbarbus.cozynotes.listener.CustomCardListener;
+import cpe.lesbarbus.cozynotes.models.Note;
 import cpe.lesbarbus.cozynotes.models.Notebook;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseManager;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
@@ -169,9 +170,10 @@ public class MainActivity extends AppCompatActivity
         //adapter for recyclerview
          na = new NoteAdapter(cbn.getAllNotes(), this, new CustomCardListener() {
              @Override
-             public void onItemClick(View v, int position) {
-                 //TODO
-                 Toast.makeText(MainActivity.this,"Clicked card",Toast.LENGTH_SHORT).show();
+             public void onItemClick(View v, Note n) {
+                 Intent detailIntent = new Intent(MainActivity.this, NoteDetailActivity.class);
+                detailIntent.putExtra("note", n);
+                 startActivity(detailIntent);
              }
          });
         _recList.setAdapter(na);
@@ -260,9 +262,9 @@ public class MainActivity extends AppCompatActivity
         Toast.makeText(this, "Update asked", Toast.LENGTH_SHORT).show();
     }
 
-    public void showDialog() {
+    public void showDialog(Note n) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        NoteDetailDialog newFragment = new NoteDetailDialog();
+        NoteDetailDialog newFragment = NoteDetailDialog.newInstance(n);
 
         if (mIsLargeLayout) {
             // The device is using a large layout, so show the fragment as a dialog
@@ -277,5 +279,12 @@ public class MainActivity extends AppCompatActivity
             transaction.add(android.R.id.content, newFragment)
                     .addToBackStack(null).commit();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        na.refreshData(cbn.getAllNotes());
+        na.notifyDataSetChanged();
     }
 }

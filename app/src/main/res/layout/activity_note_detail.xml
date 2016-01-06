@@ -5,49 +5,64 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="cpe.lesbarbus.cozynotes.NoteDetailDialog">
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/fragment_detail_appbar"
+        android:id="@+id/note_detail_appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/fragment_detail_toolbar"
+            android:id="@+id/note_detail_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/blue_500"
             app:popupTheme="@style/AppTheme.PopupOverlay" >
 
             <ImageButton
-                android:id="@+id/fragment_detail_closebutton"
+                android:id="@+id/note_detail_backbutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_note_add"
+                android:src="@drawable/ic_navigation_arrow_back"
+                android:background="#00ffffff"
                 android:contentDescription="@null" />
             <ImageButton
-                android:id="@+id/fragment_detail_editbutton"
+                android:id="@+id/note_detail_sharebutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="end"
                 android:layout_alignParentRight="true"
                 android:scaleType="center"
-                android:src="@drawable/ic_action_note_add"
+                android:src="@drawable/ic_social_share_white"
+                android:background="#00ffffff"
                 android:contentDescription="@null" />
             <ImageButton
-                android:id="@+id/fragment_detail_deletebutton"
+                android:id="@+id/note_detail_editbutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="end"
                 android:layout_alignParentRight="true"
                 android:scaleType="center"
-                android:src="@drawable/ic_action_note_add"
+                android:src="@drawable/ic_editor_mode_edit_white"
+                android:background="#00ffffff"
                 android:contentDescription="@null" />
+            <ImageButton
+                android:id="@+id/note_detail_deletebutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:layout_alignParentRight="true"
+                android:scaleType="center"
+                android:src="@drawable/ic_action_delete_white"
+                android:contentDescription="@null"
+                android:background="#00ffffff" />
+
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
     <TextView
-        android:id="@+id/fragment_detail_title"
+        android:id="@+id/note_detail_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -62,7 +77,7 @@
         android:textSize="24sp" />
 
     <View
-        android:id="@+id/fragment_detail_divider"
+        android:id="@+id/note_detail_divider"
         android:layout_width="match_parent"
         android:layout_height="2px"
         android:layout_alignParentEnd="true"
@@ -72,27 +87,27 @@
         android:layout_marginTop="2dp"
         android:background="@color/blue_500"
         android:minHeight="2px"
-        android:layout_below="@id/fragment_detail_title"/>
+        android:layout_below="@id/note_detail_title"/>
 
     <TextView
-        android:id="@+id/fragment_detail_content"
+        android:id="@+id/note_detail_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Content of the note"
         android:paddingTop="12dp"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_below="@+id/fragment_detail_divider"
+        android:layout_below="@+id/note_detail_divider"
         />
     <TextView
-        android:id="@+id/fragment_detail_date"
+        android:id="@+id/note_detail_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="end"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:textAlignment="textEnd"
-        android:layout_below="@id/fragment_detail_content"
+        android:layout_below="@id/note_detail_content"
         android:hint="Date"/>
 
 </RelativeLayout>
