@@ -56,7 +56,6 @@ public class EditNoteActivity extends AppCompatActivity implements AdapterView.O
         setContentView(R.layout.activity_create_note);
         ButterKnife.bind(this);
 
-
         _note = (Note) getIntent().getSerializableExtra("note");
         setSupportActionBar(_toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
