@@ -1,5 +1,7 @@
 package cpe.lesbarbus.cozynotes.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,9 +12,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
@@ -31,7 +36,8 @@ import cpe.lesbarbus.cozynotes.utils.CouchBaseNotebook;
 public class NotebooksActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private NotebookAdapter na = null;
-    private CouchBaseNotebook couchDB = null;
+    private CouchBaseNotebook cbk;
+    private CouchBaseNote cbn;
 
     @Bind(R.id.toolbar)
     Toolbar _toolbar;
@@ -71,16 +77,40 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
                 startActivityForResult(i, 1);
             }
         });
-        //FloatingActionMenu Init
-        /*_notebookAction.setOnClickListener(new View.OnClickListener() {
+        _notebookAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final String[] name = {null};
+                AlertDialog.Builder builder = new AlertDialog.Builder(NotebooksActivity.this);
+                builder.setCancelable(true);
 
-                Intent i = new Intent(getApplicationContext(), CreateNotebookActivity.class);
-                _fam.collapseImmediately();
-                startActivityForResult(i, 1);
+                View vw = getLayoutInflater().inflate(R.layout.dialog_addnotebook, null , false);
+                final EditText notebookName = (EditText) vw.findViewById(R.id.dialog_addNotebook_edit);
+                builder.setView(vw);
+                builder.setTitle("Notebook title");
+                builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        name[0] = notebookName.getText().toString();
+                        if (TextUtils.isEmpty(name[0])) {
+                            Toast.makeText(getApplicationContext(), "Tittle cannot be empty", Toast.LENGTH_LONG).show();
+                        } else {
+                            Notebook newNB = new Notebook(name[0]);
+                            cbk.createNotebook(newNB);
+                            _fam.toggle();
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //DO NOTHING
+                    }
+                });
+                builder.show();
             }
-        });*/
+        });
         //set the size of action button
         _noteAction.setSize(com.getbase.floatingactionbutton.FloatingActionButton.SIZE_MINI);
         _notebookAction.setSize(com.getbase.floatingactionbutton.FloatingActionButton.SIZE_MINI);
@@ -89,16 +119,8 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-        couchDB = new CouchBaseNotebook();
-        na = new NotebookAdapter(couchDB.getAllNotebooks(), this);
+        cbk = new CouchBaseNotebook();
+        na = new NotebookAdapter(cbk.getAllNotebooks(), this);
         _listNotebook.setAdapter(na);
     }
 
