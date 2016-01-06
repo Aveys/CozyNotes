@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import java.util.List;
 import cpe.lesbarbus.cozynotes.R;
 import cpe.lesbarbus.cozynotes.activities.EditNoteActivity;
 import cpe.lesbarbus.cozynotes.activities.MainActivity;
+import cpe.lesbarbus.cozynotes.listener.CustomCardListener;
 import cpe.lesbarbus.cozynotes.models.Note;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 
@@ -29,10 +31,13 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     private List<Note> noteList;
     private final Context mContext;
+    private final CustomCardListener listener;
+    private static final String TAG = "NoteAdapter";
 
-    public NoteAdapter(List<Note> noteList, Context c) {
+    public NoteAdapter(List<Note> noteList, Context c,CustomCardListener ccl) {
         this.noteList = noteList;
         this.mContext = c;
+        this.listener=ccl;
     }
 
 
@@ -40,6 +45,13 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     public NoteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cardlayout_note,parent,false);
+        final NoteViewHolder nvh = new NoteViewHolder(itemView);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemClick(v, nvh.getPosition());
+            }
+        });
         return new NoteViewHolder(itemView);
     }
 

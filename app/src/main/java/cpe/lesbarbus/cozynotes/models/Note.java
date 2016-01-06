@@ -1,9 +1,11 @@
 package cpe.lesbarbus.cozynotes.models;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SimpleTimeZone;
 
 
 public class Note implements Serializable{
@@ -105,12 +107,13 @@ public class Note implements Serializable{
      * @return Map containing all the filled fields of the Note
      */
     public Map<String, Object> getMapFormat() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         Map<String, Object> map = new HashMap<>();
         if (type != null) map.put("type", type);
         if (notebookId != null) map.put("notebookId", notebookId);
         if (title != null) map.put("title", title);
         if (content != null) map.put("content", content);
-        if (datetime != null) map.put("datetime", datetime);
+        if (datetime != null) map.put("datetime", sdf.format(datetime));
         if (endDatetime != null) map.put("endDatetime", endDatetime);
 
         return map;

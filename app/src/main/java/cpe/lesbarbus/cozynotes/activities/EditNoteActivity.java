@@ -53,13 +53,11 @@ public class EditNoteActivity extends AppCompatActivity implements AdapterView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        _note = (Note) getIntent().getSerializableExtra("note");
-
         setContentView(R.layout.activity_create_note);
-
         ButterKnife.bind(this);
 
+
+        _note = (Note) getIntent().getSerializableExtra("note");
         setSupportActionBar(_toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -97,6 +95,10 @@ public class EditNoteActivity extends AppCompatActivity implements AdapterView.O
                 else{
                     _note.setContent(_knife.toHtml());
                     _note.setTitle(_title.getText().toString());
+
+                    Notebook nb = (Notebook) _spinner.getSelectedItem();
+                    _note.setNotebookId(nb.get_id());
+
                     //_note.setCurrentDatetime(); On ne modifie pas la date
                     CouchBaseNote db = new CouchBaseNote();
                     db.updateNote(_note);

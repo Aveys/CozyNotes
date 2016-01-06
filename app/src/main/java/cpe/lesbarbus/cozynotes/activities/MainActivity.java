@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,27 +19,24 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.couchbase.lite.CouchbaseLiteException;
-import com.couchbase.lite.Database;
-import com.couchbase.lite.Query;
-import com.couchbase.lite.QueryEnumerator;
-import com.couchbase.lite.QueryRow;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
+
 import java.io.IOException;
-import java.util.Iterator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cpe.lesbarbus.cozynotes.R;
 import cpe.lesbarbus.cozynotes.adapter.NoteAdapter;
-import cpe.lesbarbus.cozynotes.utils.CouchBaseManager;
+import cpe.lesbarbus.cozynotes.fragment.NoteDetailDialog;
+import cpe.lesbarbus.cozynotes.listener.CustomCardListener;
 import cpe.lesbarbus.cozynotes.models.Notebook;
+import cpe.lesbarbus.cozynotes.utils.CouchBaseManager;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNotebook;
 
@@ -64,6 +63,8 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.recent_list_swiperefresh)
     SwipeRefreshLayout _spr;
 
+    private boolean mIsLargeLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +83,8 @@ public class MainActivity extends AppCompatActivity
 
         //bind widget (ButterKnife lib)
         ButterKnife.bind(this);
-
+        //large screen ?
+        mIsLargeLayout = getResources().getBoolean(R.bool.large_layout);
         //Toolbar Init
         setSupportActionBar(_toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -102,34 +104,34 @@ public class MainActivity extends AppCompatActivity
         _notebookAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    final String[] name = {null};
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setCancelable(true);
+                final String[] name = {null};
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setCancelable(true);
 
-                    View vw = getLayoutInflater().inflate(R.layout.dialog_addnotebook, null , false);
-                    final EditText notebookName = (EditText) vw.findViewById(R.id.dialog_addNotebook_edit);
-                    builder.setView(vw);
-                    builder.setTitle("Notebook title");
-                    builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            name[0] = notebookName.getText().toString();
-                            if (TextUtils.isEmpty(name[0])) {
-                                Toast.makeText(getApplicationContext(), "Tittle cannot be empty", Toast.LENGTH_LONG).show();
-                            } else {
-                                Notebook newNB = new Notebook(name[0]);
-                                cbk.createNotebook(newNB);
-                                _fam.toggle();
-                            }
+                View vw = getLayoutInflater().inflate(R.layout.dialog_addnotebook, null, false);
+                final EditText notebookName = (EditText) vw.findViewById(R.id.dialog_addNotebook_edit);
+                builder.setView(vw);
+                builder.setTitle("Notebook title");
+                builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        name[0] = notebookName.getText().toString();
+                        if (TextUtils.isEmpty(name[0])) {
+                            Toast.makeText(getApplicationContext(), "Tittle cannot be empty", Toast.LENGTH_LONG).show();
+                        } else {
+                            Notebook newNB = new Notebook(name[0]);
+                            cbk.createNotebook(newNB);
+                            _fam.toggle();
                         }
-                    });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //DO NOTHING
-                        }
-                    });
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //DO NOTHING
+                    }
+                });
                     builder.show();
             }
         });
@@ -148,7 +150,13 @@ public class MainActivity extends AppCompatActivity
         _recList.setLayoutManager(llm);
 
         //adapter for recyclerview
-         na = new NoteAdapter(cbn.getAllNotes(),this);
+         na = new NoteAdapter(cbn.getAllNotes(), this, new CustomCardListener() {
+             @Override
+             public void onItemClick(View v, int position) {
+                 //TODO
+                 Toast.makeText(MainActivity.this,"Clicked card",Toast.LENGTH_SHORT).show();
+             }
+         });
         _recList.setAdapter(na);
 
         //refresh comportement for swipe refresh
@@ -233,5 +241,24 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRefresh() {
         Toast.makeText(this, "Update asked", Toast.LENGTH_SHORT).show();
+    }
+
+    public void showDialog() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        NoteDetailDialog newFragment = new NoteDetailDialog();
+
+        if (mIsLargeLayout) {
+            // The device is using a large layout, so show the fragment as a dialog
+            newFragment.show(fragmentManager, "dialog");
+        } else {
+            // The device is smaller, so show the fragment fullscreen
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            // For a little polish, specify a transition animation
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            // To make it fullscreen, use the 'content' root view as the container
+            // for the fragment, which is always the root view for the activity
+            transaction.add(android.R.id.content, newFragment)
+                    .addToBackStack(null).commit();
+        }
     }
 }

@@ -98,7 +98,6 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
 
                     Notebook nb = (Notebook) _spinner.getSelectedItem();
                     n.setNotebookId(nb.get_id());
-
                     cbn.createNote(n);
                     finish();
                 }
