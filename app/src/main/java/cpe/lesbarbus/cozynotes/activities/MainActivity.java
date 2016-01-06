@@ -15,11 +15,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.couchbase.lite.CouchbaseLiteException;
@@ -61,6 +63,8 @@ public class MainActivity extends AppCompatActivity
     RecyclerView _recList;
     @Bind(R.id.recent_list_swiperefresh)
     SwipeRefreshLayout _spr;
+    @Bind(R.id.share)
+    ImageButton _im_bt_share;
 
     private boolean mIsLargeLayout;
 
@@ -85,11 +89,25 @@ public class MainActivity extends AppCompatActivity
         //large screen ?
         mIsLargeLayout = getResources().getBoolean(R.bool.large_layout);
         //Toolbar Init
+        _im_bt_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(na.getItemAtPosition(0).getContent()).toString());
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+            }
+        });
+
         setSupportActionBar(_toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, _drawer, _toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         _drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+
+
 
         //FloatingActionMenu Init
         _noteAction.setOnClickListener(new View.OnClickListener() {

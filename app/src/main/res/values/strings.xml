@@ -89,4 +89,6 @@
     <string name="login">Login</string>
     <string name="request_instance">Request an instance : http://cozy.io</string>
     <string name="error_database_load">Database Loading Error, expect errors during the execution of the app</string>
+    <string name="title_activity_receive">ReceiveActivity</string>
+    <string name="title_activity_share">ShareActivity</string>
 </resources>

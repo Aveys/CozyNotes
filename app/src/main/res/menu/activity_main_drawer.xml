@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/all_notes"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_action_note_add_blue"
             android:title="@string/all_notes" />
         <item
             android:id="@+id/all_notebooks"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_action_book_blue"
             android:title="@string/all_notrebooks" />
         <item
             android:id="@+id/disconnect"
