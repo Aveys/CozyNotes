@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -93,6 +94,7 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
                             Notebook newNB = new Notebook(name[0]);
                             cbk.createNotebook(newNB);
                             _fam.toggle();
+                            na.refreshData(cbk.getAllNotebooks());
                         }
                     }
                 });
@@ -118,6 +120,8 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
         na = new NotebookAdapter(this,cbk.getAllNotebooks());
         na.setMode(Attributes.Mode.Single);
         _listNotebook.setAdapter(na);
+
+
     }
 
     @Override
@@ -140,5 +144,11 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        na.refreshData(cbk.getAllNotebooks());
     }
 }

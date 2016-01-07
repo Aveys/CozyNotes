@@ -51,6 +51,7 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
     private CouchBaseNote cbn;
     private CouchBaseNotebook cbk;
     private ArrayList<Notebook> list;
+    private String text_shared;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +60,21 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
 
         ButterKnife.bind(this);
 
+
         setSupportActionBar(_toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        if(getIntent().getSerializableExtra("text_shared") != null) {
+            text_shared = (String) getIntent().getSerializableExtra("text_shared");
+            _knife.setText(text_shared);
+            _knife.setSelection(_knife.getEditableText().length());
+        }
+        else
+        {
+            // Use async would better; ImageGetter coming soon...
+            _knife.setText(Html.fromHtml("<p> write text here</p>", null, new KnifeTagHandler()));
+            _knife.setSelection(_knife.getEditableText().length());
+        }
         cbn = new CouchBaseNote();
         cbk = new CouchBaseNotebook();
         list = (ArrayList<Notebook>) cbk.getAllNotebooks();
@@ -71,9 +84,6 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
         _spinner.setAdapter(adapter);
         _spinner.setOnItemSelectedListener(this);
 
-        // Use async would better; ImageGetter coming soon...
-        _knife.setText(Html.fromHtml("<p> write text here</p>", null, new KnifeTagHandler()));
-        _knife.setSelection(_knife.getEditableText().length());
         setupBold();
         setupItalic();
         setupUnderline();
@@ -254,7 +264,7 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
                         Toast.makeText(getApplicationContext(), "Tittle cannot be empty", Toast.LENGTH_LONG).show();
                     } else {
                         Notebook newNB = new Notebook(name[0]);
-                        cbk.createNotebook(newNB);
+                        newNB.set_id(cbk.createNotebook(newNB));
                         adapter.add(newNB);
                         int pos = getAdapterItemPosition(newNB);
                         _spinner.setSelection(pos);
@@ -262,13 +272,15 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
                     }
                 }
             });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            if(cbn.getNotesCount()>0) {
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //DO NOTHING
-                }
-            });
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //DO NOTHING
+                    }
+                });
+            }
             builder.show();
         }
         else{

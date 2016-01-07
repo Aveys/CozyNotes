@@ -176,8 +176,9 @@ public class CouchBaseNote {
             QueryEnumerator result = query.run();
             for (; result.hasNext(); ) {
                 Document doc = result.next().getDocument();
-                if (DOC_TYPE.equals(doc.getProperty("type")) && notebookId.equals(doc.getProperty("notebookId"))) {
-                    ln.add(mapper.readValue(new JSONObject(doc.getProperties()).toString(), Note.class));
+                if (DOC_TYPE.equals(doc.getProperty("type"))) {
+                    if(notebookId.equals(doc.getProperty("notebookId")))
+                        ln.add(mapper.readValue(new JSONObject(doc.getProperties()).toString(), Note.class));
                 }
             }
         } catch (CouchbaseLiteException | IOException e) {
@@ -214,5 +215,13 @@ public class CouchBaseNote {
         );
         Log.d(TAG, "View Created for Notes" + noteView.toString());
         return noteView;
+    }
+
+    /**
+     * Get the count of all notes inside the database
+     * @return the count of notes
+     */
+    public int getNotesCount(){
+        return getAllNotes().size();
     }
 }

@@ -21,13 +21,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.couchbase.lite.CouchbaseLiteException;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-
-import java.io.IOException;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cpe.lesbarbus.cozynotes.R;
@@ -36,16 +31,17 @@ import cpe.lesbarbus.cozynotes.fragment.NoteDetailDialog;
 import cpe.lesbarbus.cozynotes.listener.CustomCardListener;
 import cpe.lesbarbus.cozynotes.models.Note;
 import cpe.lesbarbus.cozynotes.models.Notebook;
-import cpe.lesbarbus.cozynotes.utils.CouchBaseManager;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNotebook;
 
-public class MainActivity extends AppCompatActivity
+public class NoteByNotebookActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
+
 
     private NoteAdapter na = null;
     private CouchBaseNotebook cbk;
     private CouchBaseNote cbn;
+    private boolean mIsLargeLayout;
 
     @Bind(R.id.toolbar)
     Toolbar _toolbar;
@@ -62,21 +58,13 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.recent_list_swiperefresh)
     SwipeRefreshLayout _spr;
 
-
-    private boolean mIsLargeLayout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        this.setTitle(getString(R.string.R_main_appbar_title));
-        //Database init
-        try {
-            CouchBaseManager.setDatabaseInstance(this);
-        } catch (IOException | CouchbaseLiteException e) {
-            Toast.makeText(this, R.string.error_database_load,Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        }
+        setContentView(R.layout.activity_note_by_notebook);
+
+
+
 
         cbk = new CouchBaseNotebook();
         cbn = new CouchBaseNote();
@@ -84,22 +72,8 @@ public class MainActivity extends AppCompatActivity
         //bind widget (ButterKnife lib)
         ButterKnife.bind(this);
         //large screen ?
-        mIsLargeLayout = getResources().getBoolean(R.bool.large_layout);
+         mIsLargeLayout = getResources().getBoolean(R.bool.large_layout);
         //Toolbar Init
-
-
-
-        /*_im_bt_share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(na.getItemAtPosition(0).getContent()).toString());
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
-            }
-        });*/
-
 
         setSupportActionBar(_toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -123,7 +97,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 final String[] name = {null};
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(NoteByNotebookActivity.this);
                 builder.setCancelable(true);
 
                 View vw = getLayoutInflater().inflate(R.layout.dialog_addnotebook, null, false);
@@ -150,7 +124,7 @@ public class MainActivity extends AppCompatActivity
                         //DO NOTHING
                     }
                 });
-                    builder.show();
+                builder.show();
             }
         });
         //set the size of action button
@@ -168,14 +142,16 @@ public class MainActivity extends AppCompatActivity
         _recList.setLayoutManager(llm);
 
         //adapter for recyclerview
-         na = new NoteAdapter(cbn.getAllNotes(), this, new CustomCardListener() {
-             @Override
-             public void onItemClick(View v, Note n) {
-                 Intent detailIntent = new Intent(MainActivity.this, NoteDetailActivity.class);
+        Notebook notebook =(Notebook)this.getIntent().getSerializableExtra("notebook");
+        this.setTitle(notebook.getName());
+        na = new NoteAdapter(cbn.getAllNotesByNotebook(notebook.get_id()), this, new CustomCardListener() {
+            @Override
+            public void onItemClick(View v, Note n) {
+                Intent detailIntent = new Intent(NoteByNotebookActivity.this, NoteDetailActivity.class);
                 detailIntent.putExtra("note", n);
-                 startActivity(detailIntent);
-             }
-         });
+                startActivity(detailIntent);
+            }
+        });
         _recList.setAdapter(na);
 
         //refresh comportement for swipe refresh
@@ -185,7 +161,8 @@ public class MainActivity extends AppCompatActivity
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        na.refreshData(cbn.getAllNotes());
+                        Notebook notebook =(Notebook)NoteByNotebookActivity.this.getIntent().getSerializableExtra("notebook");
+                        na.refreshData(cbn.getAllNotesByNotebook(notebook.get_id()));
                         na.notifyDataSetChanged();
                         _spr.setRefreshing(false);
                     }
@@ -193,34 +170,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
-        //Receive shared COntent
-        // Get intent, action and MIME type
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        String type = intent.getType();
-        //Call apropriate handling methods
-        if (Intent.ACTION_SEND.equals(action) && type != null) {
-            if ("text/plain".equals(type)) {
-                handleSendText(intent);
-            }
-        } else {
-            // Handle other intents, such as being started from the home screen
-        }
-    }
-
-    /**
-     * Function that receives the text send by third party app
-     * @param intent
-     */
-    void handleSendText(Intent intent) {
-        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-        if (sharedText != null) {
-            // Update UI to reflect text being shared
-            Intent i = new Intent(this, CreateNoteActivity.class);
-            i.putExtra("text_shared",sharedText);
-            startActivity(i);
-        }
     }
 
     @Override
@@ -233,6 +182,31 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        } else if (id == R.id.action_settings_test) {
+            Intent i = new Intent(this, TestActivity.class);
+            startActivity(i);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -240,13 +214,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.all_notes) {
-           runOnUiThread(new Runnable() {
+            new Thread(new Runnable() {
                 @Override
                 public void run() {
                     na.refreshData(cbn.getAllNotes());
                     na.notifyDataSetChanged();
                 }
-            });
+            }).start();
 
         } else if (id == R.id.all_notebooks) {
             Intent i = new Intent(getApplicationContext(), NotebooksActivity.class);
@@ -287,7 +261,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        na.refreshData(cbn.getAllNotes());
+        Notebook notebook =(Notebook)NoteByNotebookActivity.this.getIntent().getSerializableExtra("notebook");
+        na.refreshData(cbn.getAllNotesByNotebook(notebook.get_id()));
         na.notifyDataSetChanged();
     }
 }

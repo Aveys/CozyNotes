@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import cpe.lesbarbus.cozynotes.R;
+
 import cpe.lesbarbus.cozynotes.authenticator.AccountGeneral;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 
@@ -36,8 +37,11 @@ public class TestActivity extends Activity {
                 actionA.setTitle("Action A clicked");
             }
         });
+        new Thread(new Runnable() {
+            public void run() {
 
-
+            }
+        }).start();
 
     }
 }
