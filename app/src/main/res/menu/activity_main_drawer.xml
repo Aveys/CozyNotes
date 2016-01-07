@@ -13,6 +13,10 @@
             android:icon="@drawable/ic_action_book_blue"
             android:title="@string/all_notrebooks" />
         <item
+            android:id="@+id/get_from_cloud"
+            android:icon="@drawable/ic_action_book_blue"
+            android:title="@string/get_from_cloud" />
+        <item
             android:id="@+id/disconnect"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/disconnect" />

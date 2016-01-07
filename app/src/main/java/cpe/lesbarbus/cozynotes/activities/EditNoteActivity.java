@@ -16,6 +16,8 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.squareup.okhttp.OkHttpClient;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -103,11 +105,8 @@ public class EditNoteActivity extends AppCompatActivity implements AdapterView.O
                     db.updateNote(_note);
                     finish();
                 }
-
             }
         });
-
-
     }
 
     private void setupBold() {

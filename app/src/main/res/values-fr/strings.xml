@@ -101,5 +101,6 @@
     <string name="empty_input_content">Le contenu ne peut pas être vide</string>
     <string name="add">Ajouter</string>
     <string name="update_asked">Mise à jour demandée</string>
+    <string name="get_from_cloud">Récupérer depuis le cloud</string>
 
 </resources>

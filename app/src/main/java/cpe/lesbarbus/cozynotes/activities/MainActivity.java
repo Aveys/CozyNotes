@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.recent_list_swiperefresh)
     SwipeRefreshLayout _spr;
 
-
     private boolean mIsLargeLayout;
 
     @Override
@@ -249,16 +248,18 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.all_notes) {
            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    na.refreshData(cbn.getAllNotes());
-                    na.notifyDataSetChanged();
-                }
-            });
+               @Override
+               public void run() {
+                   na.refreshData(cbn.getAllNotes());
+                   na.notifyDataSetChanged();
+               }
+           });
 
         } else if (id == R.id.all_notebooks) {
             Intent i = new Intent(getApplicationContext(), NotebooksActivity.class);
             startActivity(i);
+        } else if (id == R.id.get_from_cloud){
+
         } else if (id == R.id.disconnect) {
             new Thread(new Runnable() {
                 @Override

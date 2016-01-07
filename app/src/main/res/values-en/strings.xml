@@ -100,4 +100,5 @@
     <string name="empty_input_content">Content can\'t be empty</string>
     <string name="add">Add</string>
     <string name="update_asked">Update asked</string>
+    <string name="get_from_cloud">Get from cloud</string>
 </resources>
