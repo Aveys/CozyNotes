@@ -94,7 +94,7 @@
         android:id="@+id/note_detail_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Content of the note"
+        android:hint="@string/detail_content"
         android:paddingTop="12dp"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -109,6 +109,6 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:textAlignment="textEnd"
         android:layout_below="@id/note_detail_content"
-        android:hint="Date"/>
+        android:hint="@string/date"/>
 
 </RelativeLayout>

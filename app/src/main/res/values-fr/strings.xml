@@ -70,7 +70,7 @@
     <string name="nav_communicate">Communiquer</string>
     <string name="nav_share">Partager</string>
     <string name="nav_send">Envoyer</string>
-    <string name="addnotebook_title">Titre Notebook</string>
+    <string name="notebook_title">Titre Notebook</string>
     <string name="action_settings_test">Test de l\'activité</string>
     <string name="title">Titre</string>
     <string name="cozynotes">CozyNotes</string>
@@ -86,4 +86,26 @@
     <string name="login">Se connecter</string>
     <string name="request_instance">Demander une instance : http://cozy.io</string>
     <string name="error_database_load">Impossible de charger la base de donnée</string>
+
+
+    <string name="title_activity_receive">ReceiveActivity</string>
+    <string name="title_activity_share">ShareActivity</string>
+    <string name="R.main.appbar.title">Notes Récentes</string>
+    <string name="alertdialog_delete_note_message">Êtes-vous sûr de vouloir supprimer cette note ?</string>
+    <string name="alertdialog_delete_note_title">Supprimer une note</string>
+    <string name="alertdialog_delete_action">Supprimer</string>
+    <string name="alertdialog_cancel_action">Annuler</string>
+    <string name="alertdialog_delete_notebook_message">Vous êtes sur le point de supprimer un notebook et toutes les notes associées. Continuer ?</string>
+    <string name="alertdialog_delete_notebook_title">Supprimer notebook</string>
+    <string name="error_signoff">Erreur pendant la déconnexion</string>
+
+    <string name="notebook">Notebook</string>
+    <string name="notebook_name">Nom du Notebook</string>
+    <string name="detail_content">Contenu de la note</string>
+    <string name="note_placeholder"><![CDATA[<p> Ecrivez un texte ici</p>]]></string>
+    <string name="create_notebook">Créer un Notebook …</string>
+    <string name="empty_input_title">Le titre ne peut pas être vide</string>
+    <string name="empty_input_content">Le contenu ne peut pas être vide</string>
+    <string name="add">Ajouter</string>
+
 </resources>

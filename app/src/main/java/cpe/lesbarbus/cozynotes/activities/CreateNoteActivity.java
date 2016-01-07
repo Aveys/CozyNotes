@@ -72,13 +72,13 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
         else
         {
             // Use async would better; ImageGetter coming soon...
-            _knife.setText(Html.fromHtml("<p> write text here</p>", null, new KnifeTagHandler()));
+            _knife.setText(Html.fromHtml(getString(R.string.note_placeholder), null, new KnifeTagHandler()));
             _knife.setSelection(_knife.getEditableText().length());
         }
         cbn = new CouchBaseNote();
         cbk = new CouchBaseNotebook();
         list = (ArrayList<Notebook>) cbk.getAllNotebooks();
-        list.add(new Notebook("Create a Notebook ...."));
+        list.add(new Notebook(getString(R.string.create_notebook)));
 
         adapter = new NotebookSpinnerAdapter(this, android.R.layout.simple_spinner_dropdown_item, list);
         _spinner.setAdapter(adapter);
@@ -97,9 +97,9 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
             @Override
             public void onClick(View v) {
                 if(_title.getText().toString().isEmpty())
-                    Toast.makeText(getApplicationContext(),"Title can't be empty",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.empty_input_title,Toast.LENGTH_SHORT).show();
                 else if(_knife.getText().toString().isEmpty())
-                    Toast.makeText(getApplicationContext(),"Content can't be empty",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.empty_input_content,Toast.LENGTH_SHORT).show();
                 else{
                     Note n = new Note();
                     n.setContent(_knife.toHtml());
@@ -247,7 +247,7 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         //IF add notebook selected
         Notebook nb = (Notebook) parent.getItemAtPosition(position);
-        if (nb.getName().equals("Create a Notebook ....")) {
+        if (nb.getName().equals(R.string.create_notebook)) {
             final String[] name = {null};
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true);
@@ -255,13 +255,13 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
             View vw = getLayoutInflater().inflate(R.layout.dialog_addnotebook, parent, false);
             final EditText notebookName = (EditText) vw.findViewById(R.id.dialog_addNotebook_edit);
             builder.setView(vw);
-            builder.setTitle("Notebook title");
-            builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            builder.setTitle(R.string.notebook_title);
+            builder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     name[0] = notebookName.getText().toString();
                     if (TextUtils.isEmpty(name[0])) {
-                        Toast.makeText(getApplicationContext(), "Tittle cannot be empty", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), R.string.empty_input_title, Toast.LENGTH_LONG).show();
                     } else {
                         Notebook newNB = new Notebook(name[0]);
                         newNB.set_id(cbk.createNotebook(newNB));

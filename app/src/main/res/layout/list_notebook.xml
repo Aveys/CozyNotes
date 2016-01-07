@@ -33,7 +33,7 @@
                 android:id="@+id/notebooks_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Notebook name"/>
+                android:text="@string/notebook_name"/>
         </LinearLayout>
         <!-- Surface View End -->
     </com.daimajia.swipe.SwipeLayout>

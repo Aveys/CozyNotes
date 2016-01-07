@@ -24,7 +24,7 @@
             android:paddingLeft="16dp"
             android:textStyle="italic"
             android:textAlignment="textEnd"
-            android:text="Notebook"
+            android:text="@string/notebook"
             android:paddingTop="4dp" />
         <TextView
             android:id="@+id/card_note_title"

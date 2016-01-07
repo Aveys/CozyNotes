@@ -73,7 +73,7 @@
     <string name="nav_communicate">Communicate</string>
     <string name="nav_share">Share</string>
     <string name="nav_send">Send</string>
-    <string name="addnotebook_title">Notebook title</string>
+    <string name="notebook_title">Notebook title</string>
     <string name="action_settings_test">TestActivity</string>
     <string name="title">Title</string>
     <string name="cozynotes">CozyNotes</string>
@@ -99,4 +99,12 @@
     <string name="alertdialog_delete_notebook_message">You are going to remove a notebook and all the notes associated. Continue ?</string>
     <string name="alertdialog_delete_notebook_title">Delete notebook</string>
     <string name="error_signoff">Error during Sign off</string>
+    <string name="notebook">Notebook</string>
+    <string name="notebook_name">Notebook name</string>
+    <string name="detail_content">Content of the note</string>
+    <string name="note_placeholder"><![CDATA[<p> write text here</p>]]></string>
+    <string name="create_notebook">Create a Notebook …</string>
+    <string name="empty_input_title">Title can\'t be empty</string>
+    <string name="empty_input_content">Content can\'t be empty</string>
+    <string name="add">Add</string>
 </resources>
