@@ -1,5 +1,7 @@
 package cpe.lesbarbus.cozynotes.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cpe.lesbarbus.cozynotes.R;
 import cpe.lesbarbus.cozynotes.models.Note;
+import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 
 public class NoteDetailActivity extends AppCompatActivity {
 
@@ -51,18 +54,43 @@ public class NoteDetailActivity extends AppCompatActivity {
                 Intent editIntent = new Intent(NoteDetailActivity.this, EditNoteActivity.class);
                 editIntent.putExtra("note", note);
                 NoteDetailActivity.this.startActivity(editIntent);
+                finish();
             }
         });
         _deletebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(tag, "delete button pressed");
+                AlertDialog.Builder builder = new AlertDialog.Builder(NoteDetailActivity.this);
+                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        CouchBaseNote db = new CouchBaseNote();
+                        db.deleteNote(note.get_id());
+                        finish();
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //DO NOTHING
+                    }
+                });
+                builder.setMessage("Are you sure you want to delete this note ?");
+                builder.setTitle("Delete a note");
+                builder.create().show();
             }
         });
         _backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        _sharebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }

@@ -107,6 +107,7 @@ public class EditNoteActivity extends AppCompatActivity implements AdapterView.O
             }
         });
 
+
     }
 
     private void setupBold() {

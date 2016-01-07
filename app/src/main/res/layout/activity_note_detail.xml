@@ -24,17 +24,7 @@
                 android:src="@drawable/ic_navigation_arrow_back"
                 android:background="#00ffffff"
                 android:contentDescription="@null" />
-            <ImageButton
-                android:id="@+id/note_detail_sharebutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="end"
-                android:layout_alignParentRight="true"
-                android:scaleType="center"
-                android:src="@drawable/ic_social_share_white"
-                android:background="#00ffffff"
-                android:contentDescription="@null" />
+
             <ImageButton
                 android:id="@+id/note_detail_editbutton"
                 android:layout_width="wrap_content"
@@ -57,6 +47,17 @@
                 android:src="@drawable/ic_action_delete_white"
                 android:contentDescription="@null"
                 android:background="#00ffffff" />
+            <ImageButton
+                android:id="@+id/note_detail_sharebutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:layout_alignParentRight="true"
+                android:scaleType="center"
+                android:src="@drawable/ic_social_share_white"
+                android:background="#00ffffff"
+                android:contentDescription="@null" />
 
         </android.support.v7.widget.Toolbar>
 

@@ -5,6 +5,7 @@
     <color name="blue_200">#FF90CAF9</color>
     <color name="blue_500">#FF2196F3</color>
     <color name="blue_700">#FF1976D2</color>
+    <color name="red_500">#FFF44336</color>
     <color name="colorPrimary">#FFF</color>
     <color name="colorPrimaryDark">#177ae8</color>
     <color name="black_semi_transparent">#B2000000</color>

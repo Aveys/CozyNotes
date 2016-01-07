@@ -15,19 +15,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.couchbase.lite.CouchbaseLiteException;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-
 
 import java.io.IOException;
 
@@ -64,8 +61,6 @@ public class MainActivity extends AppCompatActivity
     RecyclerView _recList;
     @Bind(R.id.recent_list_swiperefresh)
     SwipeRefreshLayout _spr;
-    @Bind(R.id.share)
-    ImageButton _im_bt_share;
 
     private boolean mIsLargeLayout;
 
@@ -73,7 +68,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        this.setTitle(getString(R.string.R_main_appbar_title));
         //Database init
         try {
             CouchBaseManager.setDatabaseInstance(this);
@@ -90,7 +85,10 @@ public class MainActivity extends AppCompatActivity
         //large screen ?
         mIsLargeLayout = getResources().getBoolean(R.bool.large_layout);
         //Toolbar Init
-        _im_bt_share.setOnClickListener(new View.OnClickListener() {
+
+
+
+        /*_im_bt_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent sendIntent = new Intent();
@@ -99,7 +97,7 @@ public class MainActivity extends AppCompatActivity
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
             }
-        });
+        });*/
 
         setSupportActionBar(_toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

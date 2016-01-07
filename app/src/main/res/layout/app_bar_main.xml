@@ -21,18 +21,6 @@
             android:background="@color/blue_500"
             app:popupTheme="@style/AppTheme.PopupOverlay" >
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/share"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="end"
-                android:layout_alignParentRight="true"
-                android:scaleType="center"
-                android:src="@drawable/ic_menu_share"
-                android:background="#00ffffff"
-                />
-
             </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>

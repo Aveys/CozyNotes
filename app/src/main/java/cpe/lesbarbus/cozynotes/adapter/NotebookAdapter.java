@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.daimajia.swipe.adapters.ArraySwipeAdapter;
+
 import java.util.List;
 
 import cpe.lesbarbus.cozynotes.R;
@@ -17,9 +19,32 @@ import cpe.lesbarbus.cozynotes.models.Notebook;
 /**
  * Created by p_rib_000 on 05/01/2016.
  */
-public class NotebookAdapter extends ArrayAdapter<Notebook>{
+public class NotebookAdapter extends ArraySwipeAdapter<Notebook>{
+    public NotebookAdapter(Context context, int resource) {
+        super(context, resource);
+    }
 
-    private List<Notebook> notebookList;
+    public NotebookAdapter(Context context, int resource, int textViewResourceId) {
+        super(context, resource, textViewResourceId);
+    }
+
+    public NotebookAdapter(Context context, int resource, Notebook[] objects) {
+        super(context, resource, objects);
+    }
+
+    public NotebookAdapter(Context context, int resource, int textViewResourceId, Notebook[] objects) {
+        super(context, resource, textViewResourceId, objects);
+    }
+
+    public NotebookAdapter(Context context, int resource, List<Notebook> objects) {
+        super(context, resource, objects);
+    }
+
+    public NotebookAdapter(Context context, int resource, int textViewResourceId, List<Notebook> objects) {
+        super(context, resource, textViewResourceId, objects);
+    }
+
+    /*private List<Notebook> notebookList;
     private final Context mContext;
 
     public NotebookAdapter(List<Notebook> list , Context context){
@@ -38,7 +63,7 @@ public class NotebookAdapter extends ArrayAdapter<Notebook>{
         TextView name = (TextView) convertView.findViewById(R.id.list_notebook_name);
         name.setText(item.getName());
         return convertView;
-    }
+    }*/
 
     /**
      * Refresh the list of notes
@@ -48,4 +73,8 @@ public class NotebookAdapter extends ArrayAdapter<Notebook>{
         this.notebookList = list;
     }
 
+    @Override
+    public int getSwipeLayoutResourceId(int position) {
+        return R.id.notebooks_swipelayout;
+    }
 }

@@ -3,15 +3,38 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/list_notebook_name"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:gravity="center_vertical"
-        android:textStyle="bold"
-        android:text="Notebook Name"
-        android:background="#EEE"
-        android:paddingLeft="12dp"
-        android:layout_margin="12dp" />
+    <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/notebooks_swipelayout"
+        android:layout_width="match_parent" android:layout_height="wrap_content">
+        <!-- Bottom View Start-->
+        <LinearLayout
+            android:background="@color/red_500"
+            android:id="@+id/bottom_wrapper"
+            android:layout_width="160dp"
+            android:weightSum="1"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <ImageButton
+                android:id="@+id/notebooks_deletebutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_delete_white"/>
+        </LinearLayout>
+        <!-- Bottom View End-->
+
+        <!-- Surface View Start -->
+        <LinearLayout
+            android:padding="10dp"
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/notebooks_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Notebook name"/>
+        </LinearLayout>
+        <!-- Surface View End -->
+    </com.daimajia.swipe.SwipeLayout>
 
 </RelativeLayout>
