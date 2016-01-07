@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.recent_list_swiperefresh)
     SwipeRefreshLayout _spr;
 
+
     private boolean mIsLargeLayout;
 
     @Override
@@ -98,6 +99,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(sendIntent);
             }
         });*/
+
 
         setSupportActionBar(_toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -235,13 +237,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.all_notes) {
-            new Thread(new Runnable() {
+           runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     na.refreshData(cbn.getAllNotes());
                     na.notifyDataSetChanged();
                 }
-            }).start();
+            });
 
         } else if (id == R.id.all_notebooks) {
             Intent i = new Intent(getApplicationContext(), NotebooksActivity.class);

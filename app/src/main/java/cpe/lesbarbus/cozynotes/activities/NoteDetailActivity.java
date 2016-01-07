@@ -14,6 +14,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cpe.lesbarbus.cozynotes.R;
+import cpe.lesbarbus.cozynotes.adapter.NoteAdapter;
 import cpe.lesbarbus.cozynotes.models.Note;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 
@@ -90,7 +91,11 @@ public class NoteDetailActivity extends AppCompatActivity {
         _sharebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(note.getContent()).toString());
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
             }
         });
     }
