@@ -115,6 +115,7 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
             }
         });
 
+
     }
 
     private void setupBold() {
@@ -245,8 +246,38 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
         //IF add notebook selected
         Notebook nb = (Notebook) parent.getItemAtPosition(position);
+
+        if (cbk.getNotebooksCount()<=0){
+            final String[] name = {null};
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(true);
+
+            View vw = getLayoutInflater().inflate(R.layout.dialog_addnotebook, parent, false);
+            final EditText notebookName = (EditText) vw.findViewById(R.id.dialog_addNotebook_edit);
+            builder.setView(vw);
+            builder.setTitle(R.string.notebook_title);
+            builder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    name[0] = notebookName.getText().toString();
+                    if (TextUtils.isEmpty(name[0])) {
+                        Toast.makeText(getApplicationContext(), R.string.empty_input_title, Toast.LENGTH_LONG).show();
+
+                    } else {
+                        Notebook newNB = new Notebook(name[0]);
+                        newNB.set_id(cbk.createNotebook(newNB));
+                        adapter.add(newNB);
+                        int pos = getAdapterItemPosition(newNB);
+                        _spinner.setSelection(pos);
+
+                    }
+                }
+            });
+            builder.show();
+        }
         if (nb.getName().equals(R.string.create_notebook)) {
             final String[] name = {null};
             AlertDialog.Builder builder = new AlertDialog.Builder(this);

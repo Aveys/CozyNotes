@@ -49,13 +49,6 @@
     <string name="menu_title_refresh">Rafraîchir</string>
 
 
-    <string-array name="notebook_test_array">
-        <item>Notebook 1</item>
-        <item>Notebook 2</item>
-        <item>Notebook 3</item>
-        <item>Créer un Notebook ....</item>
-    </string-array>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

@@ -54,6 +54,8 @@ public class LoginActivity extends AccountAuthenticatorActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
+
+
         mAccountManager = AccountManager.get(getBaseContext());
 
         _loginButton.setOnClickListener(new View.OnClickListener() {

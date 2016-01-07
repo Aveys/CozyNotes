@@ -62,6 +62,7 @@
             android:id="@+id/add_notebook_action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_book_blue"
             fab:fab_colorNormal="@color/white"
             fab:fab_title="@string/notebook_label"
             fab:fab_colorPressed="@color/white_pressed" />

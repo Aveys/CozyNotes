@@ -79,7 +79,7 @@
     <string name="cozynotes">CozyNotes</string>
     <string name="date">Date</string>
     <string name="card_note_text">test</string>
-    <string name="input_url">URL</string>
+    <string name="input_url">URL (https://)</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="disconnect">Disconnect</string>
