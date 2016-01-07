@@ -216,10 +216,8 @@ public class MainActivity extends AppCompatActivity
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (sharedText != null) {
             // Update UI to reflect text being shared
-            Intent i = new Intent(this, EditNoteActivity.class);
-            Note note = new Note();
-            note.setContent(sharedText);
-            i.putExtra("note",note);
+            Intent i = new Intent(this, CreateNoteActivity.class);
+            i.putExtra("text_shared",sharedText);
             startActivity(i);
         }
     }

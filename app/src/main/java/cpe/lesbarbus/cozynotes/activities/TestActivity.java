@@ -14,7 +14,7 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import cpe.lesbarbus.cozynotes.R;
-import cpe.lesbarbus.cozynotes.SyncDB.TestLBL;
+
 import cpe.lesbarbus.cozynotes.authenticator.AccountGeneral;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 
@@ -39,7 +39,7 @@ public class TestActivity extends Activity {
         });
         new Thread(new Runnable() {
             public void run() {
-                TestLBL test = new TestLBL(getApplicationContext());
+
             }
         }).start();
 
