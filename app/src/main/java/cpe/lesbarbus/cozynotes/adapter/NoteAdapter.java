@@ -14,6 +14,8 @@ import java.util.List;
 import cpe.lesbarbus.cozynotes.R;
 import cpe.lesbarbus.cozynotes.listener.CustomCardListener;
 import cpe.lesbarbus.cozynotes.models.Note;
+import cpe.lesbarbus.cozynotes.models.Notebook;
+import cpe.lesbarbus.cozynotes.utils.CouchBaseNotebook;
 
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder>{
@@ -50,8 +52,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @Override
     public void onBindViewHolder(NoteViewHolder holder, final int position) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-
+        CouchBaseNotebook cbk = new CouchBaseNotebook();
         Note n = noteList.get(position);
+        System.out.println("Note "+n);
         holder._vTitle.setTag(position);
         if(!n.getTitle().isEmpty())
             holder._vTitle.setText(n.getTitle());
@@ -65,6 +68,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             holder._vText.setText(Html.fromHtml(n.getContent()));
         else
             holder._vText.setText("No content");
+        if(n.getnotebookId()!=null && !n.getnotebookId().isEmpty()) {
+            Notebook nbk = cbk.getNotebookById(n.getnotebookId());
+            if(nbk!=null)
+                holder._vNotebook.setText(nbk.getName());
+            else
+                holder._vNotebook.setText("No Notebook !");
+        }
+        else
+            holder._vNotebook.setText("No Notebook !");
     }
 
     /**
@@ -97,12 +109,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         TextView _vTitle;
         TextView _vText;
         TextView _vDate;
+        TextView _vNotebook;
         public NoteViewHolder(View itemView) {
             super(itemView);
 
             _vTitle = (TextView) itemView.findViewById(R.id.card_note_title);
             _vText = (TextView) itemView.findViewById(R.id.card_note_text);
             _vDate = (TextView) itemView.findViewById(R.id.card_note_date);
+            _vNotebook = (TextView) itemView.findViewById(R.id.card_note_notebook);
         }
     }
 }

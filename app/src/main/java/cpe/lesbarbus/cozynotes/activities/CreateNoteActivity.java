@@ -264,7 +264,7 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
                         Toast.makeText(getApplicationContext(), "Tittle cannot be empty", Toast.LENGTH_LONG).show();
                     } else {
                         Notebook newNB = new Notebook(name[0]);
-                        cbk.createNotebook(newNB);
+                        newNB.set_id(cbk.createNotebook(newNB));
                         adapter.add(newNB);
                         int pos = getAdapterItemPosition(newNB);
                         _spinner.setSelection(pos);

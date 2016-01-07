@@ -3,6 +3,7 @@ package cpe.lesbarbus.cozynotes.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cpe.lesbarbus.cozynotes.R;
+import cpe.lesbarbus.cozynotes.activities.NoteByNotebookActivity;
 import cpe.lesbarbus.cozynotes.models.Note;
 import cpe.lesbarbus.cozynotes.models.Notebook;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
@@ -59,7 +61,19 @@ public class NotebookAdapter extends BaseSwipeAdapter {
         swipeLayout.setOnDoubleClickListener(new SwipeLayout.DoubleClickListener() {
             @Override
             public void onDoubleClick(SwipeLayout layout, boolean surface) {
-                //
+
+            }
+        });
+        swipeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final int pos = (int) v.findViewById(R.id.notebooks_deletebutton).getTag();
+                Notebook notebook = (Notebook) getItem(pos);
+                System.out.println("item : " + pos);
+                System.out.println("Notebook : " + notebook.toString());
+                Intent intent = new Intent(mContext,NoteByNotebookActivity.class);
+                intent.putExtra("notebook",notebook);
+                mContext.startActivity(intent);
             }
         });
         v.findViewById(R.id.notebooks_deletebutton).setOnClickListener(new View.OnClickListener() {
@@ -76,7 +90,6 @@ public class NotebookAdapter extends BaseSwipeAdapter {
                         CouchBaseNotebook cbk = new CouchBaseNotebook();
 
                         for (Note n : cbn.getAllNotesByNotebook(nb.get_id())){
-                            System.out.println("Deleted note : "+n);
                             cbn.deleteNote(n.get_id());
                         }
                         cbk.deleteNotebook(nb.get_id());

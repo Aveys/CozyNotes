@@ -120,17 +120,7 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
         na = new NotebookAdapter(this,cbk.getAllNotebooks());
         na.setMode(Attributes.Mode.Single);
         _listNotebook.setAdapter(na);
-        _listNotebook.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Notebook notebook = (Notebook) parent.getItemAtPosition(position);
-                System.out.println("item : " + position);
-                System.out.println("Notebook : " + notebook.toString());
-                Intent intent = new Intent(getApplicationContext(),NoteByNotebookActivity.class);
-                intent.putExtra("notebook",notebook);
-                startActivity(intent);
-            }
-        });
+
 
     }
 

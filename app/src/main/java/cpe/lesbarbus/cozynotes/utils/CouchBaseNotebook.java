@@ -10,8 +10,11 @@ import com.couchbase.lite.Mapper;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.QueryEnumerator;
 import com.couchbase.lite.View;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -128,9 +131,18 @@ public class CouchBaseNotebook {
         return database.getDocument(documentId);
     }
 
-    public void getNotebookById(String documentId) {
-        JSONObject jsonObject = new JSONObject(database.getDocument(documentId).getProperties());
-        System.out.println(jsonObject.toString());
+    public Notebook getNotebookById(String documentId) {
+        Notebook nbk=null;
+        ObjectMapper mapper = new ObjectMapper();
+        Document document = database.getDocument(documentId);
+        if (DOC_TYPE.equals(document.getProperty("type"))) {
+            try {
+                nbk = mapper.readValue(new JSONObject(document.getProperties()).toString(), Notebook.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return nbk;
     }
 
     /**
@@ -213,6 +225,28 @@ public class CouchBaseNotebook {
      */
     public int getNotebooksCount(){
         return getAllNotebooks().size();
+    }
+
+    public void dumpDatabase(){
+        ObjectMapper mapper = new ObjectMapper();
+        System.out.println("DUMP DATABASE INCOMING !");
+        try {
+            Query query = database.createAllDocumentsQuery();
+            query.setAllDocsMode(Query.AllDocsMode.ALL_DOCS);
+            QueryEnumerator result = query.run();
+            for (; result.hasNext(); ) {
+                Document doc = result.next().getDocument();
+                if (DOC_TYPE.equals(doc.getProperty("type"))) {
+                    System.out.println(mapper.readValue(new JSONObject(doc.getProperties()).toString(), Notebook.class));
+                }
+                if ("note".equals(doc.getProperty("type"))) {
+                    System.out.println(mapper.readValue(new JSONObject(doc.getProperties()).toString(), Note.class));
+                }
+            }
+        } catch (CouchbaseLiteException | IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("END OF DUMP DATABASE");
     }
 
 }

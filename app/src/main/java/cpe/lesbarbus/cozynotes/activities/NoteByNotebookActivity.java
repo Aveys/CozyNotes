@@ -143,6 +143,7 @@ public class NoteByNotebookActivity extends AppCompatActivity
 
         //adapter for recyclerview
         Notebook notebook =(Notebook)this.getIntent().getSerializableExtra("notebook");
+        this.setTitle(notebook.getName());
         na = new NoteAdapter(cbn.getAllNotesByNotebook(notebook.get_id()), this, new CustomCardListener() {
             @Override
             public void onItemClick(View v, Note n) {

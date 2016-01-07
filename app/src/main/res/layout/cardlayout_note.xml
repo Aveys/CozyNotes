@@ -16,15 +16,30 @@
 
         <TextView
             android:id="@+id/card_note_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/title"
             android:textSize="24sp"
-            android:paddingTop="24dp"
+            android:layout_marginTop="24dp"
             android:paddingRight="16dp"
             android:paddingLeft="16dp"
             android:textStyle="bold"
             android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/card_note_notebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/card_note_title"
+            android:layout_toEndOf="@id/card_note_title"
+            android:textSize="18sp"
+            android:layout_marginTop="24dp"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:textStyle="italic"
+            android:background="@color/blue_500"
+            android:textColor="@color/white"
+            android:text="Notebook"
+            android:paddingTop="4dp" />
         <TextView
             android:id="@+id/card_note_date"
             android:layout_width="match_parent"
