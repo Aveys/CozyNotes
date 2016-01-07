@@ -272,13 +272,15 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
                     }
                 }
             });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            if(cbn.getNotesCount()>0) {
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //DO NOTHING
-                }
-            });
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //DO NOTHING
+                    }
+                });
+            }
             builder.show();
         }
         else{

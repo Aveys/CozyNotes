@@ -207,4 +207,12 @@ public class CouchBaseNotebook {
         return notebookView;
     }
 
+    /**
+     * Return the number of notebooks inside the database
+     * @return the number of notebooks
+     */
+    public int getNotebooksCount(){
+        return getAllNotebooks().size();
+    }
+
 }

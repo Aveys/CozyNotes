@@ -61,7 +61,7 @@ public class NoteDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(NoteDetailActivity.this);
-                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.alertdialog_delete_action, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         CouchBaseNote db = new CouchBaseNote();
@@ -70,14 +70,14 @@ public class NoteDetailActivity extends AppCompatActivity {
 
                     }
                 });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(R.string.alertdialog_cancel_action, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //DO NOTHING
                     }
                 });
-                builder.setMessage("Are you sure you want to delete this note ?");
-                builder.setTitle("Delete a note");
+                builder.setMessage(R.string.alertdialog_delete_note_message);
+                builder.setTitle(R.string.alertdialog_delete_note_title);
                 builder.create().show();
             }
         });

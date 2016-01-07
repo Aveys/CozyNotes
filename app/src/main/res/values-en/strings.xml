@@ -88,4 +88,10 @@
     <string name="request_instance">Request an instance : http://cozy.io</string>
     <string name="error_database_load">Database Loading Error, expect errors during the execution of the app</string>
     <string name="R.main.appbar.title">Recent Notes</string>
+    <string name="alertdialog_delete_note_message">Are you sure you want to delete this note ?</string>
+    <string name="alertdialog_delete_note_title">Delete a note</string>
+    <string name="alertdialog_delete_action">Delete</string>
+    <string name="alertdialog_cancel_action">Cancel</string>
+    <string name="alertdialog_delete_notebook_message">You are going to remove a notebook and all the notes associated. Continue ?</string>
+    <string name="alertdialog_delete_notebook_title">Delete notebook</string>
 </resources>

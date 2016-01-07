@@ -94,6 +94,7 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
                             Notebook newNB = new Notebook(name[0]);
                             cbk.createNotebook(newNB);
                             _fam.toggle();
+                            na.refreshData(cbk.getAllNotebooks());
                         }
                     }
                 });
@@ -153,5 +154,11 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        na.refreshData(cbk.getAllNotebooks());
     }
 }
