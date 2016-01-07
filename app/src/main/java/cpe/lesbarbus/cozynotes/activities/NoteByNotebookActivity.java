@@ -1,9 +1,15 @@
 package cpe.lesbarbus.cozynotes.activities;
 
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,6 +22,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,10 +30,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
+import java.io.IOException;
+import java.util.Arrays;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cpe.lesbarbus.cozynotes.R;
 import cpe.lesbarbus.cozynotes.adapter.NoteAdapter;
+import cpe.lesbarbus.cozynotes.authenticator.AccountGeneral;
+import cpe.lesbarbus.cozynotes.authenticator.CozyServerAuthenticate;
 import cpe.lesbarbus.cozynotes.fragment.NoteDetailDialog;
 import cpe.lesbarbus.cozynotes.listener.CustomCardListener;
 import cpe.lesbarbus.cozynotes.models.Note;
@@ -226,7 +239,46 @@ public class NoteByNotebookActivity extends AppCompatActivity
             Intent i = new Intent(getApplicationContext(), NotebooksActivity.class);
             startActivity(i);
         } else if (id == R.id.disconnect) {
-            //TODO
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    AccountManager accountManager = AccountManager.get(NoteByNotebookActivity.this);
+                    CozyServerAuthenticate sserver = new CozyServerAuthenticate();
+                    Looper.prepare();
+                    try {
+                        sserver.userSignoff(AccountGeneral.getPassOwnerFromAccount(NoteByNotebookActivity.this),AccountGeneral.getUrlFromAccount(NoteByNotebookActivity.this));
+                        accountManager.removeAccount(AccountGeneral.getAccountCozy(NoteByNotebookActivity.this), new AccountManagerCallback<Boolean>() {
+                            @Override
+                            public void run(AccountManagerFuture<Boolean> future) {
+                                try {
+                                    Boolean isSuppressed = future.getResult();
+                                    Intent  i = new Intent(NoteByNotebookActivity.this,SplahScreenActivity.class);
+                                    startActivity(i);
+                                    finish();
+                                } catch (OperationCanceledException e) {
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } catch (AuthenticatorException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        },null);
+
+                    } catch (Exception e) {
+                        Log.e("MainActivity", Arrays.toString(e.getStackTrace()));
+                        e.printStackTrace();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(NoteByNotebookActivity.this, R.string.error_signoff, Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                    }
+                }
+            }).start();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

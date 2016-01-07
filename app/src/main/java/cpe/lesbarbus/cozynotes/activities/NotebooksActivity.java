@@ -1,9 +1,15 @@
 package cpe.lesbarbus.cozynotes.activities;
 
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -26,10 +32,15 @@ import com.daimajia.swipe.util.Attributes;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
+import java.io.IOException;
+import java.util.Arrays;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cpe.lesbarbus.cozynotes.R;
 import cpe.lesbarbus.cozynotes.adapter.NotebookAdapter;
+import cpe.lesbarbus.cozynotes.authenticator.AccountGeneral;
+import cpe.lesbarbus.cozynotes.authenticator.CozyServerAuthenticate;
 import cpe.lesbarbus.cozynotes.models.Notebook;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNotebook;
@@ -144,7 +155,46 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
             Intent i = new Intent(getApplicationContext(), NotebooksActivity.class);
             startActivity(i);
         } else if (id == R.id.disconnect) {
-            //TODO
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    AccountManager accountManager = AccountManager.get(NotebooksActivity.this);
+                    CozyServerAuthenticate sserver = new CozyServerAuthenticate();
+                    Looper.prepare();
+                    try {
+                        sserver.userSignoff(AccountGeneral.getPassOwnerFromAccount(NotebooksActivity.this),AccountGeneral.getUrlFromAccount(NotebooksActivity.this));
+                        accountManager.removeAccount(AccountGeneral.getAccountCozy(NotebooksActivity.this), new AccountManagerCallback<Boolean>() {
+                            @Override
+                            public void run(AccountManagerFuture<Boolean> future) {
+                                try {
+                                    Boolean isSuppressed = future.getResult();
+                                    Intent  i = new Intent(NotebooksActivity.this,SplahScreenActivity.class);
+                                    startActivity(i);
+                                    finish();
+                                } catch (OperationCanceledException e) {
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } catch (AuthenticatorException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        },null);
+
+                    } catch (Exception e) {
+                        Log.e("MainActivity", Arrays.toString(e.getStackTrace()));
+                        e.printStackTrace();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(NotebooksActivity.this, R.string.error_signoff, Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                    }
+                }
+            }).start();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
