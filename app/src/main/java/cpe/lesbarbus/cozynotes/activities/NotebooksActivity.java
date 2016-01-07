@@ -4,9 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,15 +17,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.daimajia.swipe.util.Attributes;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cpe.lesbarbus.cozynotes.R;
-import cpe.lesbarbus.cozynotes.adapter.NoteAdapter;
 import cpe.lesbarbus.cozynotes.adapter.NotebookAdapter;
 import cpe.lesbarbus.cozynotes.models.Notebook;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
@@ -120,7 +115,8 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
         navigationView.setNavigationItemSelectedListener(this);
 
         cbk = new CouchBaseNotebook();
-        na = new NotebookAdapter(cbk.getAllNotebooks(), this);
+        na = new NotebookAdapter(this,cbk.getAllNotebooks());
+        na.setMode(Attributes.Mode.Single);
         _listNotebook.setAdapter(na);
     }
 
