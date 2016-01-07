@@ -107,5 +107,6 @@
     <string name="empty_input_title">Le titre ne peut pas être vide</string>
     <string name="empty_input_content">Le contenu ne peut pas être vide</string>
     <string name="add">Ajouter</string>
+    <string name="update_asked">Mise à jour demandée</string>
 
 </resources>

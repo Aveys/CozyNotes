@@ -138,13 +138,13 @@ public class MainActivity extends AppCompatActivity
                 View vw = getLayoutInflater().inflate(R.layout.dialog_addnotebook, null, false);
                 final EditText notebookName = (EditText) vw.findViewById(R.id.dialog_addNotebook_edit);
                 builder.setView(vw);
-                builder.setTitle("Notebook title");
-                builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                builder.setTitle(R.string.notebook_title);
+                builder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         name[0] = notebookName.getText().toString();
                         if (TextUtils.isEmpty(name[0])) {
-                            Toast.makeText(getApplicationContext(), "Tittle cannot be empty", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), R.string.empty_input_title, Toast.LENGTH_LONG).show();
                         } else {
                             Notebook newNB = new Notebook(name[0]);
                             cbk.createNotebook(newNB);
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(R.string.dialog_button_cancel, new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onRefresh() {
-        Toast.makeText(this, "Update asked", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.update_asked, Toast.LENGTH_SHORT).show();
     }
 
     public void showDialog(Note n) {
