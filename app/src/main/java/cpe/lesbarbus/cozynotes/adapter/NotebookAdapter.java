@@ -63,15 +63,17 @@ public class NotebookAdapter extends ArraySwipeAdapter<Notebook>{
         TextView name = (TextView) convertView.findViewById(R.id.list_notebook_name);
         name.setText(item.getName());
         return convertView;
-    }*/
+    }
 
     /**
      * Refresh the list of notes
      * @param list the new list of notes
      */
-    public void refreshData(List<Notebook> list){
+    /*public void refreshData(List<Notebook> list){
         this.notebookList = list;
-    }
+    }*/
+
+
 
     @Override
     public int getSwipeLayoutResourceId(int position) {
