@@ -94,9 +94,6 @@ public class NoteByNotebookActivity extends AppCompatActivity
         _drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-
-
-
         //FloatingActionMenu Init
         _noteAction.setOnClickListener(new View.OnClickListener() {
             @Override

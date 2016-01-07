@@ -83,7 +83,7 @@
     <string name="all_notrebooks">Voir tous les notebooks</string>
     <string name="all_notes">Voir toutes les notes</string>
     <string name="password">Mot de Passe</string>
-    <string name="login">Identifiant</string>
+    <string name="login">Se connecter</string>
     <string name="request_instance">Demander une instance : http://cozy.io</string>
     <string name="error_database_load">Impossible de charger la base de donnée</string>
 </resources>
