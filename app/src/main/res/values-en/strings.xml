@@ -94,4 +94,5 @@
     <string name="alertdialog_cancel_action">Cancel</string>
     <string name="alertdialog_delete_notebook_message">You are going to remove a notebook and all the notes associated. Continue ?</string>
     <string name="alertdialog_delete_notebook_title">Delete notebook</string>
+    <string name="error_signoff">Error during Sign off</string>
 </resources>

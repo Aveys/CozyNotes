@@ -45,7 +45,7 @@ public class CozyServerAuthenticate implements ServerAuthenticate {
         String passRes=null;
         String formedURL = "https://owner:"+pass+"@"+url+"/device";
 
-        String body = "{\"login\":\""+AccountGeneral.DEVICE_NAME+"\",\"permissions\":{\"File\":{\"description\":\"Synchronise notes\"}}}";
+        String body = "{\"login\":\""+AccountGeneral.DEVICE_NAME+"\",\"permissions\":{\"all\":{\"description\":\"Synchronise notes\"}}}";
         Log.d("CozyServerAuthenticate","Requested URL : "+formedURL+" \n Request Body : "+body);
 
         String res = post(formedURL,body);// send the POST request
@@ -61,6 +61,31 @@ public class CozyServerAuthenticate implements ServerAuthenticate {
         }
         return passRes;
 
+    }
+
+    @Override
+    public String userSignoff(final String pass, final String url) throws Exception {
+        client.setAuthenticator(new Authenticator() {
+            @Override
+            public Request authenticate(Proxy proxy, Response response) throws IOException {
+                String credentials = Credentials.basic("owner", pass);
+                return response.request().newBuilder().header("Authorization", credentials).build();
+            }
+
+            @Override
+            public Request authenticateProxy(Proxy proxy, Response response) throws IOException {
+                return null;
+            }
+        });
+
+        String formedURL = "https://owner:"+pass+"@"+url+"/device/"+AccountGeneral.DEVICE_NAME;
+
+        Log.d("CozyServerAuthenticate","Requested URL : "+formedURL);
+
+        String res = delete(formedURL);// send the POST request
+
+        Log.d("CozyServerAuthenticate","result="+res);
+       return null;
     }
 
     /**
@@ -83,15 +108,24 @@ public class CozyServerAuthenticate implements ServerAuthenticate {
         return res.body().string();
 
     }
+    private String delete(String url) throws IOException {
+        client.networkInterceptors().add(new LoggingInterceptor());
+        Request req = new Request.Builder()
+                .url(url)
+                .delete()
+                .addHeader("Accept", "*/*")
+                .build();
+        Response res = client.newCall(req).execute();
+        return res.body().string();
+    }
 }
 //Interceptor for debug in OkHttp
 class LoggingInterceptor implements Interceptor {
     @Override public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        System.out.println(bodyToString(request.body()));
         long t1 = System.nanoTime();
-        Log.i("CozyServerAuthenticate", String.format("Sending request %s on %s%n%s%n%s",
-                request.url(), chain.connection(), request.headers(), request.body().contentLength()));
+        Log.i("CozyServerAuthenticate", String.format("Sending request %s on %s%n%s",
+                request.url(), chain.connection(), request.headers()));
 
         Response response = chain.proceed(request);
 

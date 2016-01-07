@@ -61,19 +61,23 @@ public class NotebookAdapter extends BaseSwipeAdapter {
         swipeLayout.setOnDoubleClickListener(new SwipeLayout.DoubleClickListener() {
             @Override
             public void onDoubleClick(SwipeLayout layout, boolean surface) {
-
+                swipeLayout.close();
             }
         });
-        swipeLayout.setOnClickListener(new View.OnClickListener() {
+
+
+        swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final int pos = (int) v.findViewById(R.id.notebooks_deletebutton).getTag();
+                swipeLayout.close();
+                final int pos = (int) v.findViewById(R.id.notebooks_title).getTag();
                 Notebook notebook = (Notebook) getItem(pos);
                 System.out.println("item : " + pos);
                 System.out.println("Notebook : " + notebook.toString());
-                Intent intent = new Intent(mContext,NoteByNotebookActivity.class);
-                intent.putExtra("notebook",notebook);
+                Intent intent = new Intent(mContext, NoteByNotebookActivity.class);
+                intent.putExtra("notebook", notebook);
                 mContext.startActivity(intent);
+
             }
         });
         v.findViewById(R.id.notebooks_deletebutton).setOnClickListener(new View.OnClickListener() {

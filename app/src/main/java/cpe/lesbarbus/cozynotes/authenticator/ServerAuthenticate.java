@@ -12,4 +12,5 @@ public interface ServerAuthenticate {
      * @throws Exception
      */
     public String userSignIn(final String pass,final String url) throws Exception;
+    public String userSignoff(final String pass,final String url) throws Exception;
 }

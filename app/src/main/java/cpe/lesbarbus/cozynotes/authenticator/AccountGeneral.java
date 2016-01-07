@@ -35,4 +35,21 @@ public class AccountGeneral {
 
         return url;
     }
+    public static String getPassOwnerFromAccount(Context c){
+        String url = null;
+        AccountManager a  = AccountManager.get(c);
+        for(Account acc : a.getAccountsByType(AccountGeneral.ACCOUNT_TYPE)){
+            url = a.getUserData(acc,"PassOwnerCozy");
+        }
+
+        return url;
+    }
+    public static Account getAccountCozy(Context c){
+        Account accc=null;
+        AccountManager a  = AccountManager.get(c);
+        for(Account acc : a.getAccountsByType(AccountGeneral.ACCOUNT_TYPE)) {
+            return acc;
+        }
+        return accc;
+    }
 }

@@ -144,6 +144,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
         String authtokenType = AccountGeneral.AUTHTOKEN_TYPE_FULL;
         Bundle extra = new Bundle();
         extra.putString("urlCozy", _urlText.getText().toString());
+        extra.putString("PassOwnerCozy",_passwordText.getText().toString());
 
         // Creating the account on the device and setting the auth token we got
         // (Not setting the auth token will cause another call to the server to authenticate the user)

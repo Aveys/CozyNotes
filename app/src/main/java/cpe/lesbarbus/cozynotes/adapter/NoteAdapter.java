@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.sufficientlysecure.htmltextview.HtmlTextView;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -54,7 +56,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         CouchBaseNotebook cbk = new CouchBaseNotebook();
         Note n = noteList.get(position);
-        System.out.println("Note "+n);
         holder._vTitle.setTag(position);
         if(!n.getTitle().isEmpty())
             holder._vTitle.setText(n.getTitle());
@@ -65,7 +66,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         else
             holder._vDate.setText("No date");
         if(!n.getContent().isEmpty())
-            holder._vText.setText(Html.fromHtml(n.getContent()));
+            holder._vText.setHtmlFromString(n.getContent(), new HtmlTextView.RemoteImageGetter());
         else
             holder._vText.setText("No content");
         if(n.getnotebookId()!=null && !n.getnotebookId().isEmpty()) {
@@ -107,14 +108,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     public static class NoteViewHolder extends RecyclerView.ViewHolder{
 
         TextView _vTitle;
-        TextView _vText;
+        HtmlTextView _vText;
         TextView _vDate;
         TextView _vNotebook;
         public NoteViewHolder(View itemView) {
             super(itemView);
 
             _vTitle = (TextView) itemView.findViewById(R.id.card_note_title);
-            _vText = (TextView) itemView.findViewById(R.id.card_note_text);
+            _vText = (HtmlTextView) itemView.findViewById(R.id.card_note_text);
             _vDate = (TextView) itemView.findViewById(R.id.card_note_date);
             _vNotebook = (TextView) itemView.findViewById(R.id.card_note_notebook);
         }

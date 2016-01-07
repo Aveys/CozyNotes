@@ -15,4 +15,5 @@
         android:layout_marginRight="24dp"
         android:hint="@string/addnotebook_title"/>
 
+
 </LinearLayout>

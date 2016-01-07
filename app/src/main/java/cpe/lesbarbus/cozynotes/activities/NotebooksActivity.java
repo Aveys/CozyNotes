@@ -11,14 +11,19 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.util.Attributes;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import butterknife.Bind;
@@ -47,6 +52,7 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
     com.getbase.floatingactionbutton.FloatingActionButton _notebookAction;
     @Bind(R.id.list_notebooks)
     ListView _listNotebook;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +115,8 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
             }
         });
         //set the size of action button
-        _noteAction.setSize(com.getbase.floatingactionbutton.FloatingActionButton.SIZE_MINI);
-        _notebookAction.setSize(com.getbase.floatingactionbutton.FloatingActionButton.SIZE_MINI);
+        _noteAction.setSize(FloatingActionButton.SIZE_MINI);
+        _notebookAction.setSize(FloatingActionButton.SIZE_MINI);
 
         //drawer related
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);

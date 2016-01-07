@@ -37,5 +37,17 @@
         </LinearLayout>
         <!-- Surface View End -->
     </com.daimajia.swipe.SwipeLayout>
+    <View
+    android:id="@+id/note_create_divider"
+    android:layout_width="match_parent"
+    android:layout_height="2px"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp"
+    android:layout_below="@id/notebooks_swipelayout"
+    android:background="@color/half_black"
+    android:minHeight="2px"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
