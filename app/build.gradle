@@ -46,4 +46,6 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.6.0'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.6.4'
     compile "com.daimajia.swipelayout:library:1.2.0@aar"
+    compile 'com.daimajia.androidanimations:library:1.1.2@aar'
+    compile 'com.nineoldandroids:library:2.4.0'
 }

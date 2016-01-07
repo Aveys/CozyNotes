@@ -7,8 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.swipe.SimpleSwipeListener;
+import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.ArraySwipeAdapter;
+import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 
 import java.util.List;
 
@@ -19,34 +25,12 @@ import cpe.lesbarbus.cozynotes.models.Notebook;
 /**
  * Created by p_rib_000 on 05/01/2016.
  */
-public class NotebookAdapter extends ArraySwipeAdapter<Notebook>{
-    public NotebookAdapter(Context context, int resource) {
-        super(context, resource);
-    }
+public class NotebookAdapter extends BaseSwipeAdapter {
 
-    public NotebookAdapter(Context context, int resource, int textViewResourceId) {
-        super(context, resource, textViewResourceId);
-    }
 
-    public NotebookAdapter(Context context, int resource, Notebook[] objects) {
-        super(context, resource, objects);
-    }
-
-    public NotebookAdapter(Context context, int resource, int textViewResourceId, Notebook[] objects) {
-        super(context, resource, textViewResourceId, objects);
-    }
-
-    public NotebookAdapter(Context context, int resource, List<Notebook> objects) {
-        super(context, resource, objects);
-    }
-
-    public NotebookAdapter(Context context, int resource, int textViewResourceId, List<Notebook> objects) {
-        super(context, resource, textViewResourceId, objects);
-    }
-
-    /*private List<Notebook> notebookList;
+    private List<Notebook> notebookList;
     private final Context mContext;
-
+    /*
     public NotebookAdapter(List<Notebook> list , Context context){
         super(context, R.layout.list_notebook, list);
         this.mContext = context;
@@ -73,10 +57,61 @@ public class NotebookAdapter extends ArraySwipeAdapter<Notebook>{
         this.notebookList = list;
     }*/
 
-
+    public NotebookAdapter(Context mContext, List<Notebook> notebookList) {
+        this.mContext = mContext;
+        this.notebookList = notebookList;
+    }
 
     @Override
     public int getSwipeLayoutResourceId(int position) {
         return R.id.notebooks_swipelayout;
+    }
+
+    @Override
+    public View generateView(int position, ViewGroup parent) {
+        View v = LayoutInflater.from(mContext).inflate(R.layout.list_notebook, null);
+        SwipeLayout swipeLayout = (SwipeLayout)v.findViewById(getSwipeLayoutResourceId(position));
+        swipeLayout.addSwipeListener(new SimpleSwipeListener() {
+            @Override
+            public void onOpen(SwipeLayout layout) {
+                YoYo.with(Techniques.Tada).duration(500).delay(100).playOn(layout.findViewById(R.id.notebooks_deletebutton));
+            }
+        });
+        swipeLayout.setOnDoubleClickListener(new SwipeLayout.DoubleClickListener() {
+            @Override
+            public void onDoubleClick(SwipeLayout layout, boolean surface) {
+                Toast.makeText(mContext, "DoubleClick", Toast.LENGTH_SHORT).show();
+            }
+        });
+        v.findViewById(R.id.notebooks_deletebutton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(mContext, "click delete", Toast.LENGTH_SHORT).show();
+            }
+        });
+        return v;
+    }
+
+    @Override
+    public void fillValues(int position, View convertView) {
+
+        TextView t = (TextView)convertView.findViewById(R.id.notebooks_title);
+        t.setText(notebookList.get(position).getName());
+
+    }
+
+    @Override
+    public int getCount() {
+        return notebookList.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return notebookList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 }

@@ -193,6 +193,37 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+
+        //Receive shared COntent
+        // Get intent, action and MIME type
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+        //Call apropriate handling methods
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                handleSendText(intent);
+                // Handle text being sent
+            }
+        } else {
+            // Handle other intents, such as being started from the home screen
+        }
+    }
+
+    /**
+     * Function that receives the text send by third party app
+     * @param intent
+     */
+    void handleSendText(Intent intent) {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (sharedText != null) {
+            // Update UI to reflect text being shared
+            Intent i = new Intent(this, EditNoteActivity.class);
+            Note note = new Note();
+            note.setContent(sharedText);
+            i.putExtra("note",note);
+            startActivity(i);
+        }
     }
 
     @Override
