@@ -33,7 +33,13 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.CreateNoteActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -65,17 +71,11 @@
             android:name=".activities.ReceiveActivity"
             android:label="@string/title_activity_receive"
             android:theme="@style/AppTheme" >
-
         </activity>
         <activity
             android:name=".activities.ShareActivity"
             android:label="@string/title_activity_share"
             android:theme="@style/AppTheme" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="text/plain" />
-            </intent-filter>
         </activity>
     </application>
 
