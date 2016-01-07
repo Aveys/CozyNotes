@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -118,6 +119,18 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
         na = new NotebookAdapter(this,cbk.getAllNotebooks());
         na.setMode(Attributes.Mode.Single);
         _listNotebook.setAdapter(na);
+        _listNotebook.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Notebook notebook = (Notebook) parent.getItemAtPosition(position);
+                System.out.println("item : " + position);
+                System.out.println("Notebook : " + notebook.toString());
+                Intent intent = new Intent(getApplicationContext(),NoteByNotebookActivity.class);
+                intent.putExtra("notebook",notebook);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override

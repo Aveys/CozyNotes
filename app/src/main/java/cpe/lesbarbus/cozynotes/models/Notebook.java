@@ -1,13 +1,11 @@
 package cpe.lesbarbus.cozynotes.models;
 
+import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-/**
- * Created by arthurveys on 03/01/16.
- */
-public class Notebook {
+
+public class Notebook implements Serializable{
 
     private String _id;
     private String _rev;

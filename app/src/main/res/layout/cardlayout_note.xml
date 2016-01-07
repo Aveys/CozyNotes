@@ -54,21 +54,7 @@
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
             android:layout_below="@id/card_note_text"/>-->
-        <Button
-            android:id="@+id/card_note_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/card_note_text"
-            android:padding="8dp"
-            android:text="@string/edit"/>
-        <Button
-            android:id="@+id/card_note_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:layout_below="@id/card_note_text"
-            android:layout_toEndOf="@id/card_note_edit"
-            android:text="@string/delete"/>
+
 
     </RelativeLayout>
 
