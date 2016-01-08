@@ -53,7 +53,7 @@ public class NoteDetailActivity extends AppCompatActivity {
         _content.setText(Html.fromHtml(note.getContent()));
         _date.setText(note.getFormattedDateTime());
 
-        _editbutton.setOnClickListener(new View.OnClickListener() {
+        _remindbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -65,10 +65,11 @@ public class NoteDetailActivity extends AppCompatActivity {
                 intentCal.putExtra("rrule", "FREQ=YEARLY");
                 intentCal.putExtra("endTime", cal.getTimeInMillis()+60*60*1000);
                 intentCal.putExtra("title", note.getTitle());
+                intentCal.putExtra("description", note.getContent());
                 startActivity(intentCal);
             }
         });
-        _remindbutton.setOnClickListener(new View.OnClickListener() {
+        _editbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent editIntent = new Intent(NoteDetailActivity.this, EditNoteActivity.class);
