@@ -254,7 +254,6 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
             final String[] name = {null};
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true);
-
             View vw = getLayoutInflater().inflate(R.layout.dialog_addnotebook, parent, false);
             final EditText notebookName = (EditText) vw.findViewById(R.id.dialog_addNotebook_edit);
             builder.setView(vw);
@@ -278,7 +277,7 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
             });
             builder.show();
         }
-        if (view.getTag()!=null && view.getTag().equals("creation_notebook")) {
+        if (view.getTag() != null && view.getTag().equals("creation_notebook")) {
             final String[] name = {null};
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true);

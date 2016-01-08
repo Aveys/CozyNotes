@@ -302,7 +302,7 @@ public class EditNoteActivity extends AppCompatActivity implements AdapterView.O
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         //IF add notebook selected
         Notebook nb = (Notebook) parent.getItemAtPosition(position);
-        if (nb.getName().equals(R.string.create_notebook)) {
+        if (view.getTag()!=null && view.getTag().equals("creation_notebook")) {
             final String[] name = {null};
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true);
