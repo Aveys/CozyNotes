@@ -42,6 +42,7 @@ import cpe.lesbarbus.cozynotes.adapter.NotebookAdapter;
 import cpe.lesbarbus.cozynotes.authenticator.AccountGeneral;
 import cpe.lesbarbus.cozynotes.authenticator.CozyServerAuthenticate;
 import cpe.lesbarbus.cozynotes.models.Notebook;
+import cpe.lesbarbus.cozynotes.utils.CouchBaseManager;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNotebook;
 
@@ -168,7 +169,7 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
                             public void run(AccountManagerFuture<Boolean> future) {
                                 try {
                                     Boolean isSuppressed = future.getResult();
-                                    Intent  i = new Intent(NotebooksActivity.this,SplahScreenActivity.class);
+                                    Intent i = new Intent(NotebooksActivity.this, SplahScreenActivity.class);
                                     startActivity(i);
                                     finish();
                                 } catch (OperationCanceledException e) {
@@ -180,7 +181,8 @@ public class NotebooksActivity extends AppCompatActivity implements NavigationVi
                                 }
 
                             }
-                        },null);
+                        }, null);
+                        CouchBaseManager.destroyDatabase();
 
                     } catch (Exception e) {
                         Log.e("MainActivity", Arrays.toString(e.getStackTrace()));

@@ -69,8 +69,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             holder._vText.setHtmlFromString(n.getContent(), new HtmlTextView.RemoteImageGetter());
         else
             holder._vText.setText("No content");
-        if(n.getnotebookId()!=null && !n.getnotebookId().isEmpty()) {
-            Notebook nbk = cbk.getNotebookById(n.getnotebookId());
+        if(n.getNotebookId()!=null && !n.getNotebookId().isEmpty()) {
+            Notebook nbk = cbk.getNotebookById(n.getNotebookId());
             if(nbk!=null)
                 holder._vNotebook.setText(nbk.getName());
             else

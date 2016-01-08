@@ -1,5 +1,6 @@
 package cpe.lesbarbus.cozynotes.authenticator;
 
+import android.accounts.AuthenticatorException;
 import android.util.Log;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,7 +52,7 @@ public class CozyServerAuthenticate implements ServerAuthenticate {
         String passRes=null;
         String formedURL = "https://owner:"+pass+"@"+url+"/device";
 
-        String body = "{\"login\":\""+AccountGeneral.DEVICE_NAME+"\",\"permissions\":{\"all\":{\"description\":\"Synchronise notes\"}}}";
+        String body = "{\"login\":\""+AccountGeneral.DEVICE_NAME+"\",\"permissions\":{\"File\":{\"description\":\"Synchronise notes\"}}}";
         Log.d("CozyServerAuthenticate","Requested URL : "+formedURL+" \n Request Body : "+body);
 
         String res = post(formedURL,body);// send the POST request

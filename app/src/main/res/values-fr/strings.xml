@@ -102,5 +102,6 @@
     <string name="add">Ajouter</string>
     <string name="update_asked">Mise à jour demandée</string>
     <string name="get_from_cloud">Récupérer depuis le cloud</string>
-
+    <string name="save_to_cloud">Exporter dans le cloud</string>
+    <string name="title_activity_notebooks">Cahier de notes</string>
 </resources>

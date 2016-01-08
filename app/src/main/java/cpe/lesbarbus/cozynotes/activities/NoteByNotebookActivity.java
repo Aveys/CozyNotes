@@ -44,6 +44,7 @@ import cpe.lesbarbus.cozynotes.fragment.NoteDetailDialog;
 import cpe.lesbarbus.cozynotes.listener.CustomCardListener;
 import cpe.lesbarbus.cozynotes.models.Note;
 import cpe.lesbarbus.cozynotes.models.Notebook;
+import cpe.lesbarbus.cozynotes.utils.CouchBaseManager;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNotebook;
 
@@ -249,7 +250,7 @@ public class NoteByNotebookActivity extends AppCompatActivity
                             public void run(AccountManagerFuture<Boolean> future) {
                                 try {
                                     Boolean isSuppressed = future.getResult();
-                                    Intent  i = new Intent(NoteByNotebookActivity.this,SplahScreenActivity.class);
+                                    Intent i = new Intent(NoteByNotebookActivity.this, SplahScreenActivity.class);
                                     startActivity(i);
                                     finish();
                                 } catch (OperationCanceledException e) {
@@ -261,7 +262,8 @@ public class NoteByNotebookActivity extends AppCompatActivity
                                 }
 
                             }
-                        },null);
+                        }, null);
+                        CouchBaseManager.destroyDatabase();
 
                     } catch (Exception e) {
                         Log.e("MainActivity", Arrays.toString(e.getStackTrace()));

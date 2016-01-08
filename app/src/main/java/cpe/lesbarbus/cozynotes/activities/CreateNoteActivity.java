@@ -278,7 +278,7 @@ public class CreateNoteActivity extends AppCompatActivity implements AdapterView
             });
             builder.show();
         }
-        if (nb.getName().equals(R.string.create_notebook)) {
+        if (view.getTag()!=null && view.getTag().equals("creation_notebook")) {
             final String[] name = {null};
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setCancelable(true);

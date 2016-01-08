@@ -48,6 +48,12 @@ public class CouchBaseManager {
         }
         return database;
     }
+
+    public static void destroyDatabase() throws CouchbaseLiteException {
+        database.delete();
+    }
+
+
     /*HOW TO QUERY VIEW IN COUCHDBLITE
     try {
 

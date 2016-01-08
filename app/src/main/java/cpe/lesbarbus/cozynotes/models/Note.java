@@ -37,10 +37,6 @@ public class Note implements Serializable{
         this._rev = _rev;
     }
 
-    public String getnotebookId() {
-        return notebookId;
-    }
-
     public void setNotebookId(String notebookId) {
         this.notebookId = notebookId;
     }

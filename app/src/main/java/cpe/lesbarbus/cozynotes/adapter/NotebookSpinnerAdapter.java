@@ -36,6 +36,9 @@ public class NotebookSpinnerAdapter extends ArrayAdapter<Notebook> {
         }
         TextView name = (TextView) convertView.findViewById(android.R.id.text1);
         name.setText(item.getName());
+        if(item.getName().equals(mContext.getString(R.string.create_notebook))){
+            name.setTag("creation_notebook");
+        }
         return convertView;
     }
 

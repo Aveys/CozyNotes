@@ -224,4 +224,5 @@ public class CouchBaseNote {
     public int getNotesCount(){
         return getAllNotes().size();
     }
+
 }

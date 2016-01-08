@@ -45,6 +45,8 @@ import cpe.lesbarbus.cozynotes.fragment.NoteDetailDialog;
 import cpe.lesbarbus.cozynotes.listener.CustomCardListener;
 import cpe.lesbarbus.cozynotes.models.Note;
 import cpe.lesbarbus.cozynotes.models.Notebook;
+import cpe.lesbarbus.cozynotes.synctasks.CloudExport;
+import cpe.lesbarbus.cozynotes.synctasks.CloudImport;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseManager;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNote;
 import cpe.lesbarbus.cozynotes.utils.CouchBaseNotebook;
@@ -260,6 +262,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(i);
         } else if (id == R.id.get_from_cloud){
 
+
         } else if (id == R.id.disconnect) {
             new Thread(new Runnable() {
                 @Override
@@ -274,7 +277,7 @@ public class MainActivity extends AppCompatActivity
                             public void run(AccountManagerFuture<Boolean> future) {
                                 try {
                                     Boolean isSuppressed = future.getResult();
-                                    Intent  i = new Intent(MainActivity.this,SplahScreenActivity.class);
+                                    Intent i = new Intent(MainActivity.this, SplahScreenActivity.class);
                                     startActivity(i);
                                     finish();
                                 } catch (OperationCanceledException e) {
@@ -286,7 +289,8 @@ public class MainActivity extends AppCompatActivity
                                 }
 
                             }
-                        },null);
+                        }, null);
+                        CouchBaseManager.destroyDatabase();
 
                     } catch (Exception e) {
                         Log.e("MainActivity", Arrays.toString(e.getStackTrace()));
@@ -302,6 +306,11 @@ public class MainActivity extends AppCompatActivity
                 }
             }).start();
 
+        } else if(id == R.id.export_from_cloud){
+            new CloudExport().execute(this);
+
+        } else if(id == R.id.import_from_cloud){
+            new CloudImport().execute(this);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
