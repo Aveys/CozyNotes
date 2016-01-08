@@ -65,7 +65,7 @@ public class NoteDetailActivity extends AppCompatActivity {
                 intentCal.putExtra("rrule", "FREQ=YEARLY");
                 intentCal.putExtra("endTime", cal.getTimeInMillis()+60*60*1000);
                 intentCal.putExtra("title", note.getTitle());
-                intentCal.putExtra("description", note.getContent());
+                intentCal.putExtra("description",  Html.fromHtml(note.getContent()).toString());
                 startActivity(intentCal);
             }
         });
