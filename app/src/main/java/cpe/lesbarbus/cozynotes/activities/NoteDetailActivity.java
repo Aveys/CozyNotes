@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.Calendar;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cpe.lesbarbus.cozynotes.R;
@@ -36,6 +38,8 @@ public class NoteDetailActivity extends AppCompatActivity {
     ImageButton _editbutton;
     @Bind(R.id.note_detail_deletebutton)
     ImageButton _deletebutton;
+    @Bind(R.id.note_detail_remindbutton)
+    ImageButton _remindbutton;
     private Note note;
 
     @Override
@@ -50,6 +54,21 @@ public class NoteDetailActivity extends AppCompatActivity {
         _date.setText(note.getFormattedDateTime());
 
         _editbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Calendar cal = Calendar.getInstance();
+                Intent intentCal = new Intent(Intent.ACTION_EDIT);
+                intentCal.setType("vnd.android.cursor.item/event");
+                intentCal.putExtra("beginTime", cal.getTimeInMillis());
+                intentCal.putExtra("allDay", true);
+                intentCal.putExtra("rrule", "FREQ=YEARLY");
+                intentCal.putExtra("endTime", cal.getTimeInMillis()+60*60*1000);
+                intentCal.putExtra("title", note.getTitle());
+                startActivity(intentCal);
+            }
+        });
+        _remindbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent editIntent = new Intent(NoteDetailActivity.this, EditNoteActivity.class);

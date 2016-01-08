@@ -58,6 +58,17 @@
                 android:src="@drawable/ic_social_share_white"
                 android:background="#00ffffff"
                 android:contentDescription="@null" />
+            <ImageButton
+                android:id="@+id/note_detail_remindbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:layout_alignParentRight="true"
+                android:scaleType="center"
+                android:src="@drawable/ic_alarm_white_24dp"
+                android:background="#00ffffff"
+                android:contentDescription="@null" />
 
         </android.support.v7.widget.Toolbar>
 
