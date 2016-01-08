@@ -15,6 +15,7 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 import java.net.Proxy;
+import java.net.URL;
 
 import okio.Buffer;
 
@@ -30,8 +31,13 @@ public class CozyServerAuthenticate implements ServerAuthenticate {
     public String userSignIn(final String pass, String url) throws Exception {
         //Create the Auth header (base 64 with owner:pass)
         client.setAuthenticator(new Authenticator() {
+            private int mCounter = 0;
             @Override
             public Request authenticate(Proxy proxy, Response response) throws IOException {
+                if (mCounter++ > 0) {
+                    mCounter = 0;
+                    throw new IOException("Invalid login or password");
+                }
                 String credentials = Credentials.basic("owner",pass);
                 return response.request().newBuilder().header("Authorization",credentials).build();
             }
